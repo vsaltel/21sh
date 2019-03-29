@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/14 11:22:49 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/03/28 19:11:36 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,19 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <curses.h>
+#include <term.h>
+#include <termios.h>
 
 # include "libft.h"
 # include "ft_printf.h"
 # include "get_next_line.h"
 # include "lexer.h"
+# include "termcaps.h"
+
+#define BUFF 64
 
 typedef struct		s_env
 {
@@ -91,4 +99,7 @@ void				no_user(char *name);
 int					cd_exists(char *file, char *name);
 void				env_invalid_arg(int *argc, char ***argv);
 
+int					get_input(int fd, char **dest);
+int					execute_termcaps(char *buf, char **str, t_cursor_pos *pos);
+int					my_putchar(int c);
 #endif

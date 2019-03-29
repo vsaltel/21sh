@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/03/26 15:53:25 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/03/28 19:34:46 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc
-CFLAGS	+=	-Wall -Werror -Wextra -g3
-#CFLAGS	+= -g -fsanitize=address
+#CFLAGS	+=	-Wall -Werror -Wextra -g3
+CFLAGS	+= -g -fsanitize=address
 
 NAME 	=	21sh
 LIBFT	=	libft
@@ -21,6 +21,8 @@ INCDIR	=	includes
 OBJDIR	=	objs
 FILES 	=	main.c				\
 			minishell.c			\
+			read_input.c		\
+			termcaps.c			\
 			lexer.c				\
 			lexer_utils.c		\
 			tokens_utils.c		\
@@ -66,7 +68,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -C $(LIBFT)
 	@echo "${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -ltermcap
 	@echo "${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

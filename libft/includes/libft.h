@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 18:24:16 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/26 16:03:21 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/03/28 18:25:06 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstfold(t_list **lst, void (*del)(void *, size_t));
 
-void				ft_putstrtable(char **tab);
+void				ft_putstrtable(char **tb);
 char				*ft_strfdup(const char *s1, const char *f);
 char				*ft_strfjoin(char const *s1, char const *s2, char const *f);
 #endif

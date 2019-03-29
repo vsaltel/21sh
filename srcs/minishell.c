@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/11 13:33:34 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/03/28 18:52:54 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		bslash_error(char **input, int ret)
 
 	g_ignore_signals = 1;
 	write(1, "> ", 2);
-	if (!(ret = get_next_line(0, &ninput)))
+	if (!(ret = get_input(0, &ninput)))
 	{
 		if (g_ignore_signals)
 		{
@@ -43,7 +43,7 @@ int		quote_error(char **input, int ret)
 
 	g_ignore_signals = 1;
 	ret ? write(1, "dquote> ", 8) : write(1, "quote> ", 7);
-	if (!(ret = get_next_line(0, &ninput)))
+	if (!(ret = get_input(0, &ninput)))
 	{
 		if (g_ignore_signals)
 		{
@@ -101,10 +101,11 @@ int		minishell(t_env **env)
 
 	lexer.tokens = NULL;
 	ft_printf("\033[1;32m$> \033[0m");
-	while (get_next_line(0, &input) > 0)
+	while (get_input(0, &input) > 0)
 	{
+		ft_printf("resutl -> |%s|, len = %d\n", input, ft_strlen(input));
 		if ((g_return = eval_exec(&lexer, &input, env)))
-			ft_printf("\033[1;31m$> \033[0m");
+			ft_printf("\033[1;32m$> \033[0m");
 		else
 			ft_printf("\033[1;32m$> \033[0m");
 	}
