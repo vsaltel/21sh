@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/03/28 19:34:46 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/04/02 16:24:46 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,14 @@ INCDIR	=	includes
 OBJDIR	=	objs
 FILES 	=	main.c				\
 			minishell.c			\
-			read_input.c		\
-			termcaps.c			\
+			termcaps/read_input.c		\
+			termcaps/termcaps.c	\
+			termcaps/termcaps_utils.c	\
+			termcaps/t_up.c		\
+			termcaps/t_down.c	\
+			termcaps/t_left.c	\
+			termcaps/t_right.c	\
+			termcaps/t_delete.c	\
 			lexer.c				\
 			lexer_utils.c		\
 			tokens_utils.c		\
@@ -74,6 +80,7 @@ $(NAME): $(OBJS)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
+	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
 	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -o $@ -c $<
 

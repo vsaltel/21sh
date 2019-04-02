@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/03/29 18:33:14 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/02 18:04:17 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ static void	print_nb(char *str)
 	}
 	ft_putstr("---");
 	ft_putstr(str);
-}
-
-void	add_char(char **str, char *buf, int x)
-{
-	char *l;	
-	char *r;	
-
-	l = ft_strndup(*str, x);
-	r = ft_strjoin(buf, *str + x);
-	*str = ft_strfjoin(l, r, *str);
-	free(l);
-	free(r);
 }
 
 static int		termcaps_init()
@@ -103,7 +91,7 @@ static int		get_pos(t_cursor_pos *pos)
 		pos->y = pos->y + (buf[i] - '0') * pow;
 		pow = pow * 10;
 	}
-	//tputs(tgoto(tgetstr("cm", NULL), --(pos->x), --(pos->y)), 1, my_putchar);
+	tputs(tgoto(tgetstr("cm", NULL), --(pos->x), --(pos->y)), 1, my_putchar);
 	return (0);
 }
 
@@ -115,27 +103,73 @@ static int		memset_pos(t_cursor_pos *pos)
 	pos->x_lastc = pos->x;
 	pos->y_lastc = pos->y;
 	pos->x_rel = 0;
-	pos->x_max = tgetnum("co");
+	pos->x_max = tgetnum("co") - 1;
 	pos->y_min = pos->y;
 	pos->y_max = tgetnum("li");
+	pos->auto_wrap = tgetflag("am");
 	return (1);
 }
 
 static void		move_pos(t_cursor_pos *pos)
 {
+	if (pos->y_lastc == pos->y_max - 1 && pos->x_lastc == pos->x_max)
+	{
+		tputs(tgetstr("sf", NULL), 1, my_putchar);
+		pos->y--;
+		pos->y_min--;
+		pos->y_lastc--;
+	}
 	if (pos->x == pos->x_max)
 	{
 		pos->y++;
 		pos->y_lastc++;
 		pos->x = 0;
 		pos->x_lastc = 0;
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y), 1, my_putchar);
 	}
 	else
 	{
 		pos->x++;
-		pos->x_lastc++;
+		if (pos->x_lastc == pos->x_max)
+		{
+			pos->x_lastc = 0;
+			pos->y_lastc++;
+		}
+		else
+			pos->x_lastc++;
 	}
 	pos->x_rel++;
+}
+
+void	new_char(char **str, char *buf, t_cursor_pos *pos)
+{
+	char *l;	
+	char *r;	
+
+	if (!*str)
+		*str = ft_strdup(buf);
+	else if ((*str)[pos->x_rel])
+	{
+		if (pos->y_lastc > pos->y || pos->x_lastc == pos->x_max)
+		{
+			tputs(tgoto(tgetstr("cm", NULL), 0, pos->y + 1), 1, my_putchar);
+			tputs(tgetstr("cd", NULL), 1, my_putchar);
+			ft_printf("%s", *str + pos->x_rel + (pos->x_max - pos->x));
+			tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+		}
+		l = ft_strndup(*str, pos->x_rel);
+		r = ft_strjoin(buf, *str + pos->x_rel);
+		*str = ft_strfjoin(l, r, *str);
+		free(l);
+		free(r);
+		tputs(tgetstr("im", NULL), 1, my_putchar);
+	}
+	else
+		*str = ft_strfjoin(*str, buf, *str);
+	ft_putchar(buf[0]);
+	if ((*str)[pos->x_rel])
+		tputs(tgetstr("ei", NULL), 1, my_putchar);
+	move_pos(pos);
 }
 
 int		get_input(int fd, char **dest)
@@ -153,27 +187,11 @@ int		get_input(int fd, char **dest)
 	{
 		if (ret == -1)
 			return (-1);
+		if (buf[0] == '\n')
+			break ;
 		buf[ret] = '\0';
 		if (!execute_termcaps(buf, &str, &pos))
-		{
-			if (buf[0] == 'p')
-				ft_printf("x%d, y%d|", pos.x, pos.y);
-			if (buf[0] == '\n')
-				break ;
-			if (!str)
-				str = ft_strdup(buf);
-			else if (str[pos.x_rel])
-			{
-				add_char(&str, buf, pos.x_rel);
-				tputs(tgetstr("im", NULL), 1, my_putchar);
-			}
-			else
-				str = ft_strfjoin(str, buf, str);
-			ft_putchar(buf[0]);
-			if (str[pos.x_rel])
-				tputs(tgetstr("ei", NULL), 1, my_putchar);
-			move_pos(&pos);
-		}
+			new_char(&str, buf, &pos);	
 	}
 	ft_putchar('\n');
 	*dest = str;

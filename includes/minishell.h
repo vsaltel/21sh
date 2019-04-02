@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/28 19:11:36 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/02 17:11:37 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,8 @@ void				env_invalid_arg(int *argc, char ***argv);
 
 int					get_input(int fd, char **dest);
 int					execute_termcaps(char *buf, char **str, t_cursor_pos *pos);
+//void				add_char(char **str, char *buf, t_cursor_pos *pos);
+void				new_char(char **str, char *buf, t_cursor_pos *pos);
+void				del_char(char **str, t_cursor_pos *pos);
 int					my_putchar(int c);
 #endif

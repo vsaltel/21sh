@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/03/29 15:53:25 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/02 16:24:20 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct	s_cursor_pos
 	size_t			x_rel; //postion x dans la string
 	size_t			y_min; //position y initiale de la ligne du prompt dans le shell
 	size_t			y_max; //position y de la derniere affichable dans le shell
+	int				auto_wrap : 1;
 }				t_cursor_pos;
 
 typedef enum	e_caps_type
@@ -31,6 +32,8 @@ typedef enum	e_caps_type
 	CAPS_NULL,
 	CAPS_DELETE,
 	CAPS_LEFT,
+	CAPS_UP,
+	CAPS_DOWN,
 	CAPS_RIGHT
 }				t_caps_type;
 
@@ -45,14 +48,17 @@ typedef struct	s_ex_caps
 int		termcaps_left(char **str, t_cursor_pos *pos);
 int		termcaps_right(char **str, t_cursor_pos *pos);
 int		termcaps_delete(char **str, t_cursor_pos *pos);
+int		termcaps_up(char **str, t_cursor_pos *pos);
+int		termcaps_down(char **str, t_cursor_pos *pos);
 
 static const t_ex_caps g_caps_list[] =
 {
 	{"\e[D", 3, CAPS_LEFT, &termcaps_left},
 	{"\e[C", 3, CAPS_RIGHT, &termcaps_right},
-	{"\e[A", 3, CAPS_NULL, NULL},
-	{"\e[B", 3, CAPS_NULL, NULL},
+	{"\e[A", 3, CAPS_UP, &termcaps_up},
+	{"\e[B", 3, CAPS_DOWN, &termcaps_down},
 	{"\177", 1, CAPS_DELETE, &termcaps_delete},
+	{"\011", 1, CAPS_NULL, NULL},
 	{NULL, 1, CAPS_NULL, NULL}
 };
 

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/28 18:52:54 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/02 18:41:49 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		minishell(t_env **env)
 	{
 		ft_printf("resutl -> |%s|, len = %d\n", input, ft_strlen(input));
 		if ((g_return = eval_exec(&lexer, &input, env)))
-			ft_printf("\033[1;32m$> \033[0m");
+			ft_printf("\033[1;31m$> \033[0m");
 		else
 			ft_printf("\033[1;32m$> \033[0m");
 	}
