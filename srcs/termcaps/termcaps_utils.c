@@ -3,12 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   termcaps_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/01 19:16:48 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/02 17:48:48 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "shell.h"
 

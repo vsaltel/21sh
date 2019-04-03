@@ -6,11 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 12:27:16 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/07 12:08:12 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "shell.h"
 
 t_token		*push_token(t_token *list, t_token *new)
 {

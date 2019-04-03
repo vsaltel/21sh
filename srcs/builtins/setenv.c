@@ -6,11 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 14:30:34 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/11 14:58:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "shell.h"
 
 int			disp_env(t_env *env)
 {

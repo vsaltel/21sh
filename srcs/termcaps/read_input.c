@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/02 18:04:17 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/03 12:25:02 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "shell.h"
 
 int		my_putchar(int c)
 {
@@ -44,7 +44,7 @@ static int		termcaps_init()
 
 	tcgetattr(0, &term);
 	term.c_lflag &= ~(ICANON | ECHO);
-	term.c_lflag &= ~(OPOST);   
+	term.c_lflag &= ~(OPOST);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSADRAIN, &term);
@@ -191,7 +191,7 @@ int		get_input(int fd, char **dest)
 			break ;
 		buf[ret] = '\0';
 		if (!execute_termcaps(buf, &str, &pos))
-			new_char(&str, buf, &pos);	
+			new_char(&str, buf, &pos);
 	}
 	ft_putchar('\n');
 	*dest = str;

@@ -6,12 +6,14 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/26 18:11:45 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/03 14:13:23 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
+
+# include "shell.h"
 
 typedef enum	e_token_type
 {
@@ -67,5 +69,15 @@ static const t_ex_token g_tokens_list[] =
 	{"\f", 1, TOKEN_IGN},
 	{NULL, 1, TOKEN_NULL}
 };
+
+int lex(char *s, t_lexer *lexer);
+int is_escaped(char *s, size_t index, int endquote);
+int is_start_quote(char *s, size_t index);
+void destroy_lexer(t_lexer *lexer);
+t_token *push_token(t_token *list, t_token *new);
+t_token *create_token(t_lexer *lexer, char *content,
+					  size_t len, t_token_type type);
+t_ex_token search_token(const char *s);
+void destroy_tokens(t_token *token);
 
 #endif

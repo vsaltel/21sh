@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_down.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 16:15:16 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/02 18:32:32 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "shell.h"
 
 int		termcaps_down(char **str, t_cursor_pos *pos)
 {

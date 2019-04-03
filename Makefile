@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/02 16:24:46 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/04/03 12:13:37 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,36 +19,37 @@ LIBFT	=	libft
 SRCDIR	=	srcs
 INCDIR	=	includes
 OBJDIR	=	objs
-FILES 	=	main.c				\
-			minishell.c			\
+FILES 	=	main.c						\
+			minishell.c					\
 			termcaps/read_input.c		\
-			termcaps/termcaps.c	\
+			termcaps/termcaps.c			\
 			termcaps/termcaps_utils.c	\
-			termcaps/t_up.c		\
-			termcaps/t_down.c	\
-			termcaps/t_left.c	\
-			termcaps/t_right.c	\
-			termcaps/t_delete.c	\
-			lexer.c				\
-			lexer_utils.c		\
-			tokens_utils.c		\
-			parser.c			\
-			executables.c		\
-			exec_utils.c		\
-			env_utils.c			\
-			env_utilities.c		\
-			builtins.c			\
-			builtins_errors.c	\
-			builtins/env.c		\
-			builtins/setenv.c	\
-			builtins/unsetenv.c	\
-			builtins/exit.c		\
-			builtins/cd.c		\
-			builtins/echo.c		\
-			signals.c			\
-			errors.c			\
-			utils.c				\
-			variables.c			\
+			termcaps/t_up.c				\
+			termcaps/t_down.c			\
+			termcaps/t_left.c			\
+			termcaps/t_right.c			\
+			termcaps/t_delete.c			\
+			lexer/lexer.c				\
+			lexer/lexer_utils.c			\
+			lexer/lexer_free.c			\
+			tokens_utils.c				\
+			parser.c					\
+			executables.c				\
+			exec_utils.c				\
+			env_utils.c					\
+			env_utilities.c				\
+			builtins.c					\
+			builtins_errors.c			\
+			builtins/env.c				\
+			builtins/setenv.c			\
+			builtins/unsetenv.c			\
+			builtins/exit.c				\
+			builtins/cd.c				\
+			builtins/echo.c				\
+			signals.c					\
+			errors.c					\
+			utils.c						\
+			variables.c					\
 			tilde.c
 SRCS	=	$(addprefix $(SRCDIR)/, $(FILES))
 OBJS 	=	$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -81,6 +82,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
 	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
+	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
 	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -o $@ -c $<
 
