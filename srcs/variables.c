@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:05:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,13 @@ int			replace_vars(t_token *curr, t_env *env)
 {
 	while (curr)
 	{
-		if (curr->type == TOKEN_DQUOTES || curr->type == TOKEN_NAME)
+		if (curr->type == TOKEN_NAME)
 		{
 			parse_token(curr, env);
 			if (curr->type == TOKEN_NAME && curr->content[0] == '~')
 				if (!(handle_home(curr, env)))
 					return (0);
 		}
-		else if (curr->type == TOKEN_QUOTES)
-			;
 		else
 			break ;
 		curr = curr->next;

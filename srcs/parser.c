@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:05:22 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static int	build_args(char ***args, t_token *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		if (tmp->type != TOKEN_NAME && tmp->type != TOKEN_QUOTES
-				&& tmp->type != TOKEN_DQUOTES)
+		if (tmp->type != TOKEN_NAME)
 			break ;
 		argc++;
 		tmp = tmp->next;

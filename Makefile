@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/03 12:13:37 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/03 15:05:26 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,9 @@ FILES 	=	main.c						\
 			lexer/lexer.c				\
 			lexer/lexer_utils.c			\
 			lexer/lexer_free.c			\
-			tokens_utils.c				\
+			lexer/lexer_search.c		\
+			lexer/create_token.c		\
+			lexer/push_token.c			\
 			parser.c					\
 			executables.c				\
 			exec_utils.c				\

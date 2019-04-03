@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 14:13:23 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:21:03 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,23 @@
 
 # include "shell.h"
 
+typedef enum	e_state
+{
+	ST_GENERAL,
+	ST_QUOTES,
+	ST_DQUOTES,
+	ST_ESCAPED,
+	ST_COMMENT,
+	ST_PIPE,
+	ST_REDIR,
+	ST_AND,
+	ST_OR
+}				t_state;
+
 typedef enum	e_token_type
 {
 	TOKEN_NULL,
 	TOKEN_NAME,
-	TOKEN_QUOTES,
-	TOKEN_DQUOTES,
 	TOKEN_SEMI,
 	TOKEN_AND,
 	TOKEN_OR,
@@ -48,18 +59,20 @@ typedef struct	s_lexer
 {
 	t_token		*tokens;
 	size_t		size;
+	t_state		state;
 }				t_lexer;
 
 static const t_ex_token g_tokens_list[] =
 {
-	{"|", 1, TOKEN_PIPE},
 	{"<<", 2, TOKEN_REDIR},
-	{"<", 1, TOKEN_REDIR},
-	{">", 1, TOKEN_REDIR},
+	{">>", 2, TOKEN_REDIR},
 	{">&", 2, TOKEN_REDIR},
 	{"<&", 2, TOKEN_REDIR},
 	{"&&", 2, TOKEN_AND},
 	{"||", 2, TOKEN_OR},
+	{"|", 1, TOKEN_PIPE},
+	{"<", 1, TOKEN_REDIR},
+	{">", 1, TOKEN_REDIR},
 	{";", 1, TOKEN_SEMI},
 	{" ", 1, TOKEN_IGN},
 	{"\n", 1, TOKEN_IGN},
@@ -73,11 +86,11 @@ static const t_ex_token g_tokens_list[] =
 int lex(char *s, t_lexer *lexer);
 int is_escaped(char *s, size_t index, int endquote);
 int is_start_quote(char *s, size_t index);
+t_ex_token lexer_search(const char *s);
 void destroy_lexer(t_lexer *lexer);
 t_token *push_token(t_token *list, t_token *new);
 t_token *create_token(t_lexer *lexer, char *content,
-					  size_t len, t_token_type type);
-t_ex_token search_token(const char *s);
+						size_t len, t_token_type type);
 void destroy_tokens(t_token *token);
 
 #endif

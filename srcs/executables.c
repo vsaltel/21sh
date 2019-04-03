@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:56:43 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int				execute(char *file, char ***args, t_env **env, t_lexer *lex)
 	{
 		envp = build_env(*env);
 		path = get_exe(*env, file, 1);
-		ret = start_process(path, *args, envp);
+		//ret = start_process(path, *args, envp);
 		free(path);
 		ft_strddel(&envp);
 	}

@@ -1,4 +1,4 @@
 *.o
-.dSYM
+*.dSYM
 21sh
 *.a

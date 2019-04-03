@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_free.c                                       :+:      :+:    :+:   */
+/*   lexer_search.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 12:12:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 17:35:02 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/03 15:02:36 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/03 15:04:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	destroy_tokens(t_token *token)
+t_ex_token lexer_search(const char *s)
 {
-	t_token *next;
+	const t_ex_token empty = {NULL, 0, TOKEN_NULL};
+	size_t i;
 
-	next = NULL;
-	while (token)
+	if (!s)
+		return (empty);
+	i = 0;
+	while (g_tokens_list + i && (g_tokens_list[i]).op)
 	{
-		next = token->next;
-		free(token->content);
-		free(token);
-		token = next;
+		if (ft_strncmp(g_tokens_list[i].op, s, g_tokens_list[i].len) == 0)
+			return (g_tokens_list[i]);
+		i++;
 	}
-}
-
-void	destroy_lexer(t_lexer *lexer)
-{
-	destroy_tokens(lexer->tokens);
-	lexer->tokens = NULL;
-	lexer->size = 0;
-	lexer->state = ST_GENERAL;
+	return (empty);
 }

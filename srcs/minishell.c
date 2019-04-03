@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:56:29 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@ int		quote_error(char **input, int ret)
 	return (0);
 }
 
+void disp_tokens(t_lexer *lexer)
+{
+	ft_printf("Size: %d - Final State: %d\n", lexer->size, lexer->state);
+
+	t_token *cur = lexer->tokens;
+	while (cur)
+	{
+		ft_printf("(%d = %s)\n", cur->type, cur->content);
+		cur = cur->next;
+	}
+}
+
 int		handle_input(t_lexer *lexer, char **input)
 {
 	int		ret;
@@ -75,6 +87,7 @@ int		handle_input(t_lexer *lexer, char **input)
 		else if (ret == -2 && (ret = bslash_error(input, ret)))
 			return (ret);
 	}
+	disp_tokens(lexer);
 	return (0);
 }
 
@@ -100,6 +113,7 @@ int		minishell(t_env **env)
 	t_lexer	lexer;
 
 	lexer.tokens = NULL;
+	lexer.state = ST_GENERAL;
 	ft_printf("\033[1;32m$> \033[0m");
 	while (get_input(0, &input) > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:45 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 14:13:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:37:42 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ static int	handle_quotes(t_lexer *lexer, char **prev, char **s)
 	if (!*str || *str != quote)
 		return (quote == '\'' ? 0 : -1);
 	(*prev)++;
-	create_token(lexer, *prev, str - *prev,
-				quote == '"' ? TOKEN_DQUOTES : TOKEN_QUOTES);
+	create_token(lexer, *prev, str - *prev, TOKEN_NAME);
 	*prev = ++str;
 	*s = str;
 	return (1);
@@ -50,15 +49,6 @@ static int	add_quotes(t_lexer *lexer, char **s, char **prev)
 	return (1);
 }
 
-static void	add_current_token(t_lexer *lexer, t_ex_token cur,
-												char **s, char **prev)
-{
-	*s += cur.len;
-	if (cur.type != TOKEN_IGN)
-		create_token(lexer, (char *)cur.op, cur.len, cur.type);
-	*prev = *s;
-}
-
 static int	rlex(char *s, char *prev, t_lexer *lexer)
 {
 	t_ex_token	cur;
@@ -66,23 +56,100 @@ static int	rlex(char *s, char *prev, t_lexer *lexer)
 
 	while (s && *s)
 	{
-		if (*s == '\\' && s++)
-			continue;
-		cur = search_token(s);
-		if (((cur.op && !is_escaped(prev, s - prev, 0))
-						|| is_start_quote(s, prev - s)) && prev != s)
-			create_token(lexer, prev, s - prev, TOKEN_NAME);
-		if (cur.op && !is_escaped(prev, s - prev, 0))
-			add_current_token(lexer, cur, &s, &prev);
-		else if (*s == '"' || *s == '\'')
+		ft_printf("STATE: %d - ", lexer->state);
+		if (lexer->state == ST_GENERAL)
 		{
-			if ((ret = add_quotes(lexer, &s, &prev)) < 1)
-				return (ret);
+			cur = lexer_search(s);
+			ft_printf("OPERATOR: |%s|", cur.op);
+			if (cur.op)
+			{
+				//Close actual token
+				s > prev ? create_token(lexer, prev, s - prev, TOKEN_NAME) : 0;
+				//Add current token (except blanks)
+				cur.type != TOKEN_IGN ? create_token(lexer, s, cur.len, cur.type) : 0;
+				prev = (s += cur.len);
+			}
+			else
+			{
+				if (*s == '"' && !is_escaped(s, s - prev, 0))
+				{
+					prev = s;
+					lexer->state = ST_DQUOTES;
+				}
+				else if (*s == '\'' && !is_escaped(s, s - prev, 0))
+				{
+					prev = s;
+					lexer->state = ST_QUOTES;
+				}
+				else if (*s == '\\' && !is_escaped(s, s - prev, 0))
+				{
+					prev = s;
+					lexer->state = ST_ESCAPED;
+				}
+				else if (*s == '#' && !is_escaped(s, s - prev, 0))
+				{
+					prev = s;
+					lexer->state = ST_COMMENT;
+				}
+				s++;
+			}
 		}
-		else
+		else if (lexer->state == ST_QUOTES)
+		{
+			ft_printf("QUOTED CHAR: %c", *s);
+			if (*s == '\'' && !is_escaped(prev, s - prev, 0))
+			{
+				lexer->state = ST_GENERAL;
+				create_token(lexer, prev, ++s - prev, TOKEN_NAME);
+				prev = s;
+			}
+			else if (*s == '\0')
+				return (0);
+			else
+				s++;
+		}
+		else if (lexer->state == ST_DQUOTES)
+		{
+			ft_printf("DQUOTED CHAR: %c", *s);
+			if (*s == '"' && !is_escaped(prev, s - prev, 0))
+			{
+				lexer->state = ST_GENERAL;
+				create_token(lexer, prev, ++s - prev, TOKEN_NAME);
+				prev = s;
+			}
+			else if (*s == '\0')
+				return (-1);
+			else
+				s++;
+		}
+		else if (lexer->state == ST_ESCAPED)
+		{
 			s++;
+			ft_printf("ESCAPED CHAR: %c", *s);
+			lexer->state = ST_GENERAL;
+		}
+		else if (lexer->state == ST_COMMENT)
+		{
+			ft_printf("COMMENTED CHAR: %c", *s);
+			if (*s == '\n' && !is_escaped(prev, s - prev, 0))
+			{
+				lexer->state = ST_GENERAL;
+				prev = s;
+			}
+			else
+				s++;
+		}
+		ft_printf("\n");
 	}
-	(prev != s) ? create_token(lexer, prev, s - prev, TOKEN_NAME) : 0;
+	if (lexer->state == ST_GENERAL)
+		s > prev ? create_token(lexer, prev, s - prev, TOKEN_NAME) : 0;
+	else
+	{
+		if (lexer->state == ST_DQUOTES)
+			return (-1);
+		if (lexer->state == ST_QUOTES)
+			return (0);
+	}
 	return (1);
 }
 
