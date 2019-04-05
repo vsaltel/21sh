@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/08 15:06:03 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/08 15:35:53 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,13 @@ FILES 	=	main.c						\
 			termcaps/termcaps_utils.c	\
 			termcaps/t_up.c				\
 			termcaps/t_down.c			\
+			termcaps/t_shift_left.c		\
+			termcaps/t_shift_right.c	\
 			termcaps/t_left.c			\
 			termcaps/t_right.c			\
 			termcaps/t_delete.c			\
+			termcaps/t_home.c			\
+			termcaps/t_end.c			\
 			lexer/lexer.c				\
 			lexer/is_escaped.c			\
 			lexer/is_word_token.c		\

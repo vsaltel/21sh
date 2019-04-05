@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/02 16:24:20 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/05 16:51:31 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ typedef enum	e_caps_type
 {
 	CAPS_NULL,
 	CAPS_DELETE,
+	CAPS_SHIFT_LEFT,
+	CAPS_SHIFT_RIGHT,
 	CAPS_LEFT,
+	CAPS_RIGHT,
 	CAPS_UP,
 	CAPS_DOWN,
-	CAPS_RIGHT
+	CAPS_HOME,
+	CAPS_END
 }				t_caps_type;
 
 typedef struct	s_ex_caps
@@ -45,18 +49,26 @@ typedef struct	s_ex_caps
 	int     		(*func)(char **str, t_cursor_pos *pos);
 }				t_ex_caps;
 
+int		termcaps_shift_left(char **str, t_cursor_pos *pos);
+int		termcaps_shift_right(char **str, t_cursor_pos *pos);
 int		termcaps_left(char **str, t_cursor_pos *pos);
 int		termcaps_right(char **str, t_cursor_pos *pos);
 int		termcaps_delete(char **str, t_cursor_pos *pos);
 int		termcaps_up(char **str, t_cursor_pos *pos);
 int		termcaps_down(char **str, t_cursor_pos *pos);
+int		termcaps_home(char **str, t_cursor_pos *pos);
+int		termcaps_end(char **str, t_cursor_pos *pos);
 
 static const t_ex_caps g_caps_list[] =
 {
+	{"\e[1;2C", 6, CAPS_SHIFT_RIGHT, &termcaps_shift_right},
+	{"\e[1;2D", 6, CAPS_SHIFT_LEFT, &termcaps_shift_left},
 	{"\e[D", 3, CAPS_LEFT, &termcaps_left},
 	{"\e[C", 3, CAPS_RIGHT, &termcaps_right},
 	{"\e[A", 3, CAPS_UP, &termcaps_up},
 	{"\e[B", 3, CAPS_DOWN, &termcaps_down},
+	{"\e[H", 3, CAPS_HOME, &termcaps_home},
+	{"\e[F", 3, CAPS_END, &termcaps_end},
 	{"\177", 1, CAPS_DELETE, &termcaps_delete},
 	{"\011", 1, CAPS_NULL, NULL},
 	{NULL, 1, CAPS_NULL, NULL}

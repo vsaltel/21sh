@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/03 12:25:02 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:53:32 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,90 +110,131 @@ static int		memset_pos(t_cursor_pos *pos)
 	return (1);
 }
 
-static void		move_pos(t_cursor_pos *pos)
+static void		last_line(t_cursor_pos *pos, size_t len)
 {
-	if (pos->y_lastc == pos->y_max - 1 && pos->x_lastc == pos->x_max)
+	size_t	line_sup;
+	size_t	final_pos;
+	int i;
+
+	line_sup = (pos->x_lastc + 1 + len) / (pos->x_max + 1);
+	if (line_sup + pos->y_lastc >= pos->y_max)
 	{
-		tputs(tgetstr("sf", NULL), 1, my_putchar);
-		pos->y--;
-		pos->y_min--;
-		pos->y_lastc--;
+		final_pos = pos->y_max - pos->y_lastc + line_sup - 1;
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc), 1, my_putchar);
+		i = -1;
+		while (++i < final_pos)
+			tputs(tgetstr("sf", NULL), 1, my_putchar);
+		//tputs(tgetstr("SF", NULL), pos->y_max - pos->y_lastc + line_sup - 1, my_putchar);
+		pos->y_min -= final_pos;
+		pos->y -= final_pos;
+		tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+		pos->y_lastc -= final_pos;
 	}
-	if (pos->x == pos->x_max)
+}
+static void		move_pos(t_cursor_pos *pos, size_t len)
+{
+	if (pos->x_lastc == pos->x_max || pos->x_lastc + len > pos->x_max)
 	{
-		pos->y++;
-		pos->y_lastc++;
-		pos->x = 0;
-		pos->x_lastc = 0;
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y), 1, my_putchar);
+		pos->y_lastc += (pos->x_lastc + 1 + len) / (pos->x_max + 1);
+		pos->x_lastc = ((pos->x_lastc + 1 + len) % (pos->x_max + 1)) - 1;
+		if (pos->x_lastc == -1)
+		{
+			pos->y_lastc--;
+			pos->x_lastc = pos->x_max;
+		}
 	}
 	else
+		pos->x_lastc += len;
+	if (pos->x == pos->x_max || pos->x + len > pos->x_max)
 	{
-		pos->x++;
-		if (pos->x_lastc == pos->x_max)
+		pos->y += (pos->x + 1 + len) / (pos->x_max + 1);
+		pos->x = ((pos->x + 1 + len) % (pos->x_max + 1)) - 1;
+		if (pos->x == -1)
 		{
-			pos->x_lastc = 0;
-			pos->y_lastc++;
+			pos->y--;
+			pos->x = pos->x_max;
 		}
-		else
-			pos->x_lastc++;
 	}
-	pos->x_rel++;
+	else
+		pos->x += len;
+	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+	pos->x_rel += len;
 }
 
-void	new_char(char **str, char *buf, t_cursor_pos *pos)
+void	new_entry(char **str, char *buf, t_cursor_pos *pos)
 {
 	char *l;	
 	char *r;	
 
+	last_line(pos, ft_strlen(buf));
 	if (!*str)
 		*str = ft_strdup(buf);
 	else if ((*str)[pos->x_rel])
 	{
-		if (pos->y_lastc > pos->y || pos->x_lastc == pos->x_max)
-		{
-			tputs(tgoto(tgetstr("cm", NULL), 0, pos->y + 1), 1, my_putchar);
-			tputs(tgetstr("cd", NULL), 1, my_putchar);
-			ft_printf("%s", *str + pos->x_rel + (pos->x_max - pos->x));
-			tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
-		}
 		l = ft_strndup(*str, pos->x_rel);
 		r = ft_strjoin(buf, *str + pos->x_rel);
 		*str = ft_strfjoin(l, r, *str);
-		free(l);
-		free(r);
-		tputs(tgetstr("im", NULL), 1, my_putchar);
 	}
 	else
 		*str = ft_strfjoin(*str, buf, *str);
-	ft_putchar(buf[0]);
-	if ((*str)[pos->x_rel])
-		tputs(tgetstr("ei", NULL), 1, my_putchar);
-	move_pos(pos);
+	if (pos->y_lastc > pos->y_min)
+	{
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, my_putchar);
+		tputs(tgetstr("cd", NULL), 1, my_putchar);
+	}
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, my_putchar);
+	tputs(tgetstr("ce", NULL), 1, my_putchar);
+	ft_printf("%s", *str);
+	move_pos(pos, ft_strlen(buf));
+}
+
+int		read_all(int fd, char **dest)
+{
+	char 			buf[BUFF_SIZE];
+	char			*str;
+	int				ret;
+
+	str = NULL;
+	while ((ret = read(fd, buf, BUFF_SIZE - 1)))
+	{
+		if (ret == -1)
+			break ;
+		buf[ret] = '\0';
+		if (!str)
+			str = ft_strdup(buf);
+		else
+			str = ft_strfjoin(str, buf, str);
+		if (ret < BUFF_SIZE - 1)
+			break ;
+	}
+	*dest = str;
+	return (ret);
 }
 
 int		get_input(int fd, char **dest)
 {
 	int 			ret;
-	char 			buf[BUFF];
+	char 			*buf;
 	char 			*str;
 	t_cursor_pos	pos;
 
 	str = NULL;
 	termcaps_init();
 	memset_pos(&pos);
-	ft_memset(buf, '\0', BUFF);
-	while ((ret = read(fd, buf, BUFF)))
+	while ((ret = read_all(fd, &buf)))
 	{
 		if (ret == -1)
-			return (-1);
+			return (ret);
 		if (buf[0] == '\n')
 			break ;
-		buf[ret] = '\0';
+		if (buf[0] == '-')
+			ft_printf("posx = %d, posxmax = %d, buff_size = %d", pos.x, pos.x_max, BUFF_SIZE);
 		if (!execute_termcaps(buf, &str, &pos))
-			new_char(&str, buf, &pos);
+			new_entry(&str, buf, &pos);
+		//print_nb(buf);
+		free(buf);
 	}
-	ft_putchar('\n');
+	final_position(&pos);
 	*dest = str;
 	return (1);
 }
