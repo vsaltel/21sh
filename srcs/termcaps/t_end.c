@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   t_end.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 13:45:44 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/04 17:25:02 by vsaltel          ###   ########.fr       */
+/*   Created: 2019/04/05 16:01:57 by vsaltel           #+#    #+#             */
+/*   Updated: 2019/04/05 16:06:35 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "shell.h"
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE	2048
-# endif
-
-# include "libft.h"
-# include <limits.h>
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+int		termcaps_end(char **str, t_cursor_pos *pos)
+{
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_lastc, pos->y_lastc), 1, my_putchar);
+	pos->x = pos->x_lastc;
+	pos->y = pos->y_lastc;
+	pos->x_rel = ft_strlen(*str);
+	return (0);
+}

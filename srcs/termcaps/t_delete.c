@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:32:13 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/04 19:34:11 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,8 @@ int		termcaps_delete(char **str, t_cursor_pos *pos)
 		{
 			tputs(tgoto(tgetstr("cm", NULL), 0, pos->y + 1), 1, my_putchar);
 			tputs(tgetstr("cd", NULL), 1, my_putchar);
-			if (pos->x_lastc > 0)
-			{
-				tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y), 1, my_putchar);
-				ft_printf("%s", *str + pos->x_rel + (pos->x_max - pos->x) + 1);
-			}
+			tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y), 1, my_putchar);
+			ft_printf("%s", *str + pos->x_rel + (pos->x_max - pos->x) + 1);
 		}
 		del_char(str, pos);
 		--(pos->x);
