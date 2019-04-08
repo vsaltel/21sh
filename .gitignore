@@ -2,3 +2,5 @@
 *.dSYM
 21sh
 *.a
+*.png
+*.dot

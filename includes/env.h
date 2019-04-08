@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/21 15:25:22 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/04 16:15:56 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/04 16:16:27 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#ifndef ENV_H
+# define ENV_H
 
-int		check_quotes(char *str, char c)
+typedef struct		s_env
 {
-	size_t	i;
+	char			*key;
+	char			*value;
+	int				is_env;
+	struct s_env	*next;
+}					t_env;
 
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	if (str[i] != c)
-		return (0);
-	return (1);
-}
+#endif

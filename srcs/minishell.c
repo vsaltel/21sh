@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 17:56:29 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/04 15:33:21 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		quote_error(char **input, int ret)
 		if (g_ignore_signals)
 		{
 			write(2,
-			"minishell: unexpected EOF while looking for quote\n", 50);
+			"21sh: unexpected EOF while looking for quote\n", 50);
 			g_ignore_signals = 0;
 			return (2);
 		}
@@ -82,9 +82,11 @@ int		handle_input(t_lexer *lexer, char **input)
 	while ((ret = lex(*input, lexer)) < 1)
 	{
 		destroy_lexer(lexer);
-		if (ret > -2 && (ret = quote_error(input, ret)))
+		if ((ret == -2 && ret == -1) && (ret = quote_error(input, ret)))
 			return (ret);
-		else if (ret == -2 && (ret = bslash_error(input, ret)))
+		else if (ret == -3 && (ret = bslash_error(input, ret)))
+			return (ret);
+		else
 			return (ret);
 	}
 	disp_tokens(lexer);

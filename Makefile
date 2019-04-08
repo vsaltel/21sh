@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/03 15:05:26 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/08 15:06:03 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,15 @@ FILES 	=	main.c						\
 			termcaps/t_right.c			\
 			termcaps/t_delete.c			\
 			lexer/lexer.c				\
-			lexer/lexer_utils.c			\
+			lexer/is_escaped.c			\
+			lexer/is_word_token.c		\
 			lexer/lexer_free.c			\
 			lexer/lexer_search.c		\
 			lexer/create_token.c		\
 			lexer/push_token.c			\
-			parser.c					\
+			parser/parser.c				\
+			parser/create_node.c		\
+			parser/build_args.c			\
 			executables.c				\
 			exec_utils.c				\
 			env_utils.c					\
@@ -77,7 +80,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -C $(LIBFT)
 	@echo "${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -ltermcap
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -ltermcap
 	@echo "${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
@@ -85,6 +88,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
 	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
 	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
+	@[ -d $(OBJDIR)/parser ] || mkdir -p $(OBJDIR)/parser
 	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -o $@ -c $<
 

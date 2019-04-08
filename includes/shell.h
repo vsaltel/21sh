@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:23:08 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/04 16:16:40 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,12 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "get_next_line.h"
+# include "env.h"
 # include "lexer.h"
+# include "parser.h"
 # include "termcaps.h"
 
 #define BUFF 64
-
-typedef struct		s_env
-{
-	char			*key;
-	char			*value;
-	int				is_env;
-	struct s_env	*next;
-}					t_env;
 
 extern int			g_child;
 extern int			g_ignore_signals;
@@ -62,7 +56,6 @@ int					replace_vars(t_token *curr, t_env *env);
 size_t				get_var_size(char *key);
 int					handle_home(t_token *token, t_env *env);
 
-int					parse(t_lexer *lexer, t_env **env);
 char				*get_exe(t_env *env, char *name, int verbose);
 int					execute(char *file, char ***args, t_env **env,
 																t_lexer *lex);

@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   is_word_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/25 12:02:17 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 17:50:46 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/08 15:04:15 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/08 15:05:15 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		is_escaped(char *s, size_t index, int endquote)
+int		is_word_token(t_token *token)
 {
-	int	prev;
-
-	prev = 0;
-	if (index <= 0)
-		return (0);
-	if (s[index - 1] == '\\')
-		prev = !is_escaped(s, index - 1, 0);
-	if (s[index] == '\'' && endquote)
-		return (0);
-	return (prev);
-}
-
-int		is_start_quote(char *s, size_t index)
-{
-	if (s[index] != '\'' && s[index] != '"')
-		return (0);
-	return (is_escaped(s, index, 0));
+	return (token->type == TOKEN_NAME || token->type == TOKEN_QUOTES || token->type == TOKEN_DQUOTES);
 }
