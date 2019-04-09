@@ -6,53 +6,32 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:45 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 14:53:25 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/09 16:46:48 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static int	handle_quotes(t_lexer *lexer, char **prev, char **s)
+static int	is_redirection_o(char *str)
 {
-	char	*str;
-	char	quote;
+	int			i;
+	t_ex_token	cur;
 
-	str = *s;
-	quote = *str;
-	str++;
-	while (*str)
-	{
-		if (*str == quote && !is_escaped(*s, str - *s, 1))
-			break ;
-		str++;
-	}
-	if (!*str || *str != quote)
-		return (quote == '\'' ? 0 : -1);
-	(*prev)++;
-	create_token(lexer, *prev, str - *prev, TOKEN_NAME);
-	*prev = ++str;
-	*s = str;
-	return (1);
-}
-
-static int	add_quotes(t_lexer *lexer, char **s, char **prev)
-{
-	int		ret;
-
-	if (*s == *prev || (*s > *prev && *((*s) - 1) != '\\'))
-	{
-		if ((ret = handle_quotes(lexer, prev, s)) < 1)
-			return (ret);
-	}
-	else
-		(*s)++;
-	return (1);
+	i = 0;
+	if (!ft_isdigit(*str))
+		return (0);
+	while (str[i] && ft_isdigit(str[i]))
+		i++;
+	cur = lexer_search(str + i);
+	if (cur.op && cur.type == TOKEN_REDIRO)
+		return (i + cur.len);
+	return (0);
 }
 
 static int	rlex(char *s, char *prev, t_lexer *lexer)
 {
 	t_ex_token	cur;
-	int			ret;
+	int			tmp;
 
 	while (s && *s)
 	{
@@ -70,24 +49,33 @@ static int	rlex(char *s, char *prev, t_lexer *lexer)
 				lexer->state = cur.state;
 				prev = (s += cur.len);
 			}
+			else if (ft_isdigit(*s) && (tmp = is_redirection_o(s)))
+			{
+				//Close actual token
+				s > prev ? create_token(lexer, prev, s - prev, TOKEN_NAME) : 0;
+				create_token(lexer, s, tmp, TOKEN_REDIRO);
+				lexer->state = ST_OPERATOR;
+				prev = (s += tmp);
+			}
 			else
 			{
+				//ft_printf("PREV: |%s| - S: |%s| - INDEX: %d\n", prev, s, s - prev);
 				if (*s == '"' && !is_escaped(s, s - prev, 0))
 				{
 					prev = s;
 					lexer->state = ST_DQUOTES;
 				}
-				else if (*s == '\'' && !is_escaped(s, s - prev, 0))
+				else if (*s == '\'' && !is_escaped(prev, s - prev, 0))
 				{
 					prev = s;
 					lexer->state = ST_QUOTES;
 				}
-				else if (*s == '\\' && !is_escaped(s, s - prev, 0))
+				else if (*s == '\\' && !is_escaped(prev, s - prev, 0))
 				{
 					prev = s;
 					lexer->state = ST_ESCAPED;
 				}
-				else if (*s == '#' && !is_escaped(s, s - prev, 0))
+				else if (*s == '#' && !is_escaped(prev, s - prev, 0))
 				{
 					prev = s;
 					lexer->state = ST_COMMENT;

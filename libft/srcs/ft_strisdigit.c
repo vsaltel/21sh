@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_escaped.c                                       :+:      :+:    :+:   */
+/*   ft_strisdigit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/25 12:02:17 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/09 16:42:42 by frossiny         ###   ########.fr       */
+/*   Created: 2019/03/01 12:18:29 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/08 15:48:22 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
 
-int		is_escaped(char *s, size_t index, int endquote)
+int		ft_strisdigit(char *str)
 {
-	int	prev;
-
-	prev = 0;
-	if (!s || index <= 0)
-		return (0);
-	if (s[index - 1] == '\\')
-		prev = !is_escaped(s, index - 1, 0);
-	if (s[index] == '\'' && endquote)
-		return (0);
-	return (prev);
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }

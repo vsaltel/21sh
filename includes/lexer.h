@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 15:06:19 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/08 16:36:35 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef enum	e_token_type
 	TOKEN_SEMI,
 	TOKEN_AND,
 	TOKEN_OR,
-	TOKEN_REDIR,
+	TOKEN_REDIRI,
+	TOKEN_REDIRO,
 	TOKEN_PIPE,
 	TOKEN_IGN
 }				t_token_type;
@@ -65,15 +66,13 @@ typedef struct	s_lexer
 
 static const t_ex_token g_tokens_list[] =
 {
-	{"<<", 2, TOKEN_REDIR, ST_OPERATOR},
-	{">>", 2, TOKEN_REDIR, ST_OPERATOR},
-	{">&", 2, TOKEN_REDIR, ST_OPERATOR},
-	{"<&", 2, TOKEN_REDIR, ST_OPERATOR},
+	{"<<", 2, TOKEN_REDIRI, ST_OPERATOR},
+	{">>", 2, TOKEN_REDIRO, ST_OPERATOR},
 	{"&&", 2, TOKEN_AND, ST_OPERATOR},
 	{"||", 2, TOKEN_OR, ST_OPERATOR},
 	{"|", 1, TOKEN_PIPE, ST_OPERATOR},
-	{"<", 1, TOKEN_REDIR, ST_OPERATOR},
-	{">", 1, TOKEN_REDIR, ST_OPERATOR},
+	{"<", 1, TOKEN_REDIRI, ST_OPERATOR},
+	{">", 1, TOKEN_REDIRO, ST_OPERATOR},
 	{";", 1, TOKEN_SEMI, ST_SEMIC},
 	{" ", 1, TOKEN_IGN, ST_GENERAL},
 	{"\n", 1, TOKEN_IGN, ST_GENERAL},

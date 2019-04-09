@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:50:15 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 14:55:54 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/09 15:17:32 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@
 
 typedef struct		e_redirect
 {
-	int				append : 1;
-	int				filedes;
+	int					done : 1;
+	int					append : 1;
+	int					filedes;
+	t_token_type		type;
+	t_token				*value;
+	struct e_redirect	*next;
 }					t_redirect;
 
 typedef struct 		e_cmd

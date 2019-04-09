@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2019/03/26 15:59:06 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/04/08 15:49:12 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ FILES 	=	ft_memset.c							\
 			ft_strctrim.c						\
 			ft_strsplit.c						\
 			ft_strisalnum.c						\
+			ft_strisdigit.c						\
 			ft_atoi.c							\
 			ft_itoa.c							\
 			ft_islower.c						\
