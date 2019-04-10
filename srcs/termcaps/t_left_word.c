@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_shift_right.c                                    :+:      :+:    :+:   */
+/*   t_left_word.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/05 16:32:35 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/05 17:54:09 by vsaltel          ###   ########.fr       */
+/*   Created: 2019/04/10 15:58:46 by vsaltel           #+#    #+#             */
+/*   Updated: 2019/04/10 17:52:05 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,24 @@
 
 static void		maj_pos(t_cursor_pos *pos)
 {
-	pos->x_rel++;
-	pos->x++;
-	if (pos->x > pos->x_max)
+	pos->x_rel--;
+	pos->x--;
+	if (pos->x == -1)
 	{
-		pos->x = 0;
-		pos->y++;
+		pos->x = pos->x_max;
+		pos->y--;
 	}
 }
 
-int		termcaps_shift_right(char **str, t_cursor_pos *pos)
+void			termcaps_left_word(char **str, t_cursor_pos *pos
+		, t_history_info *histo)
 {
-	while ((*str)[pos->x_rel] && (*str)[pos->x_rel] != ' ')
+	(void)histo;
+	if (pos->x_rel > 0 && (*str)[pos->x_rel] != ' ')
 		maj_pos(pos);
-	while ((*str)[pos->x_rel] && (*str)[pos->x_rel] == ' ')
+	while (pos->x_rel > 0 && (*str)[pos->x_rel] == ' ')
+		maj_pos(pos);
+	while (pos->x_rel > 0 && (*str)[pos->x_rel - 1] != ' ')
 		maj_pos(pos);
 	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
-	return (0);
 }

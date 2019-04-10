@@ -6,15 +6,15 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:33:37 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 17:50:09 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		termcaps_left(char **str, t_cursor_pos *pos)
+void		termcaps_left(char **str, t_cursor_pos *pos, t_history_info *histo)
 {
-	//ft_printf("pos-y= %d pos-ymin= %d ",pos->y, pos->y_min);
+	(void)histo;
 	if (pos->x > pos->x_min || (pos->y > pos->y_min && pos->x > 0))
 	{
 		tputs(tgetstr("le", NULL), 1, my_putchar);
@@ -23,11 +23,9 @@ int		termcaps_left(char **str, t_cursor_pos *pos)
 	}
 	else if (pos->y > pos->y_min && pos->x == 0)
 	{
-		//tputs(tgetstr("bw", NULL), 1, my_putchar);
 		pos->x = pos->x_max;
 		pos->y--;
 		pos->x_rel--;
 		tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
 	}
-	return (0);
 }

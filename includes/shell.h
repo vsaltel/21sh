@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/04 19:19:31 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/10 19:47:43 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <curses.h>
 # include <term.h>
 # include <termios.h>
+# include <fcntl.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -31,7 +32,7 @@
 # include "lexer.h"
 # include "termcaps.h"
 
-#define BUFF 64
+# define MAX_HISTORY 30
 
 typedef struct		s_env
 {
@@ -42,10 +43,11 @@ typedef struct		s_env
 }					t_env;
 
 extern int			g_child;
+extern int			g_clear_buffer;
 extern int			g_ignore_signals;
 extern int			g_return;
 
-int					minishell(t_env **env);
+int					minishell(t_env **env, t_history **list);
 int					check_quotes(char *str, char c);
 
 t_env				*copy_env(char **envp, int inc);
@@ -91,10 +93,17 @@ void				no_user(char *name);
 int					cd_exists(char *file, char *name);
 void				env_invalid_arg(int *argc, char ***argv);
 
-int					get_input(int fd, char **dest);
-int					execute_termcaps(char *buf, char **str, t_cursor_pos *pos);
-void				new_entry(char **str, char *buf, t_cursor_pos *pos);
+int					termcaps_init(void);
+int					get_input(int fd, char **dest, t_history **history);
+int					read_all(int fd, char **dest);
+int					memset_all(char **str, t_history **history, t_history_info *histo, t_cursor_pos *pos);
+int					memset_pos(t_cursor_pos *pos);
+t_history_info		memset_history(t_history **history);
+void				move_pos(t_cursor_pos *pos, size_t len);
+int					execute_termcaps(char *buf, char **str, t_cursor_pos *pos, t_history_info *histo);
+void				new_entry(char **str, char *buf, t_cursor_pos *pos, t_history_info *histo);
 void				del_char(char **str, t_cursor_pos *pos);
 void				final_position(t_cursor_pos *pos);
+void				add_to_history(char *str, t_history **history);
 int					my_putchar(int c);
 #endif

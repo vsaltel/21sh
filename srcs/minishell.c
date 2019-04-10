@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 19:55:36 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		bslash_error(char **input, int ret)
 
 	g_ignore_signals = 1;
 	write(1, "> ", 2);
-	if (!(ret = get_input(0, &ninput)))
+	if (!(ret = get_input(0, &ninput, NULL)))
 	{
 		if (g_ignore_signals)
 		{
@@ -43,7 +43,7 @@ int		quote_error(char **input, int ret)
 
 	g_ignore_signals = 1;
 	ret ? write(1, "dquote> ", 8) : write(1, "quote> ", 7);
-	if (!(ret = get_input(0, &ninput)))
+	if (!(ret = get_input(0, &ninput, NULL)))
 	{
 		if (g_ignore_signals)
 		{
@@ -94,16 +94,15 @@ int		eval_exec(t_lexer *lexer, char **input, t_env **env)
 	return (ret);
 }
 
-int		minishell(t_env **env)
+int		minishell(t_env **env, t_history **history)
 {
 	char	*input;
 	t_lexer	lexer;
 
 	lexer.tokens = NULL;
 	ft_printf("\033[1;32m$> \033[0m");
-	while (get_input(0, &input) > 0)
+	while (get_input(0, &input, history) > 0)
 	{
-		ft_printf("resutl -> |%s|, len = %d\n", input, ft_strlen(input));
 		if ((g_return = eval_exec(&lexer, &input, env)))
 			ft_printf("\033[1;31m$> \033[0m");
 		else
@@ -112,6 +111,6 @@ int		minishell(t_env **env)
 	if (input)
 		ft_strdel(&input);
 	ft_putchar('\n');
-	free_env(env);
+	//free_env(env);
 	return (g_return);
 }
