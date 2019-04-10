@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/04 15:33:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:12:10 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int		handle_input(t_lexer *lexer, char **input)
 
 int		eval_exec(t_lexer *lexer, char **input, t_env **env)
 {
-	int	ret;
+	int		ret;
+	t_anode	*ast;
 
 	ret = 0;
 	if ((ret = handle_input(lexer, input)) == 0)
@@ -103,7 +104,8 @@ int		eval_exec(t_lexer *lexer, char **input, t_env **env)
 		if (!input)
 			return (1);
 		ft_strdel(input);
-		ret = parse(lexer, env);
+		build_ast(lexer, &ast, env);
+		ret = parse(lexer, ast, env);
 		destroy_lexer(lexer);
 	}
 	return (ret);

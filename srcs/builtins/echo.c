@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 10:50:50 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:29:02 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,29 @@ static int		empty_args(void)
 	return (0);
 }
 
-int				b_echo(int argc, char ***argv, t_env **env, t_lexer *lexer)
+int				b_echo(t_cmd *cmd, t_env **env, t_lexer *lexer)
 {
 	int	opt;
 	int	i;
 
 	(void)env;
 	(void)lexer;
-	if (argc < 2)
+	if (cmd->argc < 2)
 		return (empty_args());
 	opt = 0;
 	i = 0;
-	while (++i < argc)
+	while (++i < cmd->argc)
 	{
-		if (ft_strlen((*argv)[i]) < 2 || (*argv)[i][0] != '-')
+		if (ft_strlen(cmd->args[i]) < 2 || cmd->args[i][0] != '-')
 			break ;
-		if ((*argv)[i][1] == 'n')
+		if (cmd->args[i][1] == 'n')
 			opt |= 1;
-		else if ((*argv)[i][1] == 'e')
+		else if (cmd->args[i][1] == 'e')
 			opt |= 2;
 		else
 			break ;
 	}
-	disp(argc - i, (*argv) + i, opt);
+	disp(cmd->argc - i, cmd->args + i, opt);
 	opt & 1 ? 0 : ft_putchar('\n');
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/08 15:35:53 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/10 20:37:56 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,12 @@ FILES 	=	main.c						\
 			lexer/create_token.c		\
 			lexer/push_token.c			\
 			parser/parser.c				\
-			parser/create_node.c		\
-			parser/build_args.c			\
+			parser/pipe.c				\
+			parser/pipeline.c			\
+			ast/build_ast.c				\
+			ast/create_node.c			\
+			ast/build_args.c			\
+			ast/redirections.c			\
 			executables.c				\
 			exec_utils.c				\
 			env_utils.c					\
@@ -92,6 +96,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
 	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
 	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
+	@[ -d $(OBJDIR)/ast ] || mkdir -p $(OBJDIR)/ast
 	@[ -d $(OBJDIR)/parser ] || mkdir -p $(OBJDIR)/parser
 	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -o $@ -c $<

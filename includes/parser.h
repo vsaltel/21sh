@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/04 15:50:15 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/09 15:17:32 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/10 20:33:56 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/10 20:35:10 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,37 +15,16 @@
 
 #include "shell.h"
 
-typedef struct		e_redirect
+typedef struct 		e_pipel
 {
-	int					done : 1;
-	int					append : 1;
-	int					filedes;
-	t_token_type		type;
-	t_token				*value;
-	struct e_redirect	*next;
-}					t_redirect;
-
-typedef struct 		e_cmd
-{
-	t_token			*exe;
-	char			**args;
-	int				argc;
-	t_redirect		*redir;
-}					t_cmd;
-
-typedef struct		e_anode
-{
-	t_token			*ope;
 	t_cmd			*cmd;
-	struct e_anode	*left;
-	struct e_anode	*right;
-}					t_anode;
+	struct e_pipel	*previous;
+	struct e_pipel	*next;
+}					t_pipel;
 
-int					parse(t_lexer *lexer, t_env **env);
+int					parse(t_lexer *lexer, t_anode *ast, t_env **env);
+int					execute_pipes(t_anode *node, t_env **env, t_lexer *lexer);
+t_pipel				*build_pipeline(t_anode *node);
 
-int					build_args(char ***args, t_token *tokens);
-t_anode				*create_node(t_token *ope, t_cmd *cmd);
-
-char				*trim_quotes(char *str);
 
 #endif

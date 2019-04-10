@@ -6,26 +6,26 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 11:53:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:32:32 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		b_exit(int argc, char ***argv, t_env **env, t_lexer *lexer)
+int		b_exit(t_cmd *cmd, t_env **env, t_lexer *lexer)
 {
 	int		ret;
 
 	(void)env;
-	if (argc > 2)
+	if (cmd->argc > 2)
 	{
 		write(2, "exit: Too many arguments\n", 25);
 		return (1);
 	}
 	ret = g_return;
-	if (argc == 2)
-		ret = ft_atoi((*argv)[1]);
-	free(*argv);
+	if (cmd->argc == 2)
+		ret = ft_atoi(cmd->args[1]);
+	free(cmd);
 	free_env(env);
 	destroy_lexer(lexer);
 	exit(ret);

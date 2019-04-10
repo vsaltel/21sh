@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:40:21 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:29 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:27:38 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 typedef struct	s_builtin
 {
 	char	*name;
-	int		(*func)(int argc, char ***argv, t_env **env, t_lexer *lexer);
+	int		(*func)(t_cmd *cmd, t_env **env, t_lexer *lexer);
 }				t_builtin;
 
 const t_builtin g_builtins[] =

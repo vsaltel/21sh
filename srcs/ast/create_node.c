@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:52:54 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 14:56:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 13:03:36 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ t_anode		*create_node(t_token *ope, t_cmd *cmd)
 	node->cmd = cmd;
 	node->left = NULL;
 	node->right = NULL;
+	node->parent = NULL;
 	return (node);
 }

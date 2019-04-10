@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 15:35:58 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 20:34:39 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "get_next_line.h"
 # include "env.h"
 # include "lexer.h"
+# include "ast.h"
 # include "parser.h"
 # include "termcaps.h"
 
@@ -57,18 +58,17 @@ size_t				get_var_size(char *key);
 int					handle_home(t_token *token, t_env *env);
 
 char				*get_exe(t_env *env, char *name, int verbose);
-int					execute(char *file, char ***args, t_env **env,
-																t_lexer *lex);
-int					handle_builtin(char *name, char ***argv, t_env **env,
+int					execute(t_cmd *cmd, t_env **env, t_lexer *lex);
+int					handle_builtin(t_cmd *cmd, t_env **env,
 																t_lexer *lex);
 int					is_builtin(char *name);
-int					b_env(int argc, char ***argv, t_env **env, t_lexer *lex);
-int					b_setenv(int argc, char ***argv, t_env **env, t_lexer *lex);
-int					b_unsetenv(int argc, char ***argv, t_env **env,
+int					b_env(t_cmd *cmd, t_env **env, t_lexer *lex);
+int					b_setenv(t_cmd *cmd, t_env **env, t_lexer *lex);
+int					b_unsetenv(t_cmd *cmd, t_env **env,
 																t_lexer *lex);
-int					b_exit(int argc, char ***argv, t_env **env, t_lexer *lex);
-int					b_cd(int argc, char ***argv, t_env **env, t_lexer *lex);
-int					b_echo(int argc, char ***argv, t_env **env, t_lexer *lex);
+int					b_exit(t_cmd *cmd, t_env **env, t_lexer *lex);
+int					b_cd(t_cmd *cmd, t_env **env, t_lexer *lex);
+int					b_echo(t_cmd *cmd, t_env **env, t_lexer *lex);
 
 void				register_signals(void);
 

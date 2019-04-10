@@ -6,155 +6,70 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/09 16:34:05 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 20:32:23 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static t_token *getCmdEnd(t_token *tok)
+static int	parse_condition(int *ret, t_anode *cond, t_env **env, t_lexer *lex)
 {
-	while (tok)
+	if (cond->ope->type == TOKEN_AND)
 	{
-		if (is_word_token(tok))
-			tok = tok->next;
-		else if (tok->type == TOKEN_REDIRO || tok->type == TOKEN_REDIRI)
-			tok = tok->next;
-		else
-			break ;
+		if (*ret != 0)
+			return (0);
+		*ret = execute(cond->right->cmd, env, lex);
+		return (1);
 	}
-	return (tok);
-}
-
-t_redirect	*create_redirection(t_token *token)
-{
-	t_redirect	*red;
-	size_t		skip;
-
-	if (!token || !(red = (t_redirect *)malloc(sizeof(t_redirect))))
-		return (NULL);
-	red->done = 0;
-	skip = 0;
-	if (token->type == TOKEN_REDIRO)
-		red->filedes = ft_atoi_i(token->content, &skip);
-	red->type = token->type;
-	red->append = ft_strcmp(token->type == TOKEN_REDIRO ? ">>" : "<<",
-												token->content + skip) == 0;
-	red->value = token->next;
-	return (red);
-}
-
-t_redirect	*parse_redirections(t_token *tok, int offset)
-{
-	t_redirect	*red;
-
-	while (tok && offset--)
-		tok = tok->next;
-	if (!tok)
-		return (NULL);
-	red = NULL;
-	while (tok)
+	else if (cond->ope->type == TOKEN_OR)
 	{
-		if (!red)
-			red = create_redirection(tok);
-		else
-			red->next = create_redirection(tok);
-		tok = tok->next->next;
+		if (*ret == 0)
+			return (0);
+		*ret = execute(cond->right->cmd, env, lex);
+		return (1);
 	}
-	return (red);
+	else
+		return (1);
 }
 
-t_cmd *create_cmd(t_token *exe)
+int			parse(t_lexer *lexer, t_anode *ast, t_env **env)
 {
-	t_cmd	*cmd;
-	char	**argv;
+	int		ret;
+	int		pipe[2];
 
-	if (!(cmd = (t_cmd *)malloc(sizeof(t_cmd))))
-		return (NULL);
-	cmd->exe = exe;
-	cmd->argc = build_args(&argv, exe);
-	cmd->args = argv;
-	cmd->redir = parse_redirections(exe, cmd->argc);
-	return (cmd);
-}
-
-static int	parse_tree(t_token *tokens, t_anode **ast, t_env **env)
-{
-	t_anode	*tree;
-	t_anode	*tmp;
-	t_cmd	*cmd;
-	t_token	*curr;
-	
-	//TODO REPLACE VARS
-	tree = NULL;
-	curr = tokens;
-	while (tokens)
+	pipe[0] = -1;
+	pipe[1] = -1;
+	ret = 0;
+	ft_printf("----- PARSING -----\n");
+	ft_printf("Tree start: %s\n", ast->ope ? ast->ope->content : ast->cmd->exe->content);
+	while (ast->left)
+		ast = ast->left;
+	ft_printf("First cmd: |%s|\n", ast->cmd->exe->content);
+	while (ast)
 	{
-		ft_printf("Token: %s\n", tokens->content);
-		if (tokens->type == TOKEN_PIPE)
+		//ft_printf("Parsing %s - p: %p - ope: %p\n", ast->ope ? ast->ope->content : ast->cmd->exe->content, ast->parent, ast->ope);
+		if (!ast->ope && (!ast->parent || (ast->parent->ope && ast->parent->ope->type != TOKEN_PIPE)))
+			ret = execute(ast->cmd, env, lexer);
+		else if (ast->parent && (ast->parent->ope && ast->parent->ope->type == TOKEN_PIPE))
 		{
-			if (!tree)
-				return (0);
-			ft_printf("New PIPE Node on %s\n", tree->ope ? tree->ope->content : tree->cmd->exe->content);
-			tmp = create_node(tokens, NULL);
-			tmp->left = tree;
-			ft_printf("New CMD node on %s: %s\n", tmp->ope->content, tokens->next->content);
-			tmp->right = create_node(NULL, create_cmd(tokens->next));
-			tree = tmp;
-			tokens = getCmdEnd(tokens->next);
-			curr = tokens;
+			ft_printf("----------- PIPES ----------\n");
+			ret = execute_pipes(ast, env, lexer);
+			while (ast->parent && ast->parent && ast->parent->ope->type == TOKEN_PIPE)
+				ast = ast->parent;
+			ft_printf("--------- PIPES END --------\n");
 		}
-		else if (tokens->type == TOKEN_AND || tokens->type == TOKEN_OR)
+		else
 		{
-			if (!tree)
-				return (0);
-			ft_printf("New CONDITION Node on %s\n", tree->ope ? tree->ope->content : tree->cmd->exe->content);
-			tmp = create_node(tokens, NULL);
-			tmp->left = tree;
-			ft_printf("New CMD node on %s: %s\n", tmp->ope->content, tokens->next->content);
-			tmp->right = create_node(NULL, create_cmd(tokens->next));
-			tree = tmp;
-			tokens = getCmdEnd(tokens->next);
-			curr = tokens;
-		}
-		else if (is_word_token(tokens))
-		{
-			cmd = create_cmd(curr);
-			if (!tree)
+			if (ast->ope && (ast->ope->type == TOKEN_AND || ast->ope->type == TOKEN_OR))
 			{
-				ft_printf("First node: %s\n", cmd->exe->content);
-				tree = create_node(NULL, cmd);
+				if (!parse_condition(&ret, ast, env, lexer))
+					return (ret);
 			}
 			else
-			{
-				ft_printf("New CMD node on %s: %s\n", tree->ope ? tree->ope->content : tree->cmd->exe->content, cmd->exe->content);
-				tmp = create_node(NULL, cmd);
-				tmp->left = tree;
-				tree = tmp;
-				
-			}
-			tokens = getCmdEnd(tokens);
-			curr = tokens;
+				ast->ope ? ft_printf("Should have executed: %s\n", ast->ope->content) : 0;
 		}
-		else if (tokens->type == TOKEN_SEMI)
-			curr = tokens = tokens->next;
-		else
-		{
-			ft_printf("Unknown token: (%d) %s\n", tokens->type, tokens->content);
-			break ;
-		}
+		ast = ast->parent;
 	}
-	*ast = tree;
-	return (1);
-}
-
-int			parse(t_lexer *lexer, t_env **env)
-{
-	t_token	*tokens;
-	t_anode	*ast;
-
-	if (lexer->tokens && lexer->tokens->content && !ft_strcmp(lexer->tokens->content, "exit")) //TEMP
-		exit(120);
-
-	return (parse_tree(lexer->tokens, &ast, env));
+	ft_printf("-----   END   -----\n");
+	return (ret);
 }
