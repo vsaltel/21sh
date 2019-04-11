@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:29:33 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 13:45:09 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:47:27 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,10 @@ int			delete_env(t_env **env, char *key)
 	return (1);
 }
 
-int			b_unsetenv(t_cmd *cmd, t_env **env, t_lexer *lexer)
+int			b_unsetenv(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
 
-	(void)lexer;
 	if (cmd->argc < 2)
 	{
 		write(2, "setenv: Too few arguments.\n", 27);
@@ -60,7 +59,7 @@ int			b_unsetenv(t_cmd *cmd, t_env **env, t_lexer *lexer)
 	{
 		if (!cmd->args[i])
 			break ;
-		delete_env(env, cmd->args[i++]);
+		delete_env(&(shell->env), cmd->args[i++]);
 	}
 	return (0);
 }

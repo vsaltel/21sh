@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:41:24 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 13:28:24 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:43:41 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,15 @@ static char	*get_newdir(int argc, char **argv, t_env *env)
 	return (path);
 }
 
-int			b_cd(t_cmd *cmd, t_env **env, t_lexer *lexer)
+int			b_cd(t_cmd *cmd, t_shell *shell)
 {
 	char	*newdir;
 	int		ret;
 
-	(void)lexer;
-	if (!(newdir = get_newdir(cmd->argc, cmd->args, *env)))
+	if (!(newdir = get_newdir(cmd->argc, cmd->args, shell->env)))
 		return (1);
 	ret = chdir(newdir);
-	update_env(env);
+	update_env(&(shell->env));
 	free(newdir);
 	return (ret);
 }

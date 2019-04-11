@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 13:44:52 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 18:05:04 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,47 +82,46 @@ int		handle_input(t_lexer *lexer, char **input)
 	while ((ret = lex(*input, lexer)) < 1)
 	{
 		destroy_lexer(lexer);
-		if ((ret == -2 && ret == -1) && (ret = quote_error(input, ret)))
+		if ((ret == -3 || ret == -2) && (ret = quote_error(input, ret)))
 			return (ret);
-		else if (ret == -3 && (ret = bslash_error(input, ret)))
+		else if (ret == -4 && (ret = bslash_error(input, ret)))
 			return (ret);
 		else
 			return (ret);
 	}
-	disp_tokens(lexer);
+	//disp_tokens(lexer);
 	return (0);
 }
 
-int		eval_exec(t_lexer *lexer, char **input, t_env **env)
+int		eval_exec(t_shell *shell, char **input)
 {
-	int		ret;
 	t_anode	*ast;
 
-	ret = 0;
-	if ((ret = handle_input(lexer, input)) == 0)
+	if ((shell->ret = handle_input(&(shell->lexer), input)) == 0)
 	{
 		if (!input)
 			return (1);
 		ft_strdel(input);
-		build_ast(lexer, &ast, env);
-		ret = parse(lexer, ast, env);
-		destroy_lexer(lexer);
+		build_ast(shell, &ast);
+		shell->ast = ast;
+		shell->ast ? shell->ret = parse(shell, shell->ast) : 0;
+		destroy_lexer(&(shell->lexer));
+		destroy_ast(shell);
 	}
-	return (ret);
+	return (shell->ret);
 }
 
-int		minishell(t_env **env)
+int		minishell(t_shell *shell)
 {
 	char	*input;
-	t_lexer	lexer;
 
-	lexer.tokens = NULL;
-	lexer.state = ST_GENERAL;
+	shell->lexer.tokens = NULL;
+	shell->lexer.state = ST_GENERAL;
 	ft_printf("\033[1;32m$> \033[0m");
 	while (get_input(0, &input) > 0)
 	{
 		ft_printf("resutl -> |%s|, len = %d\n", input, ft_strlen(input));
-		if ((g_return = eval_exec(&lexer, &input, env)))
+		if (eval_exec(shell, &input))
 			ft_printf("\033[1;31m$> \033[0m");
 		else
 			ft_printf("\033[1;32m$> \033[0m");
@@ -130,6 +129,6 @@ int		minishell(t_env **env)
 	if (input)
 		ft_strdel(&input);
 	ft_putchar('\n');
-	free_env(env);
-	return (g_return);
+	free_env(&(shell->env));
+	return (shell->ret);
 }

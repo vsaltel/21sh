@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 14:59:41 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:18:45 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,25 @@ static int		start_process(char *file, char **args, char **env)
 	return (WEXITSTATUS(status));
 }
 
-int				execute(t_cmd *cmd, t_env **env, t_lexer *lex)
+static int		start(t_cmd *cmd, t_shell *shell)
 {
 	int		ret;
 	char	*path;
 	char	**envp;
 
-	if ((ret = handle_builtin(cmd, env, lex)) == -1)
+	if ((ret = handle_builtin(cmd, shell)) == -1)
 	{
-		envp = build_env(*env);
-		path = get_exe(*env, cmd->exe->content, 1);
+		envp = build_env(shell->env);
+		path = get_exe(shell->env, cmd->exe->content, 1);
 		ret = start_process(path, cmd->args, envp);
 		free(path);
 		ft_strddel(&envp);
 	}
 	return (ret);
+}
+
+int			execute(t_cmd *cmd, t_shell *shell)
+{
+	build_args(cmd, shell);
+	return (start(cmd, shell));
 }

@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   disp_free_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/04 16:15:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/04 16:16:27 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/11 14:53:28 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/11 14:53:34 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#include "shell.h"
 
-typedef struct		s_env
+int		disp_free_env(t_env **env)
 {
-	char			*key;
-	char			*value;
-	int				is_env;
-	struct s_env	*next;
-}					t_env;
-
-#endif
+	if (!env || !*env)
+		return (0);
+	disp_env(*env);
+	free_env(env);
+	return (0);
+}

@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   dup_argv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 11:53:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:15:08 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/11 14:54:11 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/11 14:54:24 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		b_exit(t_cmd *cmd, t_shell *shell)
+char	**dup_argv(int argc, char **args, char ***argv)
 {
-	int		ret;
+	char	**new;
+	int		i;
 
-	if (cmd->argc > 2)
-	{
-		write(2, "exit: Too many arguments\n", 25);
-		return (1);
-	}
-	ret = shell->ret;
-	if (cmd->argc == 2)
-		ret = ft_atoi(cmd->args[1]);
-	free_env(&(shell->env));
-	destroy_lexer(&(shell->lexer));
-	destroy_ast(shell);
-	exit(ret);
-	return (ret);
+	if (!(new = (char **)malloc(sizeof(char *) * (argc + 1))))
+		exit(1);
+	i = -1;
+	while (++i < argc)
+		new[i] = args[i];
+	new[i] = NULL;
+	free(*argv);
+	*argv = new;
+	return (new);
 }

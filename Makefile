@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/10 20:37:56 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/11 17:56:43 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc
 #CFLAGS	+=	-Wall -Werror -Wextra -g3
-CFLAGS	+= -g -fsanitize=address
+CFLAGS	+= -g3 -fsanitize=address
 
 NAME 	=	21sh
 LIBFT	=	libft
@@ -47,10 +47,17 @@ FILES 	=	main.c						\
 			ast/create_node.c			\
 			ast/build_args.c			\
 			ast/redirections.c			\
+			ast/destroy_ast.c			\
 			executables.c				\
 			exec_utils.c				\
-			env_utils.c					\
-			env_utilities.c				\
+			env/build_env.c				\
+			env/copy_env.c				\
+			env/count_env.c				\
+			env/disp_env.c				\
+			env/disp_free_env.c			\
+			env/free_env.c				\
+			env/get_enve.c				\
+			env/new_envl.c				\
 			builtins.c					\
 			builtins_errors.c			\
 			builtins/env.c				\
@@ -59,6 +66,8 @@ FILES 	=	main.c						\
 			builtins/exit.c				\
 			builtins/cd.c				\
 			builtins/echo.c				\
+			utils/dup_argv.c			\
+			utils/get_var_size.c		\
 			signals.c					\
 			errors.c					\
 			utils.c						\
@@ -93,11 +102,13 @@ $(NAME): $(OBJS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
-	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
-	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
-	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
 	@[ -d $(OBJDIR)/ast ] || mkdir -p $(OBJDIR)/ast
+	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
+	@[ -d $(OBJDIR)/env ] || mkdir -p $(OBJDIR)/env
+	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
 	@[ -d $(OBJDIR)/parser ] || mkdir -p $(OBJDIR)/parser
+	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
+	@[ -d $(OBJDIR)/utils ] || mkdir -p $(OBJDIR)/utils
 	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -o $@ -c $<
 

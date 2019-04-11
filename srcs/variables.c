@@ -6,20 +6,22 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/04 16:30:17 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 17:37:38 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	handle_var(char **dst, t_env *var, char *dollar)
+static void	handle_var(char **dst, t_shell *shell, char *var_name)
 {
+	t_env	*var;
 	char	*tmp;
 	char	*tmp2;
 
-	if (dollar[1] == '?')
+	var = get_enve(shell->env, var_name);
+	if (var_name[0] == '?')
 	{
-		tmp2 = ft_itoa(g_return);
+		tmp2 = ft_itoa(shell->ret);
 		tmp = ft_strjoin(*dst, tmp2);
 		free(tmp2);
 	}
@@ -31,7 +33,7 @@ static void	handle_var(char **dst, t_env *var, char *dollar)
 	*dst = tmp;
 }
 
-static int	get_var(char *str, char *buf, char **new, t_env *env)
+static int	get_var(char *str, char *buf, char **new, t_shell *shell)
 {
 	char	*tmp;
 	size_t	vsize;
@@ -49,7 +51,7 @@ static int	get_var(char *str, char *buf, char **new, t_env *env)
 	}
 	if (!(tmp = ft_strndup(str + 1, vsize)))
 		exit(1);
-	handle_var(new, get_enve(env, tmp), str);
+	handle_var(new, shell, tmp);
 	free(tmp);
 	return (vsize);
 }
@@ -72,7 +74,7 @@ static void	replace_token(t_token *dst, char *s1, char *s2)
 	dst->content = tmp;
 }
 
-static void	parse_token(t_token *token, t_env *env)
+static void	parse_token(t_token *token, t_shell *shell)
 {
 	char	*new;
 	char	buf[BUFF_SIZE + 1];
@@ -88,7 +90,7 @@ static void	parse_token(t_token *token, t_env *env)
 		if (token->content[i] == '$' && (!i || token->content[i - 1] != '\\'))
 		{
 			buf[j] = '\0';
-			i += get_var(token->content + i, buf, &new, env);
+			i += get_var(token->content + i, buf, &new, shell);
 			j = 0;
 			buf[j] = '\0';
 			continue ;
@@ -101,20 +103,15 @@ static void	parse_token(t_token *token, t_env *env)
 	replace_token(token, new, buf);
 }
 
-int			replace_vars(t_token *curr, t_env *env)
+int			replace_vars(t_token *token, t_shell *shell)
 {
-	while (curr)
+	while (token && is_word_token(token))
 	{
-		if (curr->type == TOKEN_NAME || curr->type == TOKEN_DQUOTES)
-		{
-			parse_token(curr, env);
-			if (curr->type == TOKEN_NAME && curr->content[0] == '~')
-				if (!(handle_home(curr, env)))
-					return (0);
-		}
-		else
-			break ;
-		curr = curr->next;
+		parse_token(token, shell);
+		if (token->type == TOKEN_NAME && token->content[0] == '~')
+			if (!(handle_home(token, shell->env)))
+				return (0);
+		token = token->next;
 	}
 	return (1);
 }

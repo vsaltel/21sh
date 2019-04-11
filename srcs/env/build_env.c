@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   build_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 11:53:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:15:08 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/11 14:50:49 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/11 14:50:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		b_exit(t_cmd *cmd, t_shell *shell)
+char	**build_env(t_env *env)
 {
-	int		ret;
+	char	**envp;
+	size_t	i;
 
-	if (cmd->argc > 2)
+	if (!(envp = (char **)malloc(sizeof(char *) * (count_env(env) + 1))))
+		exit(1);
+	i = 0;
+	while (env)
 	{
-		write(2, "exit: Too many arguments\n", 25);
-		return (1);
+		if (!(envp[i++] = ft_strjoint(env->key, "=", env->value)))
+			exit(1);
+		env = env->next;
 	}
-	ret = shell->ret;
-	if (cmd->argc == 2)
-		ret = ft_atoi(cmd->args[1]);
-	free_env(&(shell->env));
-	destroy_lexer(&(shell->lexer));
-	destroy_ast(shell);
-	exit(ret);
-	return (ret);
+	envp[i] = NULL;
+	return (envp);
 }

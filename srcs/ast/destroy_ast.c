@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   destroy_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 11:53:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:15:08 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/11 15:36:57 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/11 17:48:38 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		b_exit(t_cmd *cmd, t_shell *shell)
+static void	free_node(t_anode *node)
 {
-	int		ret;
-
-	if (cmd->argc > 2)
+	if (node->left)
+		free_node(node->left);
+	if (node->right)
+		free_node(node->right);
+	if (node->cmd)
 	{
-		write(2, "exit: Too many arguments\n", 25);
-		return (1);
+		free(node->cmd->args);
+		free(node->cmd);
+		node->cmd = NULL;
 	}
-	ret = shell->ret;
-	if (cmd->argc == 2)
-		ret = ft_atoi(cmd->args[1]);
-	free_env(&(shell->env));
-	destroy_lexer(&(shell->lexer));
-	destroy_ast(shell);
-	exit(ret);
-	return (ret);
+	free(node);
+}
+
+void		destroy_ast(t_shell *shell)
+{
+	if (!shell->ast)
+		return ;
+	free_node(shell->ast);
+	shell->ast = NULL;
 }

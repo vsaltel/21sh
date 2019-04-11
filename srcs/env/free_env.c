@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   free_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 11:53:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:15:08 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/11 14:52:20 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/11 14:52:36 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		b_exit(t_cmd *cmd, t_shell *shell)
+void	free_env(t_env **env)
 {
-	int		ret;
+	t_env	*curr;
+	t_env	*next;
 
-	if (cmd->argc > 2)
+	curr = *env;
+	while (curr)
 	{
-		write(2, "exit: Too many arguments\n", 25);
-		return (1);
+		next = curr->next;
+		free(curr->key);
+		free(curr->value);
+		free(curr);
+		curr = next;
 	}
-	ret = shell->ret;
-	if (cmd->argc == 2)
-		ret = ft_atoi(cmd->args[1]);
-	free_env(&(shell->env));
-	destroy_lexer(&(shell->lexer));
-	destroy_ast(shell);
-	exit(ret);
-	return (ret);
+	*env = NULL;
 }

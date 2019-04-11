@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/05 16:53:32 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/11 15:22:06 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,8 +227,6 @@ int		get_input(int fd, char **dest)
 			return (ret);
 		if (buf[0] == '\n')
 			break ;
-		if (buf[0] == '-')
-			ft_printf("posx = %d, posxmax = %d, buff_size = %d", pos.x, pos.x_max, BUFF_SIZE);
 		if (!execute_termcaps(buf, &str, &pos))
 			new_entry(&str, buf, &pos);
 		//print_nb(buf);

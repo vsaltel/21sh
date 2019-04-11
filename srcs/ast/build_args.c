@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 16:14:27 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 16:37:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 17:48:25 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		build_args(char ***args, t_token *tokens)
+static int	build_args_arr(char ***args, t_token *tokens)
 {
 	int		argc;
 	int		i;
@@ -39,4 +39,14 @@ int		build_args(char ***args, t_token *tokens)
 	}
 	(*args)[i] = NULL;
 	return (argc);
+}
+
+int			build_args(t_cmd *cmd, t_shell *shell)
+{
+	char	**argv;
+
+	replace_vars(cmd->exe, shell);
+	cmd->argc = build_args_arr(&argv, cmd->exe);
+	cmd->args = argv;
+	return (cmd->argc);
 }

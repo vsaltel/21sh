@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 11:51:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:31:56 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,5 @@ static const t_ex_token g_tokens_list[] =
 	{"\f", 1, TOKEN_IGN, ST_GENERAL},
 	{NULL, 1, TOKEN_NULL, ST_GENERAL}
 };
-
-int 		lex(char *s, t_lexer *lexer);
-int 		is_escaped(char *s, size_t index, int endquote);
-t_ex_token	lexer_search(const char *s);
-void 		destroy_lexer(t_lexer *lexer);
-t_token 	*push_token(t_token *list, t_token *new);
-t_token 	*create_token(t_lexer *lexer, char *content,
-						size_t len, t_token_type type);
-void		destroy_tokens(t_token *token);
-int			is_word_token(t_token *token);
-
 
 #endif

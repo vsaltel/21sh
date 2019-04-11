@@ -6,40 +6,40 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 13:08:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 18:53:29 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd)
+static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd, t_shell *shell)
 {
 	t_pipel		*new;
 
 	if (!(new = (t_pipel *)malloc(sizeof(t_pipel))))
 		return (NULL);
+	build_args(cmd, shell);
 	new->cmd = cmd;
 	new->previous = prev;
 	new->next = NULL;
 	return (new);
 }
 
-t_pipel			*build_pipeline(t_anode *node)
+t_pipel			*build_pipeline(t_anode *node, t_shell *shell, t_anode **cn)
 {
 	t_pipel	*pipel;
 	t_pipel *curr;
 
-	ft_printf("Pipeline start: %s\n", node->ope ? node->ope->content : node->cmd->exe->content);
-	pipel = create_pipel(NULL, node->cmd);
+	pipel = create_pipel(NULL, node->cmd, shell);
 	curr = pipel;
 	node = node->parent;
 	while (node && node->ope)
 	{
-		ft_printf("Pipeline: %s\n", node->ope ? node->ope->content : node->cmd->exe->content);
-		curr->next = create_pipel(curr, node->right->cmd);
+		curr->next = create_pipel(curr, node->right->cmd, shell);
 		curr = curr->next;
 		node = node->parent;
 	}
+	*cn = node;
 	return (pipel);
 }
 
@@ -47,6 +47,8 @@ void			del_pipeline(t_pipel *pline)
 {
 	t_pipel		*next;
 
+	while (pline && pline->previous)
+		pline = pline->previous;
 	while (pline)
 	{
 		next = pline->next;

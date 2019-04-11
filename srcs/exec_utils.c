@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 17:27:04 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 16:13:49 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,15 @@ char		*get_exe(t_env *env, char *name, int verbose)
 		free(file);
 	verbose ? not_found(name) : 0;
 	return (NULL);
+}
+
+int			is_exe(t_env *env, char *name, int verbose)
+{
+	int		ret;
+	char	*tmp;
+
+	tmp = get_exe(env, name, verbose);
+	ret = tmp != NULL;
+	free(tmp);
+	return (ret);
 }

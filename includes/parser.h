@@ -6,27 +6,20 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:33:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 13:00:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 17:47:24 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-#include "shell.h"
+# include "shell.h"
 
-typedef struct 		e_pipel
+typedef struct		s_pipel
 {
 	t_cmd			*cmd;
-	struct e_pipel	*previous;
-	struct e_pipel	*next;
+	struct s_pipel	*previous;
+	struct s_pipel	*next;
 }					t_pipel;
-
-int					parse(t_lexer *lexer, t_anode *ast, t_env **env);
-int					execute_pipes(t_anode *node, t_env **env, t_lexer *lexer);
-
-t_pipel				*build_pipeline(t_anode *node);
-void				del_pipeline(t_pipel *pline);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 13:44:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 18:53:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_env **env)
 	t_cmd	*cmd;
 	int		ret;
 
+	cmd = pline->cmd;
+	if (is_builtin(cmd->exe->content) || !is_exe(*env, cmd->exe->content, 1))
+		return (0);
 	if ((pid = fork()) == 0)
 	{
 		init_fd(pline, op, np);
-		cmd = pline->cmd;
 		if (execve(get_exe(*env, cmd->exe->content, 1),
 								cmd->args, build_env(*env)) == -1)
 			exit(EXIT_FAILURE);
@@ -52,7 +54,7 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_env **env)
 	return (WEXITSTATUS(ret));
 }
 
-int			execute_pipes(t_anode *node, t_env **env, t_lexer *lexer)
+int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 {
 	int		op[2];
 	int		np[2];
@@ -60,19 +62,19 @@ int			execute_pipes(t_anode *node, t_env **env, t_lexer *lexer)
 	t_pipel	*pipeline;
 
 	ret = 0;
-	op[0] = -1;
-	op[1] = -1;
-	pipeline = build_pipeline(node);
+	pipeline = build_pipeline(node, shell, cn);
 	while (pipeline && pipeline->cmd)
 	{
 		if (pipeline->next)
 			pipe(np);
-		ret = execute_pipe_cmd(pipeline, op, np, env);
+		ret = execute_pipe_cmd(pipeline, op, np, &(shell->env));
 		if (pipeline->next)
 		{
 			op[0] = np[0];
 			op[1] = np[1];
 		}
+		if (!pipeline->next)
+			break ;
 		pipeline = pipeline->next;
 	}
 	del_pipeline(pipeline);

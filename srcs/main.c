@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:43:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:44:59 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		g_return;
 
 int		main(int argc, char *argv[], char *envp[])
 {
-	t_env	*env;
+	t_shell		shell;
 
 	(void)argc;
 	(void)argv;
@@ -26,7 +26,9 @@ int		main(int argc, char *argv[], char *envp[])
 	g_ignore_signals = 0;
 	g_return = 0;
 	register_signals();
-	env = NULL;
-	env = copy_env(envp, 1);
-	return (minishell(&env));
+	shell.ret = 0;
+	shell.env = NULL;
+	shell.env = copy_env(envp, 1);
+	shell.ast = NULL;
+	return (minishell(&shell));
 }

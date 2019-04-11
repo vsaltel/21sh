@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   copy_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 11:53:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:15:08 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/11 14:51:11 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/11 14:51:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		b_exit(t_cmd *cmd, t_shell *shell)
+t_env	*copy_env(char **envp, int inc)
 {
-	int		ret;
+	t_env	*env;
+	char	**tmp;
 
-	if (cmd->argc > 2)
+	env = NULL;
+	tmp = NULL;
+	while (envp && *envp)
 	{
-		write(2, "exit: Too many arguments\n", 25);
-		return (1);
+		tmp = ft_strsplit(*envp, '=');
+		new_envl(&env, tmp[0], tmp[1], inc);
+		ft_strddel(&tmp);
+		envp++;
 	}
-	ret = shell->ret;
-	if (cmd->argc == 2)
-		ret = ft_atoi(cmd->args[1]);
-	free_env(&(shell->env));
-	destroy_lexer(&(shell->lexer));
-	destroy_ast(shell);
-	exit(ret);
-	return (ret);
+	return (env);
 }

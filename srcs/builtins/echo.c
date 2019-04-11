@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 10:50:50 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 13:29:02 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:30:30 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,12 @@ static int		empty_args(void)
 	return (0);
 }
 
-int				b_echo(t_cmd *cmd, t_env **env, t_lexer *lexer)
+int				b_echo(t_cmd *cmd, t_shell *shell)
 {
 	int	opt;
 	int	i;
 
-	(void)env;
-	(void)lexer;
+	(void)shell;
 	if (cmd->argc < 2)
 		return (empty_args());
 	opt = 0;

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:45 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/09 16:46:48 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 17:59:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ static int	rlex(char *s, char *prev, t_lexer *lexer)
 	else
 	{
 		if (lexer->state == ST_DQUOTES)
-			return (-2);
+			return (-3);
 		else if (lexer->state == ST_QUOTES)
-			return (-1);
+			return (-2);
 		else if (lexer->state == ST_SEMIC)
 			return (1);
 		else
@@ -176,7 +176,7 @@ static int	rlex(char *s, char *prev, t_lexer *lexer)
 			write(2, "21sh: parse error near '", 24);
 			write(2, prev, s - prev + 1);
 			ft_putstr_fd("'\n", 2);
-			return (0);
+			return (-1);
 		}
 	}
 	return (1);
@@ -190,6 +190,6 @@ int			lex(char *s, t_lexer *lexer)
 		return (1);
 	last_char = ft_strlen(s) - 1;
 	if (*s && s[last_char] == '\\' && !is_escaped(s, last_char, 0))
-		return (-3);
+		return (-4);
 	return (rlex(s, s, lexer));
 }

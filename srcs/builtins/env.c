@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:27:28 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 13:46:16 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:37:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,19 @@ static t_env	*dup_env(t_env *env, int option)
 	return (nenv);
 }
 
-int				b_env(t_cmd *cmd, t_env **env, t_lexer *lexer)
+int				b_env(t_cmd *cmd, t_shell *shell)
 {
-	int		options;
+	/*int		options;
 	t_env	*nenv;
 	char	*path;
-	char	**args;
+	char	**args;*/
 
-	if (cmd->argc == 1)
-		return (disp_env(*env));
-	args = cmd->args;
+	//if (cmd->argc == 1)
+		return (disp_env(shell->env));
+	/*args = cmd->args;
 	if (!parse_options(&options, --cmd->argc, ++args))
 		return (1);
-	nenv = dup_env(*env, options);
+	nenv = dup_env(shell->env, options);
 	parse_remove(&nenv, &(cmd->argc), &args);
 	parse_add(&nenv, &(cmd->argc), &args);
 	if (cmd->argc < 1)
@@ -125,11 +125,11 @@ int				b_env(t_cmd *cmd, t_env **env, t_lexer *lexer)
 	args = dup_argv(cmd->argc, args, &(cmd->args));
 	path = NULL;
 	if (!is_builtin(*args))
-		path = get_exe(get_enve(nenv, "PATH") ? nenv : *env, *args, 0);
+		path = get_exe(get_enve(nenv, "PATH") ? nenv : shell->env, *args, 0);
 	path = path ? path : *args;
-	ft_strcmp(path, "exit") == 0 ? free_env(env) : 0;
-	g_return = execute(cmd, &nenv, lexer);
+	ft_strcmp(path, "exit") == 0 ? free_env(shell->env) : 0;
+	g_return = execute(cmd, &nenv, shell);
 	(path != *(cmd->args) && !is_builtin(*(cmd->args))) ? ft_strdel(&path) : 0;
 	free_env(&nenv);
-	return (g_return);
+	return (g_return);*/
 }
