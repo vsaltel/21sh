@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 19:28:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:21:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static t_token *getCmdEnd(t_token *tok)
+static t_token	*get_cmd_end(t_token *tok)
 {
 	while (tok)
 	{
@@ -26,7 +26,7 @@ static t_token *getCmdEnd(t_token *tok)
 	return (tok);
 }
 
-t_cmd *create_cmd(t_token *exe)
+t_cmd 			*create_cmd(t_token *exe)
 {
 	t_cmd	*cmd;
 	char	**argv;
@@ -40,7 +40,7 @@ t_cmd *create_cmd(t_token *exe)
 	return (cmd);
 }
 
-static int	parse_tree(t_token *tokens, t_anode **ast, t_env **env)
+static int		parse_tree(t_token *tokens, t_anode **ast, t_env **env)
 {
 	t_anode	*tree;
 	t_anode	*tmp;
@@ -65,7 +65,7 @@ static int	parse_tree(t_token *tokens, t_anode **ast, t_env **env)
 			tmp->right = create_node(NULL, create_cmd(tokens->next));
 			tmp->right->parent = tmp;
 			tree = tmp;
-			tokens = getCmdEnd(tokens->next);
+			tokens = get_cmd_end(tokens->next);
 			curr = tokens;
 		}
 		else if (tokens->type == TOKEN_AND || tokens->type == TOKEN_OR)
@@ -80,7 +80,7 @@ static int	parse_tree(t_token *tokens, t_anode **ast, t_env **env)
 			tmp->right = create_node(NULL, create_cmd(tokens->next));
 			tmp->right->parent = tmp;
 			tree = tmp;
-			tokens = getCmdEnd(tokens->next);
+			tokens = get_cmd_end(tokens->next);
 			curr = tokens;
 		}
 		else if (is_word_token(tokens))
@@ -100,7 +100,7 @@ static int	parse_tree(t_token *tokens, t_anode **ast, t_env **env)
 				tree = tmp;
 				
 			}
-			tokens = getCmdEnd(tokens);
+			tokens = get_cmd_end(tokens);
 			curr = tokens;
 		}
 		else if (tokens->type == TOKEN_SEMI)
@@ -115,7 +115,7 @@ static int	parse_tree(t_token *tokens, t_anode **ast, t_env **env)
 	return (1);
 }
 
-int			build_ast(t_lexer *lexer, t_anode **ast, t_env **env)
+int				build_ast(t_lexer *lexer, t_anode **ast, t_env **env)
 {
 	t_token	*tokens;
 

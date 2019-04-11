@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:03:28 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 13:27:47 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:20:45 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int		handle_builtin(t_cmd *cmd, t_env **env, t_lexer *lex)
 		return (-1);
 	while (g_builtins[i].name)
 	{
-		if (ft_strcmp(cmd->exe->content, g_builtins[i].name) == 0 && g_builtins[i].func)
+		if (ft_strcmp(cmd->exe->content, g_builtins[i].name) == 0
+												&& g_builtins[i].func)
 			return (g_builtins[i].func(cmd, env, lex));
 		i++;
 	}

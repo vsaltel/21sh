@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:33:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 20:35:10 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:00:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ typedef struct 		e_pipel
 
 int					parse(t_lexer *lexer, t_anode *ast, t_env **env);
 int					execute_pipes(t_anode *node, t_env **env, t_lexer *lexer);
+
 t_pipel				*build_pipeline(t_anode *node);
+void				del_pipeline(t_pipel *pline);
 
 
 #endif

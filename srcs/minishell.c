@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 13:12:10 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:44:52 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		quote_error(char **input, int ret)
 	return (0);
 }
 
-void disp_tokens(t_lexer *lexer)
+void 	disp_tokens(t_lexer *lexer)
 {
 	ft_printf("Size: %d - Final State: %d\n", lexer->size, lexer->state);
 

@@ -6,14 +6,14 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:03:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/04 15:32:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:22:27 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-t_token *create_token(t_lexer *lexer, char *content,
-						size_t len, t_token_type type)
+t_token	*create_token(t_lexer *lexer, char *content,
+												size_t len, t_token_type type)
 {
 	t_token *token;
 

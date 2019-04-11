@@ -6,16 +6,16 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 15:02:36 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 15:04:26 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:23:33 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-t_ex_token lexer_search(const char *s)
+t_ex_token	lexer_search(const char *s)
 {
-	const t_ex_token empty = {NULL, 0, TOKEN_NULL};
-	size_t i;
+	const t_ex_token	empty = {NULL, 0, TOKEN_NULL};
+	size_t				i;
 
 	if (!s)
 		return (empty);

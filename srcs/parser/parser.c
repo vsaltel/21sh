@@ -6,11 +6,18 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 20:32:23 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 13:09:23 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+static int	is_pipe_node(t_anode *node)
+{
+	if (!node || !node->ope)
+		return (0);
+	return (node->ope->type == TOKEN_PIPE);
+}
 
 static int	parse_condition(int *ret, t_anode *cond, t_env **env, t_lexer *lex)
 {
@@ -48,13 +55,13 @@ int			parse(t_lexer *lexer, t_anode *ast, t_env **env)
 	while (ast)
 	{
 		//ft_printf("Parsing %s - p: %p - ope: %p\n", ast->ope ? ast->ope->content : ast->cmd->exe->content, ast->parent, ast->ope);
-		if (!ast->ope && (!ast->parent || (ast->parent->ope && ast->parent->ope->type != TOKEN_PIPE)))
+		if (!ast->ope && !is_pipe_node(ast->parent))
 			ret = execute(ast->cmd, env, lexer);
-		else if (ast->parent && (ast->parent->ope && ast->parent->ope->type == TOKEN_PIPE))
+		else if (is_pipe_node(ast->parent))
 		{
 			ft_printf("----------- PIPES ----------\n");
 			ret = execute_pipes(ast, env, lexer);
-			while (ast->parent && ast->parent && ast->parent->ope->type == TOKEN_PIPE)
+			while (is_pipe_node(ast->parent))
 				ast = ast->parent;
 			ft_printf("--------- PIPES END --------\n");
 		}
