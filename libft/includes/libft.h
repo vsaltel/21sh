@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 18:24:16 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/08 18:47:59 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/11 14:45:34 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int					ft_isascii(int c);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 
-void				ft_putchar(char c);
+int					ft_putchar(int c);
 void				ft_putstr(char const *s);
 void				ft_putnstr(char const *s, size_t n);
 void				ft_putendl(char const *s);

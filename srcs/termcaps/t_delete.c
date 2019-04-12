@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:32:13 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/10 17:59:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/11 14:50:39 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,33 @@ void	replace_lastc(t_cursor_pos *pos, t_history_info *histo)
 
 void	delete_inline(char **str, t_cursor_pos *pos, t_history_info *histo)
 {
-	tputs(tgetstr("le", NULL), 1, my_putchar);
-	tputs(tgetstr("dc", NULL), 1, my_putchar);
+	tputs(tgetstr("le", NULL), 1, ft_putchar);
+	tputs(tgetstr("dc", NULL), 1, ft_putchar);
 	if (pos->y_lastc > pos->y)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y + 1), 1, my_putchar);
-		tputs(tgetstr("cd", NULL), 1, my_putchar);
-		tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y), 1, my_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y + 1), 1, ft_putchar);
+		tputs(tgetstr("cd", NULL), 1, ft_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y), 1, ft_putchar);
 		ft_printf("%s", *str + pos->x_rel + (pos->x_max - pos->x) + 1);
 	}
 	del_char(str, pos);
 	--(pos->x);
 	--(pos->x_rel);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
 	replace_lastc(pos, histo);
 }
 
 void	delete_prevline(char **str, t_cursor_pos *pos, t_history_info *histo)
 {
-	tputs(tgetstr("cd", NULL), 1, my_putchar);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y - 1), 1, my_putchar);
-	tputs(tgetstr("ce", NULL), 1, my_putchar);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y - 1), 1, ft_putchar);
+	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", *str + pos->x_rel);
 	del_char(str, pos);
 	pos->x = pos->x_max;
 	--(pos->y);
 	--(pos->x_rel);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
 	replace_lastc(pos, histo);
 }
 

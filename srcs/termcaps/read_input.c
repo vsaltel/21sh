@@ -6,33 +6,56 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/10 20:11:35 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/11 14:53:24 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
+static int	read_all(int fd, char **dest)
+{
+	char	buf[BUFF_SIZE];
+	char	*str;
+	int		ret;
+
+	str = NULL;
+	while ((ret = read(fd, buf, BUFF_SIZE - 1)))
+	{
+		if (ret == -1)
+			break ;
+		buf[ret] = '\0';
+		if (!str)
+			str = ft_strdup(buf);
+		else
+			str = ft_strfjoin(str, buf, str);
+		if (ret < BUFF_SIZE - 1)
+			break ;
+	}
+	*dest = str;
+	return (ret);
+}
+
 static void	last_line(t_cursor_pos *pos, size_t len)
 {
 	size_t	line_sup;
 	size_t	final_pos;
-	int		i;
+	size_t	i;
 
 	line_sup = (pos->x_lastc + 1 + len) / (pos->x_max + 1);
 	if (line_sup + pos->y_lastc >= pos->y_max)
 	{
 		final_pos = pos->y_max - pos->y_lastc + line_sup - 1;
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc), 1, my_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc), 1, ft_putchar);
 		i = -1;
 		while (++i < final_pos)
-			tputs(tgetstr("sf", NULL), 1, my_putchar);
+			tputs(tgetstr("sf", NULL), 1, ft_putchar);
 /*
 **		tputs(tgetstr("SF", NULL)
-**			, pos->y_max - pos->y_lastc + line_sup - 1, my_putchar);
+**			, pos->y_max - pos->y_lastc + line_sup - 1, ft_putchar);
 */
 		pos->y_min -= final_pos;
 		pos->y -= final_pos;
-		tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
 		pos->y_lastc -= final_pos;
 	}
 }
@@ -56,11 +79,11 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 		*str = ft_strfjoin(*str, buf, *str);
 	if (pos->y_lastc > pos->y_min)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, my_putchar);
-		tputs(tgetstr("cd", NULL), 1, my_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, ft_putchar);
+		tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	}
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, my_putchar);
-	tputs(tgetstr("ce", NULL), 1, my_putchar);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, ft_putchar);
+	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", *str);
 	move_pos(pos, ft_strlen(buf));
 	histo->history_line = 0;
@@ -84,7 +107,7 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 		pos->y = pos->y_min;
 		pos->y_lastc = pos->y_min;
 		tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min)
-			, 1, my_putchar);
+			, 1, ft_putchar);
 		pos->x_rel = 0;
 		g_clear_buffer = 0;
 	}

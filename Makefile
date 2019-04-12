@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/10 18:56:34 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/04/11 17:01:53 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ FILES 	=	main.c						\
 			minishell.c					\
 			termcaps/read_input.c		\
 			termcaps/termcaps.c			\
-			termcaps/termcaps_utils.c	\
-			termcaps/termcaps_utils2.c	\
+			termcaps/initialization.c	\
+			termcaps/set_position.c		\
 			termcaps/t_up.c				\
 			termcaps/t_down.c			\
 			termcaps/t_history_next.c	\

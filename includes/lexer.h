@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 14:13:23 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 15:58:12 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ typedef struct	s_lexer
 
 static const t_ex_token g_tokens_list[] =
 {
-	{"|", 1, TOKEN_PIPE},
 	{"<<", 2, TOKEN_REDIR},
-	{"<", 1, TOKEN_REDIR},
-	{">", 1, TOKEN_REDIR},
 	{">&", 2, TOKEN_REDIR},
 	{"<&", 2, TOKEN_REDIR},
 	{"&&", 2, TOKEN_AND},
 	{"||", 2, TOKEN_OR},
+	{"|", 1, TOKEN_PIPE},
+	{"<", 1, TOKEN_REDIR},
+	{">", 1, TOKEN_REDIR},
 	{";", 1, TOKEN_SEMI},
 	{" ", 1, TOKEN_IGN},
 	{"\n", 1, TOKEN_IGN},

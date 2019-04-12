@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 19:55:36 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/11 14:18:38 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int		minishell(t_env **env, t_history **history)
 	if (input)
 		ft_strdel(&input);
 	ft_putchar('\n');
+	restore_shell();
 	//free_env(env);
 	return (g_return);
 }

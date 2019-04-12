@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:32 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/10 17:53:31 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/11 14:49:49 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	new_pos(t_history *curr, t_cursor_pos *pos)
 
 	if (pos->y_lastc > pos->y_min)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, my_putchar);
-		tputs(tgetstr("cd", NULL), 1, my_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, ft_putchar);
+		tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	}
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, my_putchar);
-	tputs(tgetstr("ce", NULL), 1, my_putchar);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, ft_putchar);
+	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", curr->str);
 	pos->x = pos->x_min;
 	pos->x_lastc = pos->x_min;
