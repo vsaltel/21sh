@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 15:11:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 12:50:40 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 18:10:19 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,15 @@ static t_redirect	*create_redirection(t_token *token)
 	red->done = 0;
 	skip = 0;
 	if (token->type == TOKEN_REDIRO)
-		red->filedes = ft_atoi_i(token->content, &skip);
+	{
+		if ((red->filedes = ft_atoi_i(token->content, &skip)) == 0)
+			red->filedes = 1;
+	}
 	red->type = token->type;
 	red->append = ft_strcmp(token->type == TOKEN_REDIRO ? ">>" : "<<",
 												token->content + skip) == 0;
 	red->value = token->next;
+	red->next = NULL;
 	return (red);
 }
 
@@ -39,13 +43,14 @@ t_redirect			*parse_redirections(t_token *tok, int offset)
 {
 	t_redirect	*red;
 
+	if (offset < 0)
+		return (NULL);
 	while (tok && offset--)
 		tok = tok->next;
 	if (!tok || !tok->next || !is_redirection(tok))
 		return (NULL);
 	red = NULL;
-	ft_printf("Redir: %s\n", tok->content);
-	while (tok)
+	while (tok && is_redirection(tok))
 	{
 		if (!red)
 			red = create_redirection(tok);

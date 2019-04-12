@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 11:29:49 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:25:40 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ typedef enum	e_state
 	ST_OPERATOR,
 	ST_SEMIC
 }				t_state;
+
+typedef struct	s_state_func
+{
+	t_state		key;
+	int			(*lex)();
+}				t_state_func;
 
 typedef enum	e_token_type
 {
@@ -59,7 +65,10 @@ typedef struct	s_token
 
 typedef struct	s_lexer
 {
+	char		*in;
+	char		*pin;
 	t_token		*tokens;
+	t_token		*last_token;
 	size_t		size;
 	t_state		state;
 }				t_lexer;

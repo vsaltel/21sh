@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   comment.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 10:40:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 15:18:13 by frossiny         ###   ########.fr       */
+/*   Created: 2019/04/12 14:22:01 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/12 14:51:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	catch_sigint(int signal)
+int		lex_state_comment(t_lexer *lexer)
 {
-	(void)signal;
-	g_clear_buffer = 1;
-	write(1, "\n", 1);
-	if (g_ignore_signals)
+	if (*(lexer->in) == '\n'
+					&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
 	{
-		g_ignore_signals = 0;
-		ioctl(0, TIOCSTI, "\4\0");
+		lexer->state = ST_GENERAL;
+		lexer->pin = lexer->in;
 	}
-	else if (!g_child)
-		ft_printf("\033[1;31m$> \033[0m");
-}
-
-void		register_signals(void)
-{
-	signal(SIGINT, catch_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	else
+		lexer->in++;
+	return (1);
 }
