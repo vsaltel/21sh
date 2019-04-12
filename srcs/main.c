@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:43:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 11:33:19 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 17:31:24 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-	termcaps_init();
+	shell.able_termcaps = termcaps_init(&(shell.prev_term));
 	g_child = 0;
 	g_ignore_signals = 0;
 	g_return = 0;
@@ -32,6 +32,6 @@ int		main(int argc, char *argv[], char *envp[])
 	shell.env = NULL;
 	shell.env = copy_env(envp, 1);
 	shell.ast = NULL;
-	shell.history = NULL;
+	shell.history = get_history();
 	return (minishell(&shell));
 }

@@ -6,44 +6,35 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:12 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:59:14 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/12 17:27:15 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int				termcaps_init(void)
+int				termcaps_init(struct termios *prev_term)
 {
 	int				ret;
 	char			*term_var;
 	struct termios	term;
 
 	tcgetattr(0, &term);
+	*prev_term = term;
+	if (!(term_var = getenv("TERM")))
+		return (0);
+	if ((ret = tgetent(NULL, term_var)) != 1)
+		return (0);
 	term.c_lflag &= ~(ICANON | ECHO);
 	term.c_lflag &= ~(OPOST);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSADRAIN, &term);
-	if (!(term_var = getenv("TERM")))
-	{
-		ft_printf("var TERM non trouve");
-		return (-1);
-	}
-	if ((ret = tgetent(NULL, term_var)) != 1)
-		return (-1);
-	return (ret);
+	return (1);
 }
 
-int				restore_shell(void)
+void			restore_shell(struct termios prev_term)
 {
-	struct termios term;
-
-	if (tcgetattr(0, &term) == -1)
-		return (-1);
-	term.c_lflag = (ICANON | ECHO);
-	if (tcsetattr(0, 0, &term) == -1)
-		return (-1);
-	return (0);
+	tcsetattr(0, TCSANOW, &prev_term);
 }
 
 int				memset_all(char **str, t_history **history

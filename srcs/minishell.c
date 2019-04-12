@@ -6,20 +6,20 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 11:38:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 18:01:50 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		bslash_error(char **input, int ret)
+int		bslash_error(t_shell *shell, char **input, int ret)
 {
 	char	*ninput;
 	char	*tmp;
 
 	g_ignore_signals = 1;
 	write(1, "> ", 2);
-	if (!(ret = get_input(0, &ninput, NULL)))
+	if (!(ret = get_input(0, &ninput, shell)))
 	{
 		if (g_ignore_signals)
 		{
@@ -36,14 +36,14 @@ int		bslash_error(char **input, int ret)
 	return (0);
 }
 
-int		quote_error(char **input, int ret)
+int		quote_error(t_shell *shell, char **input, int ret)
 {
 	char	*ninput;
 	char	*tmp;
 
 	g_ignore_signals = 1;
 	ret ? write(1, "dquote> ", 8) : write(1, "quote> ", 7);
-	if (!(ret = get_input(0, &ninput, NULL)))
+	if (!(ret = get_input(0, &ninput, shell)))
 	{
 		if (g_ignore_signals)
 		{
@@ -73,23 +73,23 @@ void 	disp_tokens(t_lexer *lexer)
 	}
 }
 
-int		handle_input(t_lexer *lexer, char **input)
+int		handle_input(t_shell *shell, char **input)
 {
 	int		ret;
 
 	ret = 0;
-	lexer->size = 0;
-	while ((ret = lex(*input, lexer)) < 1)
+	shell->lexer.size = 0;
+	while ((ret = lex(*input, &(shell->lexer))) < 1)
 	{
-		destroy_lexer(lexer);
-		if ((ret == -3 || ret == -2) && (ret = quote_error(input, ret)))
+		destroy_lexer(&(shell->lexer));
+		if ((ret == -3 || ret == -2) && (ret = quote_error(shell, input, ret)))
 			return (ret);
-		else if (ret == -4 && (ret = bslash_error(input, ret)))
+		else if (ret == -4 && (ret = bslash_error(shell, input, ret)))
 			return (ret);
 		else
 			return (ret);
 	}
-	//disp_tokens(lexer);
+	//disp_tokens(shell->lexer);
 	return (0);
 }
 
@@ -97,7 +97,7 @@ int		eval_exec(t_shell *shell, char **input)
 {
 	t_anode	*ast;
 
-	if ((shell->ret = handle_input(&(shell->lexer), input)) == 0)
+	if ((shell->ret = handle_input(shell, input)) == 0)
 	{
 		if (!input)
 			return (1);
@@ -118,7 +118,7 @@ int		minishell(t_shell *shell)
 	shell->lexer.tokens = NULL;
 	shell->lexer.state = ST_GENERAL;
 	ft_printf("\033[1;32m$> \033[0m");
-	while (get_input(0, &input, &(shell->history)) > 0)
+	while (get_input(0, &input, shell) > 0)
 	{
 		if (eval_exec(shell, &input))
 			ft_printf("\033[1;31m$> \033[0m");
@@ -129,6 +129,7 @@ int		minishell(t_shell *shell)
 		ft_strdel(&input);
 	ft_putchar('\n');
 	free_env(&(shell->env));
-	restore_shell();
+	overwrite_history(shell->history);
+	restore_shell(shell->prev_term);
 	return (shell->ret);
 }

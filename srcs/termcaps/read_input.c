@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/12 11:31:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 18:12:13 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,31 +90,28 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 }
 
 static int	check_input(char *buf, char **str, t_cursor_pos *pos
-		, t_history_info *histo)
+		, t_shell *shell)
 {
 	if (!ft_strcmp(buf, "\004"))
 	{
-		free(histo->first_command);
-		free(*str);
+		//free(shell->history->first_command);
+		ft_strdel(str);
 		return (0);
 	}
 	if (g_clear_buffer)
 	{
 		free(*str);
 		*str = NULL;
-		pos->x = pos->x_min;
-		pos->x_lastc = pos->x_min;
-		pos->y = pos->y_min;
-		pos->y_lastc = pos->y_min;
-		tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min)
-			, 1, ft_putchar);
+		if (!memset_pos(pos))
+			return (0);
 		pos->x_rel = 0;
 		g_clear_buffer = 0;
+		shell->ret = 1;
 	}
 	return (1);
 }
 
-int			get_input(int fd, char **dest, t_history **history)
+int			get_input(int fd, char **dest, t_shell *shell)
 {
 	int				ret;
 	char			*buf;
@@ -122,21 +119,27 @@ int			get_input(int fd, char **dest, t_history **history)
 	t_cursor_pos	pos;
 	t_history_info	histo;
 
-	if (!memset_all(&str, history, &histo, &pos))
-		return (-1);
-	while ((ret = read_all(fd, &buf)))
+	*dest = NULL;
+	if (shell->able_termcaps)
 	{
-		if (ret == -1 || !(ret = check_input(buf, &str, &pos, &histo)))
-			return (ret);
-		if (buf[0] == '\n')
-			break ;
-		if (!execute_termcaps(buf, &str, &pos, &histo))
-			new_entry(&str, buf, &pos, &histo);
-		free(buf);
+		if (!memset_all(&str, &(shell->history), &histo, &pos))
+			return (-1);
+		while ((ret = read_all(fd, &buf)))
+		{
+			if (ret == -1 || !(ret = check_input(buf, &str, &pos, shell)))
+				return (ret);
+			if (buf[0] == '\n')
+				break ;
+			if (!execute_termcaps(buf, &str, &pos, &histo))
+				new_entry(&str, buf, &pos, &histo);
+			free(buf);
+		}
+		final_position(&pos);
+		free(histo.first_command);
+		add_to_history(str, histo.history);
 	}
-	final_position(&pos);
-	free(histo.first_command);
-	add_to_history(str, histo.history);
+	else
+		ret = get_next_line(fd, &str);
 	*dest = str;
-	return (1);
+	return (ret > 0 ? 1 : ret);
 }

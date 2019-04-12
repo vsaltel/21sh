@@ -6,13 +6,13 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 17:47:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/10 20:11:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/12 16:44:25 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-t_history_info	memset_history(t_history **history)
+t_history_info		memset_history(t_history **history)
 {
 	t_history_info	hist;
 	t_history		*curr;
@@ -33,79 +33,105 @@ t_history_info	memset_history(t_history **history)
 	return (hist);
 }
 
-void	add_to_history(char *str, t_history **history)
+static t_history	*new_link(char *str)
+{
+	t_history	*item;
+
+	if (!(item = malloc(sizeof(t_history))))
+		return (NULL);
+	item->str = str;
+	item->len = ft_strlen(str);
+	item->next = NULL;
+	return (item);
+}
+
+void				add_to_history(char *str, t_history **history)
 {
 	t_history	*item;
 
 	if (!history || !str || !str[0] || (*history && ft_strcmp(str, (*history)->str) == 0))
 		return ;
-	if (!(item = malloc(sizeof(t_history))))
-		return ;
-	if (!*history)
-		item->next = NULL;
-	else
+	item = new_link(ft_strdup(str));
+	if (*history)
 		item->next = *history;
-	item->str = ft_strdup(str);
-	item->len = ft_strlen(str);
 	*history = item;
 }
 
-	/*
-	char	*read_history(int fd, size_t *content_len)
+t_history			*read_history(int fd)
 {
-	char	buf[BUFF_SIZE];
-	size_t	nb_nl;
+	t_history	*begin;
+	t_history	*curr;
 	int		ret;
-	char	*content;
+	size_t	nb_nl;
+	char	*buf;
 
-	content = NULL;	
-	*content_len = 0;
+	begin = NULL;
+	curr = NULL;
 	nb_nl = 0;
-	while ((ret = read(fd, buf, BUFF_SIZE - 1)) > 0)
+	while ((ret = get_next_line(fd, &buf)) == 1)
 	{
-		buf[ret] = '\0';
-		ret = -1;
-		while (buf[++ret] && nb_nl < MAX_HISTORY)
-			if (buf[ret] == '\n')
-				nb_nl++;
-		*content_len += ret;
-		content = !content ? ft_strdup(buf) : ft_strfjoin(content, buf, content);
-	}
-	if (ret == -1)
-		free(content);
-	return ret == -1 ? (NULL) : (content);
-}
-	char	*home_path;
-	char	*path;
-	char	*content;
-	size_t	content_len;
-	int		fd;
-
-	if (!(home_path = getenv("HOME")))
-		return ;
-	path = ft_strpathfile(home_path, ".21sh_history");	
-	int		fd;
-
-	if (access(path, F_OK))
-	{
-		if ((fd = open(path, O_CREAT)) == -1)
-			return ;
+		if (begin)
+		{
+			curr->next = new_link(buf);
+			curr = curr->next;
+		}
 		else
-			close(fd);
+		{
+			begin = new_link(buf);
+			curr = begin;
+		}
+		if (nb_nl++ >= MAX_HISTORY)
+			break ;
 	}
+	return ret == -1 ? (NULL) : (begin);
+}
+
+t_history			*get_history(void)
+{
+	t_history	*histo;
+	int			fd;
+	char		*path;
+
+	histo = NULL;
+	path = NULL;
+	path = ft_strpathfile(getenv("HOME"), ".21sh_history");	
+	if (access(path, F_OK))
+		return (NULL);
+	if (access(path, X_OK))
+		return (NULL);
 	if ((fd = open(path, O_RDONLY)))
 	{
+		histo = read_history(fd);
+		close(fd);
+	}
+	free(path);
+	return fd ? (histo) : (NULL);
+}
+
+void				overwrite_history(t_history *histo)
+{
+	t_history	*curr;
+	char		*path;
+	int			fd;
+
+	if (!histo)
+		return ;
+	fd = 0;
+	path = ft_strpathfile(getenv("HOME"), ".21sh_history");	
+	if (!access(path, F_OK))
 		if (access(path, X_OK))
 			return ;
-		content = read_history(fd, &content_len);
-		close(fd);
-	}
-	if ((fd = open(path, O_WRONLY | O_TRUNC)))
-	{
-		write(fd, str, ft_strlen(str));
-		write(fd, "\n", 1);
-		write(fd, content, content_len);
-		free(content);
-		close(fd);
-	}
-	*/
+	if (fd != -1)
+		if ((fd = open(path, O_CREAT | O_WRONLY | O_TRUNC)))
+		{
+			curr = histo;
+			while (curr)
+			{
+				write(fd, curr->str, ft_strlen(curr->str));
+				write(fd, "\n", 1);
+				curr = curr->next;
+			}
+			close(fd);
+		}
+	free(path);
+}
