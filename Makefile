@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/11 17:56:43 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/12 11:36:29 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,16 +23,20 @@ FILES 	=	main.c						\
 			minishell.c					\
 			termcaps/read_input.c		\
 			termcaps/termcaps.c			\
-			termcaps/termcaps_utils.c	\
+			termcaps/initialization.c	\
+			termcaps/set_position.c		\
 			termcaps/t_up.c				\
 			termcaps/t_down.c			\
-			termcaps/t_shift_left.c		\
-			termcaps/t_shift_right.c	\
+			termcaps/t_history_next.c	\
+			termcaps/t_history_prev.c	\
+			termcaps/t_left_word.c		\
+			termcaps/t_right_word.c		\
 			termcaps/t_left.c			\
 			termcaps/t_right.c			\
 			termcaps/t_delete.c			\
 			termcaps/t_home.c			\
 			termcaps/t_end.c			\
+			termcaps/history.c			\
 			lexer/lexer.c				\
 			lexer/is_escaped.c			\
 			lexer/is_word_token.c		\

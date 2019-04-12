@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   t_home.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 15:59:14 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/05 16:05:13 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/12 11:32:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		termcaps_home(char **str, t_cursor_pos *pos)
+void		termcaps_home(char **str, t_cursor_pos *pos, t_history_info *histo)
 {
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, my_putchar);
+	(void)histo;
+	(void)str;
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, ft_putchar);
 	pos->x = pos->x_min;
 	pos->y = pos->y_min;
 	pos->x_rel = 0;
-	return (0);
 }

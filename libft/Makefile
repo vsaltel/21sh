@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2019/04/08 15:49:12 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/12 11:30:44 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,6 +94,7 @@ FILES 	=	ft_memset.c							\
 			ft_strfjoin.c						\
 			ft_strfdup.c						\
 			ft_putstrtable.c					\
+			ft_strpathfile.c					\
 			get_next_line.c						\
 			printf/ft_printf.c					\
 			printf/display.c					\

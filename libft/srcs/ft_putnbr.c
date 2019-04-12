@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 16:48:55 by frossiny          #+#    #+#             */
-/*   Updated: 2018/11/08 19:13:11 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:47:02 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	ft_putnbr(int n)
 		n *= -1;
 	}
 	if (n < 10)
-		return (ft_putchar('0' + n));
+	{
+		ft_putchar('0' + n);
+		return ;
+	}
 	ft_putnbr(n / 10);
 	ft_putchar('0' + n % 10);
 }

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:40:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/10 17:26:22 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	catch_sigint(int signal)
 {
 	(void)signal;
+	g_clear_buffer = 1;
 	write(1, "\n", 1);
 	if (g_ignore_signals)
 	{
