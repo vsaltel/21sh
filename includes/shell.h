@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 18:17:04 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:09:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_pipel				*build_pipeline(t_anode *node, t_shell *shell,
 															t_anode **cn);
 t_redirect			*parse_redirections(t_token *tok, int offset);
 void				del_pipeline(t_pipel *pline);
-void				handle_redirections(t_redirect *redir, int pipe);
+void				handle_redirections(t_redirect *redir, t_shell *shell);
 
 t_env				*copy_env(char **envp, int inc);
 int					disp_env(t_env *env);

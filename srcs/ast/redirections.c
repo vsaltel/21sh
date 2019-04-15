@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 15:11:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 18:10:19 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/15 12:03:35 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_redirect	*create_redirection(t_token *token)
 		return (NULL);
 	red->done = 0;
 	skip = 0;
+	red->filedes = 0;
 	if (token->type == TOKEN_REDIRO)
 	{
 		if ((red->filedes = ft_atoi_i(token->content, &skip)) == 0)
