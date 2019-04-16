@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 15:11:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/10 12:50:40 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:56:43 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,19 @@
 
 static int			is_redirection(t_token *token)
 {
-	return (token->type == TOKEN_REDIRI || token->type == TOKEN_REDIRO);
+	return (token->type == TOKEN_REDIRI
+			|| token->type == TOKEN_REDIRO
+			|| token->type == TOKEN_AGGR);
+}
+
+static int			is_append(t_token *token)
+{
+	if (token->type == TOKEN_REDIRI)
+		return (ft_strstr(token->content, "<<") != NULL);
+	else if (token->type == TOKEN_REDIRO)
+		return (ft_strstr(token->content, ">>") != NULL);
+	else
+		return (0);
 }
 
 static t_redirect	*create_redirection(t_token *token)
@@ -26,12 +38,21 @@ static t_redirect	*create_redirection(t_token *token)
 		return (NULL);
 	red->done = 0;
 	skip = 0;
-	if (token->type == TOKEN_REDIRO)
+	red->p[0] = -1;
+	red->p[1] = -1;
+	if (ft_isdigit(token->content[0]))
 		red->filedes = ft_atoi_i(token->content, &skip);
+	else
+	{
+		if (token->type != TOKEN_AGGR)
+			red->filedes = (token->type == TOKEN_REDIRO) ? 1 : 0;
+		else
+			red->filedes = (ft_strstr(token->content, "&>")) ? 1 : 0;
+	}
 	red->type = token->type;
-	red->append = ft_strcmp(token->type == TOKEN_REDIRO ? ">>" : "<<",
-												token->content + skip) == 0;
+	red->append = is_append(token);
 	red->value = token->next;
+	red->next = NULL;
 	return (red);
 }
 
@@ -39,13 +60,14 @@ t_redirect			*parse_redirections(t_token *tok, int offset)
 {
 	t_redirect	*red;
 
+	if (offset < 0)
+		return (NULL);
 	while (tok && offset--)
 		tok = tok->next;
 	if (!tok || !tok->next || !is_redirection(tok))
 		return (NULL);
 	red = NULL;
-	ft_printf("Redir: %s\n", tok->content);
-	while (tok)
+	while (tok && is_redirection(tok))
 	{
 		if (!red)
 			red = create_redirection(tok);

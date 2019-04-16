@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   ft_strjointf.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/26 10:40:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 15:18:13 by frossiny         ###   ########.fr       */
+/*   Created: 2018/11/07 17:35:17 by frossiny          #+#    #+#             */
+/*   Updated: 2019/04/16 14:05:02 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
 
-static void	catch_sigint(int signal)
+char	*ft_strjointf(char const *s1, char const *s2, char const *s3)
 {
-	(void)signal;
-	g_clear_buffer = 1;
-	write(1, "\n", 1);
-	if (g_ignore_signals)
-	{
-		g_ignore_signals = 0;
-		ioctl(0, TIOCSTI, "\4\0");
-	}
-	else if (!g_child)
-		ft_printf("\033[1;31m$> \033[0m");
-}
+	char	*dst;
 
-void		register_signals(void)
-{
-	signal(SIGINT, catch_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	if (!s1 || !s2 || !s3 ||
+			!(dst = ft_strnew(ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3))))
+		return (NULL);
+	ft_strcpy(dst, s1);
+	ft_strcat(dst, s2);
+	free((char *)s1);
+	free((char *)s2);
+	return (ft_strcat(dst, s3));
 }

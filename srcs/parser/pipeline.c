@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 18:53:29 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 18:06:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd, t_shell *shell)
 	if (!(new = (t_pipel *)malloc(sizeof(t_pipel))))
 		return (NULL);
 	build_args(cmd, shell);
+	cmd->redir = parse_redirections(cmd->exe, cmd->argc);
 	new->cmd = cmd;
 	new->previous = prev;
 	new->next = NULL;

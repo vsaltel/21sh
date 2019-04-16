@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:33:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:47:24 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:37:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PARSER_H
 
 # include "shell.h"
+
+# define FILE_PERM (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 typedef struct		s_pipel
 {

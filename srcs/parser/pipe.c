@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 18:53:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:59:13 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		init_fd(t_pipel *pline, int op[], int np[])
+void		init_fd(t_pipel *pline, int op[], int np[], t_shell *shell)
 {
 	if (pline->previous)
 	{
@@ -26,22 +26,23 @@ void		init_fd(t_pipel *pline, int op[], int np[])
 		dup2(np[1], 1);
 		close(np[1]);
 	}
+	handle_redirections(pline->cmd->redir, shell);
 }
 
-static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_env **env)
+static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 {
-	int		pid;
 	t_cmd	*cmd;
 	int		ret;
 
 	cmd = pline->cmd;
-	if (is_builtin(cmd->exe->content) || !is_exe(*env, cmd->exe->content, 1))
-		return (0);
-	if ((pid = fork()) == 0)
+	if ((pline->previous && is_builtin(cmd->exe->content))
+							|| !is_exe(shell->env, cmd->exe->content, 1))
+		return (1);
+	if ((g_child = fork()) == 0)
 	{
-		init_fd(pline, op, np);
-		if (execve(get_exe(*env, cmd->exe->content, 1),
-								cmd->args, build_env(*env)) == -1)
+		init_fd(pline, op, np, shell);
+		if (execve(get_exe(shell->env, cmd->exe->content, 1),
+								cmd->args, build_env(shell->env)) == -1)
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);
 	}
@@ -50,7 +51,10 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_env **env)
 		close(op[0]);
 		close(op[1]);
 	}
-	waitpid(pid, &ret, 0);
+	waitpid(g_child, &ret, 0);
+	g_child = 0;
+	if (WIFSIGNALED(ret))
+		return (128 + ret);
 	return (WEXITSTATUS(ret));
 }
 
@@ -67,7 +71,8 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 	{
 		if (pipeline->next)
 			pipe(np);
-		ret = execute_pipe_cmd(pipeline, op, np, &(shell->env));
+		get_here_doc(pipeline->cmd->redir);
+		ret = execute_pipe_cmd(pipeline, op, np, shell);
 		if (pipeline->next)
 		{
 			op[0] = np[0];

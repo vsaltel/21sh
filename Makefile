@@ -6,13 +6,15 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/16 13:29:44 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/04/16 14:34:48 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	gcc
+CC		=	gcc -g3
 #CFLAGS	+=	-Wall -Werror -Wextra -g3
-CFLAGS	+= -g3 -fsanitize=address
+#CFLAGS	+= -g3 -fsanitize=address
+
+SHELL	=	bash
 
 NAME 	=	21sh
 LIBFT	=	libft
@@ -45,15 +47,23 @@ FILES 	=	main.c						\
 			lexer/lexer_search.c		\
 			lexer/create_token.c		\
 			lexer/push_token.c			\
+			lexer/parse_error.c			\
+			lexer/states/general.c		\
+			lexer/states/quotes.c		\
+			lexer/states/comment.c		\
+			lexer/states/escaped.c		\
+			lexer/states/operators.c	\
 			parser/parser.c				\
 			parser/pipe.c				\
 			parser/pipeline.c			\
+			parser/redirections.c		\
+			parser/executables.c		\
+			parser/here_doc.c			\
 			ast/build_ast.c				\
 			ast/create_node.c			\
 			ast/build_args.c			\
 			ast/redirections.c			\
 			ast/destroy_ast.c			\
-			executables.c				\
 			exec_utils.c				\
 			env/build_env.c				\
 			env/copy_env.c				\
@@ -95,15 +105,15 @@ _PURPLE=\x1b[35m
 _CYAN=\x1b[36m
 _WHITE=\x1b[37m
 
-.PHONY: all clean fclean re $(LIBFT)
+.PHONY: all clean fclean re norm $(LIBFT)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(MAKE) -q -C $(LIBFT) || $(MAKE) -C $(LIBFT)
-	@echo "${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
+	@echo -e -n "\n${_BLUE}${_BOLD}[Create Executable] $(NAME)${_END}"
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L./$(LIBFT) -lft -ltermcap
-	@echo "${_GREEN}${_BOLD}$(NAME) done.${_END}"
+	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
@@ -111,21 +121,25 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
 	@[ -d $(OBJDIR)/env ] || mkdir -p $(OBJDIR)/env
 	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
+	@[ -d $(OBJDIR)/lexer/states ] || mkdir -p $(OBJDIR)/lexer/states
 	@[ -d $(OBJDIR)/parser ] || mkdir -p $(OBJDIR)/parser
 	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
 	@[ -d $(OBJDIR)/utils ] || mkdir -p $(OBJDIR)/utils
-	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
+	@echo -n -e "\r\033[K${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -o $@ -c $<
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
-	@echo "${_RED}${_BOLD}Cleaning obj files...${_END}"
+	@echo -e "${_RED}${_BOLD}Cleaning obj files...${_END}"
 	@rm -f $(OBJS)
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
-	@echo "${_RED}${_BOLD}Cleaning project...${_END}"
+	@echo -e "${_RED}${_BOLD}Cleaning project...${_END}"
 	@rm -f $(NAME)
 
 re: fclean
 	@$(MAKE)
+
+norm:
+	@norminette $(INCDIR) $(SRCDIR)

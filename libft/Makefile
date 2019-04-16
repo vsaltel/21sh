@@ -6,12 +6,14 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2019/04/12 11:30:44 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/16 14:04:17 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc
 CFLAGS	+=	-Wall -Werror -Wextra -g3
+
+SHELL	=	bash
 
 NAME 	=	libft.a
 SRCDIR	=	srcs
@@ -56,6 +58,7 @@ FILES 	=	ft_memset.c							\
 			ft_strjoin.c						\
 			ft_strnjoin.c						\
 			ft_strjoint.c						\
+			ft_strjointf.c						\
 			ft_strtrim.c						\
 			ft_strctrim.c						\
 			ft_strsplit.c						\
@@ -132,25 +135,25 @@ _WHITE=\x1b[37m
 .PHONY: all clean fclean re
 
 $(NAME): $(OBJS)
-	@echo "${_BLUE}${_BOLD}[Linking] $(NAME)${_END}"
+	@echo -e -n "\n${_BLUE}${_BOLD}[Linking] $(NAME)${_END}"
 	@ar rc $(NAME) $(OBJS)
-	@echo "${_GREEN}${_BOLD}$(NAME) done.${_END}"
+	@echo -e -n "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	@[ -d $(OBJDIR)/printf ] || mkdir -p $(OBJDIR)/printf
 	@[ -d $(OBJDIR)/printf/converters ] || mkdir -p $(OBJDIR)/printf/converters
-	@echo "${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
+	@echo -n -e "\r\033[K${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -o $@ -c $<
 
 all: $(NAME)
 
 clean:
-	@echo "${_RED}${_BOLD}Removing obj files...${_END}"
+	@echo -e "${_RED}${_BOLD}Removing obj files...${_END}"
 	@rm -f $(OBJS)
 
 fclean: clean
-	@echo "${_RED}${_BOLD}Removing $(NAME)...${_END}"
+	@echo -e "${_RED}${_BOLD}Removing $(NAME)...${_END}"
 	@rm -f $(NAME)
 
 re: fclean
