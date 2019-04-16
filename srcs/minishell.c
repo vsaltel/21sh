@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 14:35:53 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:37:10 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,22 @@ int		handle_input(t_shell *shell, char **input)
 
 int		eval_exec(t_shell *shell, char **input)
 {
+	int		ret;
 	t_anode	*ast;
 
 	ast = NULL;
-	if ((shell->ret = handle_input(shell, input)) == 0)
+	if ((ret = handle_input(shell, input)) == 0)
 	{
 		if (!input)
 			return (1);
 		ft_strdel(input);
 		build_ast(shell, &ast);
 		shell->ast = ast;
-		shell->ast ? shell->ret = parse(shell, shell->ast) : 0;
+		shell->ast ? ret = parse(shell, shell->ast) : 0;
 		destroy_lexer(&(shell->lexer));
 		destroy_ast(shell);
 	}
-	return (shell->ret);
+	return (ret);
 }
 
 int		minishell(t_shell *shell)
@@ -121,7 +122,8 @@ int		minishell(t_shell *shell)
 	ft_printf("\033[1;32m$> \033[0m");
 	while (get_input(0, &input, shell) > 0)
 	{
-		if (eval_exec(shell, &input))
+		eval_exec(shell, &input);
+		if (shell->ret)
 			ft_printf("\033[1;31m$> \033[0m");
 		else
 			ft_printf("\033[1;32m$> \033[0m");

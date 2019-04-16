@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:40:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 15:18:13 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:33:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static void	catch_sigint(int signal)
 {
 	(void)signal;
 	g_clear_buffer = 1;
-	write(1, "\n", 1);
+	g_child > 0 ? write(1, "\n", 1) : 0;
 	if (g_ignore_signals)
 	{
 		g_ignore_signals = 0;
 		ioctl(0, TIOCSTI, "\4\0");
 	}
 	else if (!g_child)
-		ft_printf("\033[1;31m$> \033[0m");
+		ioctl(0, TIOCSTI, "\n");
 }
 
 void		register_signals(void)

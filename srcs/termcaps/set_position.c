@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_position.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:59:46 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:16:36 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,7 @@ int				memset_pos(t_cursor_pos *pos)
 	pos->x_max = tgetnum("co") - 1;
 	pos->y_min = pos->y;
 	pos->y_max = tgetnum("li");
+	pos->compl = 0;
+	pos->o_input = NULL;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 14:11:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:54:40 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static int	start_process(t_cmd *cmd, t_shell *shell)
 	get_here_doc(cmd->redir);
 	if ((g_child = fork()) == 0)
 	{
-		if (cmd->redir)
-			handle_redirections(cmd->redir, shell);
+		restore_shell(shell->prev_term);
+		cmd->redir ? handle_redirections(cmd->redir, shell) : 0;
 		if (execve(file, cmd->args, build_env(shell->env)) == -1)
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);
@@ -34,6 +34,7 @@ static int	start_process(t_cmd *cmd, t_shell *shell)
 	if (g_child == -1)
 		return (g_child = 0);
 	waitpid(g_child, &status, 0);
+	termcaps_init(NULL);
 	if (WIFSIGNALED(status))
 		return (128 + status);
 	g_child = 0;

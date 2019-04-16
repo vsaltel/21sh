@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:12 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 17:13:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 15:57:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@ int				termcaps_init(struct termios *prev_term)
 	struct termios	term;
 
 	tcgetattr(0, &term);
-	*prev_term = term;
-	if (!(term_var = getenv("TERM")))
-		return (0);
-	if ((ret = tgetent(NULL, term_var)) != 1)
-		return (0);
+	if (prev_term)
+	{
+		*prev_term = term;
+		if (!(term_var = getenv("TERM")))
+			return (0);
+		if ((ret = tgetent(NULL, term_var)) != 1)
+			return (0);
+	}
 	term.c_lflag &= ~(ICANON | ECHO);
 	term.c_lflag &= ~(OPOST);
 	term.c_cc[VMIN] = 1;

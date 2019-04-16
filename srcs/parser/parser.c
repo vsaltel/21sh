@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/15 16:10:16 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:37:51 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int			parse(t_shell *shell, t_anode *ast)
 	int		ret;
 	int		pipe[2];
 
-	ret = 0;
+	ret = shell->ret;
 	while (ast->left)
 		ast = ast->left;
 	while (ast)
@@ -67,5 +67,6 @@ int			parse(t_shell *shell, t_anode *ast)
 		}
 		ast ? ast = ast->parent : 0;
 	}
+	shell->ret = ret;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 13:39:22 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:11:04 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ int					execute_termcaps(char *buf, char **str
 	if (!(termcaps.content))
 		return (0);
 	if (termcaps.func)
+	{
+		if (!ft_strnequ("\011", termcaps.content, 1))
+		{
+			pos->compl = 0;
+		}
 		termcaps.func(str, pos, shell);
+	}
 	return (1);
 }

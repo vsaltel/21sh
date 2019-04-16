@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:53:52 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:33:04 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ typedef struct	s_cursor_pos
 	size_t				x_rel;
 	size_t				y_min;
 	size_t				y_max;
+	int					compl;
+	char				*o_input;
+	size_t				opos;
 }				t_cursor_pos;
 
 typedef struct	s_ex_caps
