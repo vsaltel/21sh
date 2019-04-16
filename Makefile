@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/15 16:06:22 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/16 13:57:36 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,7 @@ FILES 	=	main.c						\
 			parser/pipeline.c			\
 			parser/redirections.c		\
 			parser/executables.c		\
+			parser/here_doc.c			\
 			ast/build_ast.c				\
 			ast/create_node.c			\
 			ast/build_args.c			\
@@ -103,7 +104,7 @@ _PURPLE=\x1b[35m
 _CYAN=\x1b[36m
 _WHITE=\x1b[37m
 
-.PHONY: all clean fclean re $(LIBFT)
+.PHONY: all clean fclean re norm $(LIBFT)
 
 all: $(NAME)
 
@@ -138,3 +139,6 @@ fclean: clean
 
 re: fclean
 	@$(MAKE)
+
+norm:
+	@norminette $(INCDIR) $(SRCDIR)

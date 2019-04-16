@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 14:25:40 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:11:43 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum	e_token_type
 	TOKEN_REDIRI,
 	TOKEN_REDIRO,
 	TOKEN_PIPE,
+	TOKEN_AGGR,
 	TOKEN_IGN
 }				t_token_type;
 
@@ -79,6 +80,8 @@ static const t_ex_token g_tokens_list[] =
 	{">>", 2, TOKEN_REDIRO, ST_OPERATOR},
 	{"&&", 2, TOKEN_AND, ST_OPERATOR},
 	{"||", 2, TOKEN_OR, ST_OPERATOR},
+	{"<&", 2, TOKEN_AGGR, ST_OPERATOR},
+	{">&", 2, TOKEN_AGGR, ST_OPERATOR},
 	{"|", 1, TOKEN_PIPE, ST_OPERATOR},
 	{"<", 1, TOKEN_REDIRI, ST_OPERATOR},
 	{">", 1, TOKEN_REDIRO, ST_OPERATOR},
