@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2019/04/12 12:58:15 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/16 14:04:17 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ FILES 	=	ft_memset.c							\
 			ft_strjoin.c						\
 			ft_strnjoin.c						\
 			ft_strjoint.c						\
+			ft_strjointf.c						\
 			ft_strtrim.c						\
 			ft_strctrim.c						\
 			ft_strsplit.c						\
@@ -134,9 +135,9 @@ _WHITE=\x1b[37m
 .PHONY: all clean fclean re
 
 $(NAME): $(OBJS)
-	@echo -e "\n${_BLUE}${_BOLD}[Linking] $(NAME)${_END}"
+	@echo -e -n "\n${_BLUE}${_BOLD}[Linking] $(NAME)${_END}"
 	@ar rc $(NAME) $(OBJS)
-	@echo -e "${_GREEN}${_BOLD}$(NAME) done.${_END}"
+	@echo -e -n "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)

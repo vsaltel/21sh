@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 18:45:08 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 16:05:45 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_cmd			*create_cmd(t_token *exe)
 	cmd->exe = exe;
 	cmd->argc = -1;
 	cmd->args = NULL;
-	cmd->redir = parse_redirections(exe, cmd->argc);
+	cmd->redir = NULL;
 	return (cmd);
 }
 

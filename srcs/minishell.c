@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 11:38:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:47:05 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int		eval_exec(t_shell *shell, char **input)
 {
 	t_anode	*ast;
 
+	ast = NULL;
 	if ((shell->ret = handle_input(&(shell->lexer), input)) == 0)
 	{
 		if (!input)

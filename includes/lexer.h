@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 11:29:49 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:11:43 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ typedef enum	e_state
 	ST_SEMIC
 }				t_state;
 
+typedef struct	s_state_func
+{
+	t_state		key;
+	int			(*lex)();
+}				t_state_func;
+
 typedef enum	e_token_type
 {
 	TOKEN_NULL,
@@ -38,6 +44,7 @@ typedef enum	e_token_type
 	TOKEN_REDIRI,
 	TOKEN_REDIRO,
 	TOKEN_PIPE,
+	TOKEN_AGGR,
 	TOKEN_IGN
 }				t_token_type;
 
@@ -59,7 +66,10 @@ typedef struct	s_token
 
 typedef struct	s_lexer
 {
+	char		*in;
+	char		*pin;
 	t_token		*tokens;
+	t_token		*last_token;
 	size_t		size;
 	t_state		state;
 }				t_lexer;
@@ -70,6 +80,8 @@ static const t_ex_token g_tokens_list[] =
 	{">>", 2, TOKEN_REDIRO, ST_OPERATOR},
 	{"&&", 2, TOKEN_AND, ST_OPERATOR},
 	{"||", 2, TOKEN_OR, ST_OPERATOR},
+	{"<&", 2, TOKEN_AGGR, ST_OPERATOR},
+	{">&", 2, TOKEN_AGGR, ST_OPERATOR},
 	{"|", 1, TOKEN_PIPE, ST_OPERATOR},
 	{"<", 1, TOKEN_REDIRI, ST_OPERATOR},
 	{">", 1, TOKEN_REDIRO, ST_OPERATOR},

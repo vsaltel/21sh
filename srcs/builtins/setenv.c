@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 14:30:34 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 14:49:59 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:57:19 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ int			b_setenv(t_cmd *cmd, t_shell *shell)
 		"setenv: Variable name must contain alphanumeric characters.\n", 60);
 		return (3);
 	}
-	if (is_unique_key(shell->env, cmd->args[1], cmd->argc == 3 ? cmd->args[2] : ""))
+	if (is_unique_key(shell->env, cmd->args[1],
+										cmd->argc == 3 ? cmd->args[2] : ""))
 		return (0);
-	if (!(new_envl(&(shell->env), cmd->args[1], cmd->argc > 2 ? cmd->args[2] : "", 0)))
+	if (!(new_envl(&(shell->env), cmd->args[1],
+										cmd->argc > 2 ? cmd->args[2] : "", 0)))
 		return (1);
 	return (0);
 }

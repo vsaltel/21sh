@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 11:34:09 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:57:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ t_token				*create_token(t_lexer *lexer, char *content,
 void				destroy_tokens(t_token *token);
 int					is_word_token(t_token *token);
 
+int					lex_state_general(t_lexer *lexer);
+int					lex_state_quotes(t_lexer *lexer);
+int					lex_state_dquotes(t_lexer *lexer);
+int					lex_state_comment(t_lexer *lexer);
+int					lex_state_escaped(t_lexer *lexer);
+int					lex_state_operator(t_lexer *lexer);
+int					lex_state_semic(t_lexer *lexer);
+
 int					build_ast(t_shell *shell, t_anode **ast);
 int					build_args(t_cmd *cmd, t_shell *shell);
 t_anode				*create_node(t_token *ope, t_cmd *cmd);
@@ -82,9 +90,14 @@ void				destroy_ast(t_shell *shell);
 
 int					parse(t_shell *shell, t_anode *ast);
 int					execute_pipes(t_anode *node, t_shell *shell, t_anode **cn);
-t_pipel				*build_pipeline(t_anode *node, t_shell *shell, t_anode **cn);
+t_pipel				*build_pipeline(t_anode *node, t_shell *shell,
+															t_anode **cn);
 t_redirect			*parse_redirections(t_token *tok, int offset);
 void				del_pipeline(t_pipel *pline);
+void				handle_redirections(t_redirect *redir, t_shell *shell);
+void				get_here_doc(t_redirect *redir);
+void				apply_here_doc(t_redirect *redir);
+void				close_here_docs(t_redirect *redir);
 
 t_env				*copy_env(char **envp, int inc);
 int					disp_env(t_env *env);
@@ -126,11 +139,12 @@ void				permission_denied(char *name);
 void				no_user(char *name);
 int					cd_exists(char *file, char *name);
 void				env_invalid_arg(int *argc, char ***argv);
+int					parse_error(const char *str, size_t len, int ret);
 
 int					termcaps_init(void);
 int					restore_shell(void);
 int					get_input(int fd, char **dest, t_history **history);
-int					memset_all(char **str, t_history **history, 
+int					memset_all(char **str, t_history **history,
 									t_history_info *histo, t_cursor_pos *pos);
 int					memset_pos(t_cursor_pos *pos);
 t_history_info		memset_history(t_history **history);
