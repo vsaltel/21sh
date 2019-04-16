@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:33:37 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:46:46 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:13:54 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ void		termcaps_left(char **str, t_cursor_pos *pos, t_shell *shell)
 		pos->x = pos->x_max;
 		pos->y--;
 		pos->x_rel--;
-		tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+		move_cursor(pos->x, pos->y);
 	}
 }

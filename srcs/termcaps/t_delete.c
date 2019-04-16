@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:32:13 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:57:08 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:13:13 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,29 @@ void	delete_inline(char **str, t_cursor_pos *pos, t_history *histo)
 	tputs(tgetstr("dc", NULL), 1, ft_putchar);
 	if (pos->y_lastc > pos->y)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y + 1), 1, ft_putchar);
+		move_cursor(0, pos->y + 1);
 		tputs(tgetstr("cd", NULL), 1, ft_putchar);
-		tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y), 1, ft_putchar);
+		move_cursor(pos->x_max, pos->y);
 		ft_printf("%s", *str + pos->x_rel + (pos->x_max - pos->x) + 1);
 	}
 	del_char(str, pos);
 	--(pos->x);
 	--(pos->x_rel);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+	move_cursor(pos->x, pos->y);
 	replace_lastc(pos, histo);
 }
 
 void	delete_prevline(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y - 1), 1, ft_putchar);
+	move_cursor(pos->x_max, pos->y - 1);
 	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", *str + pos->x_rel);
 	del_char(str, pos);
 	pos->x = pos->x_max;
 	--(pos->y);
 	--(pos->x_rel);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+	move_cursor(pos->x, pos->y);
 	replace_lastc(pos, histo);
 }
 

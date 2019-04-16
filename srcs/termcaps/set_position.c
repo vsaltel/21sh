@@ -6,11 +6,21 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:16:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:41:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+void		move_cursor(size_t x, size_t y)
+{
+	char	*tmp;
+	char	*tmp2;
+
+	tmp = tgetstr("cm", NULL);
+	tmp2 = tgoto(tmp, x, y);
+	tputs(tmp2, 1, ft_putchar);
+}
 
 static void	move_prev_line(size_t *x, size_t *y, size_t x_dest)
 {
@@ -38,7 +48,7 @@ void		move_pos(t_cursor_pos *pos, size_t len)
 	}
 	else
 		pos->x += len;
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+	move_cursor(pos->x, pos->y);
 	pos->x_rel += len;
 }
 
@@ -46,12 +56,12 @@ void			final_position(t_cursor_pos *pos)
 {
 	if (pos->y_lastc == pos->y_max - 1)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc), 1, ft_putchar);
+		move_cursor(0, pos->y_lastc);
 		tputs(tgetstr("sf", NULL), 1, ft_putchar);
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc), 1, ft_putchar);
+		move_cursor(0, pos->y_lastc);
 	}
 	else
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc + 1), 1, ft_putchar);
+		move_cursor(0, pos->y_lastc + 1);
 }
 
 static void		get_pos_rest(char *buf, t_cursor_pos *pos, int i)
@@ -92,7 +102,7 @@ static int		get_pos(t_cursor_pos *pos)
 	if (i-- < 2)
 		return (1);
 	get_pos_rest(buf, pos, i);
-	tputs(tgoto(tgetstr("cm", NULL), --(pos->x), --(pos->y)), 1, ft_putchar);
+	move_cursor(--(pos->x), --(pos->y));
 	return (0);
 }
 

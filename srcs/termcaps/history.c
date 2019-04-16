@@ -6,11 +6,28 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 17:47:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:59:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 17:30:50 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+void				free_history(t_history *history)
+{
+	t_histo_lst	*curr;
+	t_histo_lst	*tmp;
+
+	curr = history->lst;
+	while (curr)
+	{
+		free(curr->str);
+		tmp = curr;
+		curr = curr->next;
+		free(tmp);
+	}
+	if (history->first_command)
+		free(history->first_command);
+}
 
 void				memset_history(t_history *history)
 {

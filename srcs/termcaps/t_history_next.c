@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:32 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:55:58 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 17:53:39 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,23 @@ static void	new_pos(t_histo_lst *curr, t_cursor_pos *pos)
 
 	if (pos->y_lastc > pos->y_min)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, ft_putchar);
+		move_cursor(0, pos->y_min + 1);
 		tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	}
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, ft_putchar);
+	move_cursor(pos->x_min, pos->y_min);
 	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", curr->str);
+	line_sup = (pos->x_lastc + 1 + curr->len) / (pos->x_max + 1);
+	if (line_sup + pos->y_lastc >= pos->y_max)
+	{
+		pos->y_min -= pos->y_max - pos->y_lastc + line_sup - 1;
+		pos->y_lastc -= pos->y_max - pos->y_lastc + line_sup - 1;
+	}
 	pos->x = pos->x_min;
 	pos->x_lastc = pos->x_min;
 	pos->y = pos->y_min;
 	pos->y_lastc = pos->y_min;
 	pos->x_rel = 0;
-	line_sup = (pos->x_lastc + 1 + curr->len) / (pos->x_max + 1);
-	if (line_sup + pos->y_lastc >= pos->y_max)
-		pos->y_min -= pos->y_max - pos->y_lastc + line_sup - 1;
 	move_pos(pos, curr->len);
 }
 
