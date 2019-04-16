@@ -6,13 +6,13 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:57:00 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:50:04 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:00:21 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	termcaps_down(char **str, t_cursor_pos *pos, t_history_info *histo)
+void	termcaps_down(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	(void)histo;
 	if ((pos->y == pos->y_lastc - 1 && pos->x <= pos->x_lastc)

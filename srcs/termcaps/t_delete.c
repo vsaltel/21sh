@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:32:13 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/12 11:32:17 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/15 15:59:44 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	del_char(char **str, t_cursor_pos *pos)
 	free(r);
 }
 
-void	replace_lastc(t_cursor_pos *pos, t_history_info *histo)
+void	replace_lastc(t_cursor_pos *pos, t_history *histo)
 {
 	if (pos->x_lastc == 0)
 	{
@@ -36,7 +36,7 @@ void	replace_lastc(t_cursor_pos *pos, t_history_info *histo)
 	histo->history_line = 0;
 }
 
-void	delete_inline(char **str, t_cursor_pos *pos, t_history_info *histo)
+void	delete_inline(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	tputs(tgetstr("le", NULL), 1, ft_putchar);
 	tputs(tgetstr("dc", NULL), 1, ft_putchar);
@@ -54,7 +54,7 @@ void	delete_inline(char **str, t_cursor_pos *pos, t_history_info *histo)
 	replace_lastc(pos, histo);
 }
 
-void	delete_prevline(char **str, t_cursor_pos *pos, t_history_info *histo)
+void	delete_prevline(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	tputs(tgoto(tgetstr("cm", NULL), pos->x_max, pos->y - 1), 1, ft_putchar);
@@ -68,7 +68,7 @@ void	delete_prevline(char **str, t_cursor_pos *pos, t_history_info *histo)
 	replace_lastc(pos, histo);
 }
 
-void	termcaps_delete(char **str, t_cursor_pos *pos, t_history_info *histo)
+void	termcaps_delete(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	if (pos->x > pos->x_min || (pos->y > pos->y_min && pos->x > 0))
 		delete_inline(str, pos, histo);

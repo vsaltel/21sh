@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 17:59:03 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 17:15:58 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct		s_shell
 	t_env			*env;
 	t_lexer			lexer;
 	t_anode			*ast;
-	t_history		*history;
+	t_history		history;
 	struct termios	prev_term;
 	int				able_termcaps : 1;
 }					t_shell;
@@ -129,22 +129,21 @@ void				no_user(char *name);
 int					cd_exists(char *file, char *name);
 void				env_invalid_arg(int *argc, char ***argv);
 
-t_history			*get_history(void);
-void				overwrite_history(t_history *histo);
+t_history			get_history(void);
+void				overwrite_history(t_histo_lst *histo);
 int					termcaps_init(struct termios *prev_term);
 void				restore_shell(struct termios prev_term);
 int					get_input(int fd, char **dest, t_shell *shell);
-int					memset_all(char **str, t_history **history, 
-									t_history_info *histo, t_cursor_pos *pos);
+int					memset_all(char **str, t_history *history, t_cursor_pos *pos);
 int					memset_pos(t_cursor_pos *pos);
-t_history_info		memset_history(t_history **history);
+void				memset_history(t_history *history);
 void				move_pos(t_cursor_pos *pos, size_t len);
 int					execute_termcaps(char *buf, char **str,
-									t_cursor_pos *pos, t_history_info *histo);
+									t_cursor_pos *pos, t_history *histo);
 void				new_entry(char **str, char *buf, t_cursor_pos *pos,
-														t_history_info *histo);
+														t_history *histo);
 void				del_char(char **str, t_cursor_pos *pos);
 void				final_position(t_cursor_pos *pos);
-void				add_to_history(char *str, t_history **history);
+void				add_to_history(char *str, t_history *history);
 
 #endif

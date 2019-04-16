@@ -6,13 +6,13 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:32 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:49:49 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:20:49 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	new_pos(t_history *curr, t_cursor_pos *pos)
+static void	new_pos(t_histo_lst *curr, t_cursor_pos *pos)
 {
 	size_t	line_sup;
 
@@ -36,17 +36,16 @@ static void	new_pos(t_history *curr, t_cursor_pos *pos)
 }
 
 void		termcaps_history_next(char **str, t_cursor_pos *pos
-		, t_history_info *histo)
+		, t_history *histo)
 {
 	size_t		i;
-	t_history	*curr;
+	t_histo_lst	*curr;
 
-	if (!histo->history || !*histo->history
-		|| histo->history_line == histo->history_size)
+	if (!histo->lst || histo->history_line == histo->history_size)
 		return ;
 	if (histo->history_line < histo->history_size)
 		histo->history_line++;
-	curr = *histo->history;
+	curr = histo->lst;
 	i = 0;
 	while (++i < histo->history_line && curr->next)
 		curr = curr->next;

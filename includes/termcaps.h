@@ -6,27 +6,27 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/12 11:30:33 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:22:40 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TERMCAPS_H
 # define TERMCAPS_H
 
-typedef struct	s_history
+typedef struct	s_histo_lst
 {
 	char				*str;
 	size_t				len;
-	struct s_history	*next;
-}				t_history;
+	struct s_histo_lst	*next;
+}				t_histo_lst;
 
-typedef struct	s_history_info
+typedef struct	s_history
 {
-	t_history			**history;
+	t_histo_lst			*lst;
 	size_t				history_line;
 	size_t				history_size;
 	char				*first_command;
-}				t_history_info;
+}				t_history;
 
 /*
 **	x; 			position x dans le shell
@@ -58,31 +58,31 @@ typedef struct	s_ex_caps
 	const char			*content;
 	size_t				size;
 	void				(*func)(char **str, t_cursor_pos *pos
-								, t_history_info *histo);
+								, t_history *histo);
 }				t_ex_caps;
 
 void			termcaps_up(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_down(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_left_word(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_right_word(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_left(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_right(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_delete(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_history_next(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_history_prev(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_home(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 void			termcaps_end(char **str, t_cursor_pos *pos
-						, t_history_info *histo);
+						, t_history *histo);
 
 static const t_ex_caps g_caps_list[] =
 {

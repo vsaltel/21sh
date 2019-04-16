@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/12 11:32:54 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/15 15:57:47 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_ex_caps	search_caps(const char *s)
 }
 
 int					execute_termcaps(char *buf, char **str
-		, t_cursor_pos *pos, t_history_info *histo)
+		, t_cursor_pos *pos, t_history *histo)
 {
 	t_ex_caps termcaps;
 

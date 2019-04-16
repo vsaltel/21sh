@@ -6,13 +6,13 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:16 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:48:35 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:00:28 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		termcaps_up(char **str, t_cursor_pos *pos, t_history_info *histo)
+void		termcaps_up(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	(void)histo;
 	(void)str;

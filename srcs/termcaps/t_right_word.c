@@ -6,18 +6,16 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:58 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 18:38:16 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 19:43:25 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static size_t	is_delimiter(char *str)
+static int		is_delimiter(char *str)
 {
 	size_t	i;
 
-	if (!str)
-		return (0);
 	i = 0;
 	while (g_tokens_list + i && (g_tokens_list[i]).op)
 	{
@@ -28,24 +26,26 @@ static size_t	is_delimiter(char *str)
 	return (0);
 }
 
-static void		maj_pos(t_cursor_pos *pos, size_t len)
+static void		maj_pos(t_cursor_pos *pos)
 {
-	pos->x_rel += len;
-	pos->x += len;
+	pos->x_rel++;
+	pos->x++;
 	if (pos->x > pos->x_max)
 	{
-		pos->x = pos->x_max - pos->x - 1;
+		pos->x = 0;
 		pos->y++;
 	}
 }
 
 void			termcaps_right_word(char **str, t_cursor_pos *pos
-		, t_history_info *histo)
+		, t_history *histo)
 {
 	(void)histo;
+	if (!str || !*str)
+		return ;
 	while ((*str)[pos->x_rel] && !is_delimiter(*str + pos->x_rel))
-		maj_pos(pos, 1);
+		maj_pos(pos);
 	while ((*str)[pos->x_rel] && is_delimiter(*str + pos->x_rel))
-		maj_pos(pos, 1);
+		maj_pos(pos);
 	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
 }

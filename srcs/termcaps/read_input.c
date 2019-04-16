@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/12 18:12:13 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 17:36:55 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	last_line(t_cursor_pos *pos, size_t len)
 }
 
 void		new_entry(char **str, char *buf, t_cursor_pos *pos
-		, t_history_info *histo)
+		, t_history *histo)
 {
 	char *l;
 	char *r;
@@ -94,14 +94,13 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 {
 	if (!ft_strcmp(buf, "\004"))
 	{
-		//free(shell->history->first_command);
+		free(shell->history.first_command);
 		ft_strdel(str);
 		return (0);
 	}
 	if (g_clear_buffer)
 	{
-		free(*str);
-		*str = NULL;
+		ft_strdel(str);
 		if (!memset_pos(pos))
 			return (0);
 		pos->x_rel = 0;
@@ -117,12 +116,11 @@ int			get_input(int fd, char **dest, t_shell *shell)
 	char			*buf;
 	char			*str;
 	t_cursor_pos	pos;
-	t_history_info	histo;
 
 	*dest = NULL;
 	if (shell->able_termcaps)
 	{
-		if (!memset_all(&str, &(shell->history), &histo, &pos))
+		if (!memset_all(&str, &(shell->history), &pos))
 			return (-1);
 		while ((ret = read_all(fd, &buf)))
 		{
@@ -130,13 +128,13 @@ int			get_input(int fd, char **dest, t_shell *shell)
 				return (ret);
 			if (buf[0] == '\n')
 				break ;
-			if (!execute_termcaps(buf, &str, &pos, &histo))
-				new_entry(&str, buf, &pos, &histo);
+			if (!execute_termcaps(buf, &str, &pos, &(shell->history)))
+				new_entry(&str, buf, &pos, &(shell->history));
 			free(buf);
 		}
 		final_position(&pos);
-		free(histo.first_command);
-		add_to_history(str, histo.history);
+		free(shell->history.first_command);
+		add_to_history(str, &(shell->history));
 	}
 	else
 		ret = get_next_line(fd, &str);

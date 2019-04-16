@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:34:17 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/11 14:48:51 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 15:59:52 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		termcaps_right(char **str, t_cursor_pos *pos, t_history_info *histo)
+void		termcaps_right(char **str, t_cursor_pos *pos, t_history *histo)
 {
 	(void)histo;
 	(void)str;

@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:12 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/12 17:27:15 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/15 17:13:05 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,11 @@ void			restore_shell(struct termios prev_term)
 	tcsetattr(0, TCSANOW, &prev_term);
 }
 
-int				memset_all(char **str, t_history **history
-		, t_history_info *histo, t_cursor_pos *pos)
+int				memset_all(char **str, t_history *history, t_cursor_pos *pos)
 {
 	g_clear_buffer = 0;
 	*str = NULL;
-	*histo = memset_history(history);
+	memset_history(history);
 	if (!memset_pos(pos))
 		return (0);
 	return (1);
