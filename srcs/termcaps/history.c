@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 17:47:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 17:11:37 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:59:05 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void				memset_history(t_history *history)
 {
 	history->first_command = NULL;
-	history->history_line = 0;
+	history->pos = 0;
 }
 
 static t_histo_lst	*new_link(char *str)
@@ -40,7 +40,7 @@ void				add_to_history(char *str, t_history *history)
 	if (history->lst)
 		item->next = history->lst;
 	history->lst = item;
-	history->history_size++;
+	history->size++;
 }
 
 t_histo_lst		*read_history(int fd, size_t *history_size)
@@ -89,7 +89,7 @@ t_history			get_history(void)
 		return (histo);
 	if ((fd = open(path, O_RDONLY)))
 	{
-		histo.lst = read_history(fd, &(histo.history_size));
+		histo.lst = read_history(fd, &(histo.size));
 		close(fd);
 	}
 	free(path);

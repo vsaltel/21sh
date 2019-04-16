@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:32 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 16:20:49 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:55:58 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,26 @@ static void	new_pos(t_histo_lst *curr, t_cursor_pos *pos)
 }
 
 void		termcaps_history_next(char **str, t_cursor_pos *pos
-		, t_history *histo)
+		, t_shell *shell)
 {
 	size_t		i;
 	t_histo_lst	*curr;
 
-	if (!histo->lst || histo->history_line == histo->history_size)
+	if (!shell->history.lst || shell->history.pos == shell->history.size)
 		return ;
-	if (histo->history_line < histo->history_size)
-		histo->history_line++;
-	curr = histo->lst;
+	if (shell->history.pos < shell->history.size)
+		shell->history.pos++;
+	curr = shell->history.lst;
 	i = 0;
-	while (++i < histo->history_line && curr->next)
+	while (++i < shell->history.pos && curr->next)
 		curr = curr->next;
 	new_pos(curr, pos);
-	if (histo->history_line == 1 && *str)
-		histo->first_command = ft_strdup(*str);
+	if (shell->history.pos == 1 && *str)
+	{
+		if (shell->history.first_command)
+			free(shell->history.first_command);
+		shell->history.first_command = ft_strdup(*str);
+	}
 	if (str)
 		free(*str);
 	*str = ft_strdup(curr->str);

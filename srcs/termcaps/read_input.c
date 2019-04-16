@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 17:36:55 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:54:22 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", *str);
 	move_pos(pos, ft_strlen(buf));
-	histo->history_line = 0;
+	histo->pos = 0;
 }
 
 static int	check_input(char *buf, char **str, t_cursor_pos *pos
@@ -128,7 +128,7 @@ int			get_input(int fd, char **dest, t_shell *shell)
 				return (ret);
 			if (buf[0] == '\n')
 				break ;
-			if (!execute_termcaps(buf, &str, &pos, &(shell->history)))
+			if (!execute_termcaps(buf, &str, &pos, shell))
 				new_entry(&str, buf, &pos, &(shell->history));
 			free(buf);
 		}

@@ -6,15 +6,15 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:57:00 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 16:00:21 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:28:46 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void	termcaps_down(char **str, t_cursor_pos *pos, t_history *histo)
+void	termcaps_down(char **str, t_cursor_pos *pos, t_shell *shell)
 {
-	(void)histo;
+	(void)shell;
 	if ((pos->y == pos->y_lastc - 1 && pos->x <= pos->x_lastc)
 		|| (pos->y < pos->y_lastc - 1))
 	{

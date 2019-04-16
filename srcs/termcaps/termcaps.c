@@ -6,11 +6,28 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 15:57:47 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 13:39:22 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+static const t_ex_caps g_caps_list[] =
+{
+	{"\e[1;2A", 6, &termcaps_up},
+	{"\e[1;2B", 6, &termcaps_down},
+	{"\e[1;2C", 6, &termcaps_right_word},
+	{"\e[1;2D", 6, &termcaps_left_word},
+	{"\e[D", 3, &termcaps_left},
+	{"\e[C", 3, &termcaps_right},
+	{"\e[A", 3, &termcaps_history_next},
+	{"\e[B", 3, &termcaps_history_prev},
+	{"\e[H", 3, &termcaps_home},
+	{"\e[F", 3, &termcaps_end},
+	{"\177", 1, &termcaps_delete},
+	{"\011", 1, &termcaps_completion},
+	{NULL, 1, NULL}
+};
 
 static t_ex_caps	search_caps(const char *s)
 {
@@ -30,7 +47,7 @@ static t_ex_caps	search_caps(const char *s)
 }
 
 int					execute_termcaps(char *buf, char **str
-		, t_cursor_pos *pos, t_history *histo)
+		, t_cursor_pos *pos, t_shell *shell)
 {
 	t_ex_caps termcaps;
 
@@ -38,6 +55,6 @@ int					execute_termcaps(char *buf, char **str
 	if (!(termcaps.content))
 		return (0);
 	if (termcaps.func)
-		termcaps.func(str, pos, histo);
+		termcaps.func(str, pos, shell);
 	return (1);
 }

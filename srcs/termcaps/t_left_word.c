@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:46 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 19:43:32 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:46:25 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static void		maj_pos(t_cursor_pos *pos)
 }
 
 void			termcaps_left_word(char **str, t_cursor_pos *pos
-		, t_history *histo)
+		, t_shell *shell)
 {
-	(void)histo;
+	(void)shell;
 	if (!str || !*str)
 		return ;
 	if (pos->x_rel > 0 && !is_delimiter(*str + pos->x_rel))

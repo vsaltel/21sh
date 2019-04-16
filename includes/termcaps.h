@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 16:22:40 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:53:52 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct	s_histo_lst
 typedef struct	s_history
 {
 	t_histo_lst			*lst;
-	size_t				history_line;
-	size_t				history_size;
+	size_t				pos;
+	size_t				size;
 	char				*first_command;
 }				t_history;
 
@@ -57,48 +57,7 @@ typedef struct	s_ex_caps
 {
 	const char			*content;
 	size_t				size;
-	void				(*func)(char **str, t_cursor_pos *pos
-								, t_history *histo);
+	void				(*func)();
 }				t_ex_caps;
-
-void			termcaps_up(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_down(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_left_word(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_right_word(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_left(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_right(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_delete(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_history_next(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_history_prev(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_home(char **str, t_cursor_pos *pos
-						, t_history *histo);
-void			termcaps_end(char **str, t_cursor_pos *pos
-						, t_history *histo);
-
-static const t_ex_caps g_caps_list[] =
-{
-	{"\e[1;2A", 6, &termcaps_up},
-	{"\e[1;2B", 6, &termcaps_down},
-	{"\e[1;2C", 6, &termcaps_right_word},
-	{"\e[1;2D", 6, &termcaps_left_word},
-	{"\e[D", 3, &termcaps_left},
-	{"\e[C", 3, &termcaps_right},
-	{"\e[A", 3, &termcaps_history_next},
-	{"\e[B", 3, &termcaps_history_prev},
-	{"\e[H", 3, &termcaps_home},
-	{"\e[F", 3, &termcaps_end},
-	{"\177", 1, &termcaps_delete},
-	{"\011", 1, NULL},
-	{NULL, 1, NULL}
-};
 
 #endif

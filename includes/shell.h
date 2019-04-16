@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/15 17:15:58 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 13:32:44 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <term.h>
 # include <termios.h>
 # include <fcntl.h>
+# include <dirent.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -139,11 +140,24 @@ int					memset_pos(t_cursor_pos *pos);
 void				memset_history(t_history *history);
 void				move_pos(t_cursor_pos *pos, size_t len);
 int					execute_termcaps(char *buf, char **str,
-									t_cursor_pos *pos, t_history *histo);
+									t_cursor_pos *pos, t_shell *shell);
 void				new_entry(char **str, char *buf, t_cursor_pos *pos,
 														t_history *histo);
 void				del_char(char **str, t_cursor_pos *pos);
 void				final_position(t_cursor_pos *pos);
 void				add_to_history(char *str, t_history *history);
+
+void				termcaps_completion(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_up(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_down(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_left_word(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_right_word(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_left(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_right(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_delete(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_history_next(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_history_prev(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_home(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_end(char **str, t_cursor_pos *pos, t_shell *shell);
 
 #endif

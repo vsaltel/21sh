@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:32:13 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/15 15:59:44 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 11:57:08 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	replace_lastc(t_cursor_pos *pos, t_history *histo)
 	}
 	else
 		--(pos->x_lastc);
-	histo->history_line = 0;
+	histo->pos = 0;
 }
 
 void	delete_inline(char **str, t_cursor_pos *pos, t_history *histo)
@@ -68,10 +68,10 @@ void	delete_prevline(char **str, t_cursor_pos *pos, t_history *histo)
 	replace_lastc(pos, histo);
 }
 
-void	termcaps_delete(char **str, t_cursor_pos *pos, t_history *histo)
+void	termcaps_delete(char **str, t_cursor_pos *pos, t_shell *shell)
 {
 	if (pos->x > pos->x_min || (pos->y > pos->y_min && pos->x > 0))
-		delete_inline(str, pos, histo);
+		delete_inline(str, pos, &(shell->history));
 	else if (pos->y > pos->y_min && pos->x == 0)
-		delete_prevline(str, pos, histo);
+		delete_prevline(str, pos, &(shell->history));
 }
