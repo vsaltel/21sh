@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 16:25:50 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:40:02 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:14:13 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int		termcaps_shift_left(char **str, t_cursor_pos *pos, t_history *histo)
 		maj_pos(pos);
 	while (pos->x_rel > 0 && (*str)[pos->x_rel - 1] != ' ')
 		maj_pos(pos);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, my_putchar);
+	move_cursor(pos->x, pos->y);
 	return (0);
 }

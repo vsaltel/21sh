@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:46 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:46:25 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:13:51 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ void			termcaps_left_word(char **str, t_cursor_pos *pos
 		maj_pos(pos);
 	while (pos->x_rel > 0 && !is_delimiter(*str + pos->x_rel - 1))
 		maj_pos(pos);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+	move_cursor(pos->x, pos->y);
 }

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 11:54:22 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:12:56 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	last_line(t_cursor_pos *pos, size_t len)
 	if (line_sup + pos->y_lastc >= pos->y_max)
 	{
 		final_pos = pos->y_max - pos->y_lastc + line_sup - 1;
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_lastc), 1, ft_putchar);
+		move_cursor(0, pos->y_lastc);
 		i = -1;
 		while (++i < final_pos)
 			tputs(tgetstr("sf", NULL), 1, ft_putchar);
@@ -55,7 +55,7 @@ static void	last_line(t_cursor_pos *pos, size_t len)
 */
 		pos->y_min -= final_pos;
 		pos->y -= final_pos;
-		tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+		move_cursor(pos->x, pos->y);
 		pos->y_lastc -= final_pos;
 	}
 }
@@ -74,15 +74,17 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 		l = ft_strndup(*str, pos->x_rel);
 		r = ft_strjoin(buf, *str + pos->x_rel);
 		*str = ft_strfjoin(l, r, *str);
+		free(l);
+		free(r);
 	}
 	else
 		*str = ft_strfjoin(*str, buf, *str);
 	if (pos->y_lastc > pos->y_min)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, ft_putchar);
+		move_cursor(0, pos->y_min + 1);
 		tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	}
-	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, ft_putchar);
+	move_cursor(pos->x_min, pos->y_min);
 	tputs(tgetstr("ce", NULL), 1, ft_putchar);
 	ft_printf("%s", *str);
 	move_pos(pos, ft_strlen(buf));
@@ -94,12 +96,14 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 {
 	if (!ft_strcmp(buf, "\004"))
 	{
+		free(buf);
 		free(shell->history.first_command);
 		ft_strdel(str);
 		return (0);
 	}
 	if (g_clear_buffer)
 	{
+		free(buf);
 		ft_strdel(str);
 		if (!memset_pos(pos))
 			return (0);
@@ -138,6 +142,7 @@ int			get_input(int fd, char **dest, t_shell *shell)
 	}
 	else
 		ret = get_next_line(fd, &str);
+	free(buf);
 	*dest = str;
 	return (ret > 0 ? 1 : ret);
 }

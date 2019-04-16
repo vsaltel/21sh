@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 14:35:08 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:32:23 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int					get_input(int fd, char **dest, t_shell *shell);
 int					memset_all(char **str, t_history *history, t_cursor_pos *pos);
 int					memset_pos(t_cursor_pos *pos);
 void				memset_history(t_history *history);
+void				free_history(t_history *history);
+void				move_cursor(size_t x, size_t y);
 void				move_pos(t_cursor_pos *pos, size_t len);
 int					execute_termcaps(char *buf, char **str,
 									t_cursor_pos *pos, t_shell *shell);
