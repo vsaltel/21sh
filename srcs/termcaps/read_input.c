@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:41:52 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:28:52 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ static int	read_all(int fd, char **dest)
 		if (ret == -1)
 			break ;
 		buf[ret] = '\0';
+		/*
+		int i;
+		i = -1;
+		move_cursor(10, 10);
+		while (buf[++i])
+			ft_printf("%d |", buf[i]);
+			*/
 		if (!str)
 			str = ft_strdup(buf);
 		else
@@ -33,31 +40,6 @@ static int	read_all(int fd, char **dest)
 	}
 	*dest = str;
 	return (ret);
-}
-
-static void	last_line(t_cursor_pos *pos, size_t len)
-{
-	size_t	line_sup;
-	size_t	final_pos;
-	size_t	i;
-
-	line_sup = (pos->x_lastc + 1 + len) / (pos->x_max + 1);
-	if (line_sup + pos->y_lastc >= pos->y_max)
-	{
-		final_pos = pos->y_max - pos->y_lastc + line_sup - 1;
-		move_cursor(0, pos->y_lastc);
-		i = -1;
-		while (++i < final_pos)
-			tputs(tgetstr("sf", NULL), 1, ft_putchar);
-/*
-**		tputs(tgetstr("SF", NULL)
-**			, pos->y_max - pos->y_lastc + line_sup - 1, ft_putchar);
-*/
-		pos->y_min -= final_pos;
-		pos->y -= final_pos;
-		move_cursor(pos->x, pos->y);
-		pos->y_lastc -= final_pos;
-	}
 }
 
 void		new_entry(char **str, char *buf, t_cursor_pos *pos
@@ -74,8 +56,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 		l = ft_strndup(*str, pos->x_rel);
 		r = ft_strjoin(buf, *str + pos->x_rel);
 		*str = ft_strfjoin(l, r, *str);
-		free(l);
-		free(r);
+		ft_multifree(&l, &r, NULL);
 	}
 	else
 		*str = ft_strfjoin(*str, buf, *str);
@@ -97,7 +78,7 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 	if (!ft_strcmp(buf, "\004"))
 	{
 		free(buf);
-		free(shell->history.first_command);
+		ft_strdel(&(shell->history.first_command));
 		ft_strdel(str);
 		return (0);
 	}
@@ -114,35 +95,41 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 	return (1);
 }
 
+int			termcaps_gnl(int fd, char **dest, t_shell *shell)
+{
+	int				ret;
+	char			*buf;
+
+	if (!memset_all(&(g_pos.str), &(shell->history), &g_pos))
+		return (-1);
+	signal(SIGWINCH, &resize);
+	while ((ret = read_all(fd, &buf)))
+	{
+		if (ret == -1 || !(ret = check_input(buf, &(g_pos.str), &g_pos, shell)))
+			return (ret);
+		if (buf[0] == '\n')
+			break ;
+		if (!execute_termcaps(buf, &(g_pos.str), &g_pos, shell))
+			new_entry(&(g_pos.str), buf, &g_pos, &(shell->history));
+		free(buf);
+	}
+	final_position(&g_pos);
+	ft_strdel(&(shell->history.first_command));
+	add_to_history(g_pos.str, &(shell->history));
+	free(buf);
+	*dest = g_pos.str;
+	return (ret > 0 ? 1 : ret);
+}
+
 int			get_input(int fd, char **dest, t_shell *shell)
 {
 	int				ret;
 	char			*buf;
-	char			*str;
-	t_cursor_pos	pos;
 
 	*dest = NULL;
 	if (shell->able_termcaps)
-	{
-		if (!memset_all(&str, &(shell->history), &pos))
-			return (-1);
-		while ((ret = read_all(fd, &buf)))
-		{
-			if (ret == -1 || !(ret = check_input(buf, &str, &pos, shell)))
-				return (ret);
-			if (buf[0] == '\n')
-				break ;
-			if (!execute_termcaps(buf, &str, &pos, shell))
-				new_entry(&str, buf, &pos, &(shell->history));
-			free(buf);
-		}
-		final_position(&pos);
-		free(shell->history.first_command);
-		add_to_history(str, &(shell->history));
-	}
+		ret = termcaps_gnl(fd, dest, shell);
 	else
-		ret = get_next_line(fd, &str);
-	free(buf);
-	*dest = str;
-	return (ret > 0 ? 1 : ret);
+		ret = get_next_line(fd, dest);
+	return (ret);
 }

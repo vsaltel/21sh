@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_history_next.c                                   :+:      :+:    :+:   */
+/*   t_visual_mode.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/10 15:58:32 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/18 14:28:39 by vsaltel          ###   ########.fr       */
+/*   Created: 2019/04/18 17:30:28 by vsaltel           #+#    #+#             */
+/*   Updated: 2019/04/18 18:35:49 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	new_pos(t_histo_lst *curr, t_cursor_pos *pos)
+static void	reprint(char *str, t_cursor_pos *pos)
 {
 	size_t	line_sup;
+	size_t	len;
 
 	if (pos->y_lastc > pos->y_min)
 	{
-		move_cursor(0, pos->y_min + 1);
+		tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min + 1), 1, ft_putchar);
 		tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	}
-	move_cursor(pos->x_min, pos->y_min);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x_min, pos->y_min), 1, ft_putchar);
 	tputs(tgetstr("ce", NULL), 1, ft_putchar);
-	ft_printf("%s", curr->str);
-	line_sup = (pos->x_lastc + 1 + curr->len) / (pos->x_max + 1);
+	write(1, str, ft_strlen(str));
+	line_sup = (pos->x_lastc + 1 + ft_strlen(str)) / (pos->x_max + 1);
 	if (line_sup + pos->y_lastc >= pos->y_max)
 	{
 		pos->y_min -= pos->y_max - pos->y_lastc + line_sup - 1;
@@ -35,31 +36,27 @@ static void	new_pos(t_histo_lst *curr, t_cursor_pos *pos)
 	pos->y = pos->y_min;
 	pos->y_lastc = pos->y_min;
 	pos->x_rel = 0;
-	move_pos(pos, curr->len);
+	move_pos(pos, ft_strlen(str));
 }
 
-void		termcaps_history_next(char **str, t_cursor_pos *pos
-		, t_shell *shell)
+void		termcaps_visual_mode(char **str, t_cursor_pos *pos, t_shell *shell)
 {
-	size_t		i;
-	t_histo_lst	*curr;
-
-	if (!shell->history.lst || shell->history.pos == shell->history.size)
-		return ;
-	if (shell->history.pos < shell->history.size)
-		shell->history.pos++;
-	curr = shell->history.lst;
-	i = 0;
-	while (++i < shell->history.pos && curr->next)
-		curr = curr->next;
-	new_pos(curr, pos);
-	if (shell->history.pos == 1 && *str)
+	(void)str;
+	(void)shell;
+	if (!pos->visual_mode)
 	{
-		if (shell->history.first_command)
-			ft_strdel(&(shell->history.first_command));
-		shell->history.first_command = ft_strdup(*str);
+		pos->visual_mode = 1;
+		pos->visual_str = ft_strndup(*str + pos->x_rel, 1);
+		if ((*str)[pos->x_rel])
+		{
+			tputs(tgetstr("dc", NULL), 1, ft_putchar);
+			ft_printf("\e[7m%c\e[0m", (*str)[pos->x_rel]);
+		}
 	}
-	if (str)
-		free(*str);
-	*str = ft_strdup(curr->str);
+	else
+	{
+		pos->visual_mode = 0;
+		ft_strdel(&(pos->visual_str));
+		reprint(*str, pos);
+	}
 }
