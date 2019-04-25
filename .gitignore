@@ -1,7 +1,9 @@
 *.o
+*.d
 *.dSYM
 21sh
 *.a
 *.png
 *.dot
 .vscode
+objs/

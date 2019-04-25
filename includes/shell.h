@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 16:32:23 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/25 17:10:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,15 @@
 # include "parser.h"
 # include "termcaps.h"
 # include "builtins.h"
+# include "hashtable.h"
 
-# define MAX_HISTORY 30
+# define MAX_HISTORY	30
+# define HT_SIZE		150
 
 typedef struct		s_env
 {
 	char			*key;
 	char			*value;
-	int				is_env;
 	struct s_env	*next;
 }					t_env;
 
@@ -52,6 +53,7 @@ typedef struct		s_shell
 	t_env			*env;
 	t_lexer			lexer;
 	t_anode			*ast;
+	t_hashtable		bin_ht;
 	t_history		history;
 	struct termios	prev_term;
 	int				able_termcaps : 1;
@@ -102,6 +104,11 @@ void				get_here_doc(t_redirect *redir);
 void				apply_here_doc(t_redirect *redir);
 void				close_here_docs(t_redirect *redir);
 
+void				ht_put(t_shell *shell, char *key, char *value);
+char				*ht_get(t_shell *shell, char *key);
+int					ht_exists(t_shell *shell, char *key);
+void				ht_delete(t_shell *shell);
+
 t_env				*copy_env(char **envp, int inc);
 int					disp_env(t_env *env);
 t_env				*get_enve(t_env *env, char *key);
@@ -117,8 +124,8 @@ int					replace_vars(t_token *curr, t_shell *shell);
 size_t				get_var_size(char *key);
 int					handle_home(t_token *token, t_env *env);
 
-char				*get_exe(t_env *env, char *name, int verbose);
-int					is_exe(t_env *env, char *name, int verbose);
+char				*get_exe(t_shell *shell, char *name, int verbose);
+int					is_exe(t_shell *shell, char *name, int verbose);
 int					execute(t_cmd *cmd, t_shell *shell);
 int					handle_builtin(t_cmd *cmd, t_shell *shell);
 int					is_builtin(char *name);
@@ -163,7 +170,6 @@ void				del_char(char **str, t_cursor_pos *pos);
 void				final_position(t_cursor_pos *pos);
 void				add_to_history(char *str, t_history *history);
 
-void				termcaps_completion(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_up(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_down(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_left_word(char **str, t_cursor_pos *pos, t_shell *shell);
@@ -175,5 +181,12 @@ void				termcaps_history_next(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_history_prev(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_home(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_end(char **str, t_cursor_pos *pos, t_shell *shell);
+
+void				termcaps_completion(char **str, t_cursor_pos *pos,
+																t_shell *shell);
+int					complete_files(t_compl_info *ci);
+void				include_word(char *word, char **str, t_cursor_pos *pos);
+int					complete_path(t_compl_info *ci, t_shell *shell);
+void				t_new_pos(char *str, t_cursor_pos *pos);
 
 #endif

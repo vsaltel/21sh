@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:33:04 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/25 16:52:49 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,14 @@ typedef struct	s_ex_caps
 	size_t				size;
 	void				(*func)();
 }				t_ex_caps;
+
+typedef struct	s_compl_info
+{
+	char			**str;
+	char			*word;
+	t_cursor_pos	*pos;
+	int				index;
+}				t_compl_info;
+
 
 #endif
