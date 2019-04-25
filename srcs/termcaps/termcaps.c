@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:11:04 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:33:41 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static const t_ex_caps g_caps_list[] =
 	{"\e[F", 3, &termcaps_end},
 	{"\177", 1, &termcaps_delete},
 	{"\011", 1, &termcaps_completion},
+	{"\e[5~", 1, &termcaps_visual_mode},
 	{NULL, 1, NULL}
 };
 

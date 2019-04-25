@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/25 17:10:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/25 17:35:08 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct		s_shell
 	int				able_termcaps : 1;
 }					t_shell;
 
+t_cursor_pos		g_pos;
 extern int			g_child;
 extern int			g_clear_buffer;
 extern int			g_ignore_signals;
@@ -151,23 +152,29 @@ int					cd_exists(char *file, char *name);
 void				env_invalid_arg(int *argc, char ***argv);
 int					parse_error(const char *str, size_t len, int ret);
 
-t_history			get_history(void);
-void				overwrite_history(t_histo_lst *histo);
 int					termcaps_init(struct termios *prev_term);
 void				restore_shell(struct termios prev_term);
 int					get_input(int fd, char **dest, t_shell *shell);
+int					get_pos(t_cursor_pos *pos);
 int					memset_all(char **str, t_history *history, t_cursor_pos *pos);
-int					memset_pos(t_cursor_pos *pos);
-void				memset_history(t_history *history);
-void				free_history(t_history *history);
-void				move_cursor(size_t x, size_t y);
-void				move_pos(t_cursor_pos *pos, size_t len);
-int					execute_termcaps(char *buf, char **str,
-									t_cursor_pos *pos, t_shell *shell);
 void				new_entry(char **str, char *buf, t_cursor_pos *pos,
 														t_history *histo);
+int					execute_termcaps(char *buf, char **str,
+									t_cursor_pos *pos, t_shell *shell);
+void				resize(int sig);
+
+int					memset_pos(t_cursor_pos *pos);
 void				del_char(char **str, t_cursor_pos *pos);
+void				move_cursor(size_t x, size_t y);
+void				move_pos(t_cursor_pos *pos, size_t len);
 void				final_position(t_cursor_pos *pos);
+void				last_line(t_cursor_pos *pos, size_t len);
+
+void				free_history(t_history *history);
+void				memset_history(t_history *history);
+t_history			get_history(void);
+void				overwrite_history(t_histo_lst *histo);
+t_histo_lst			*new_link(char *str);
 void				add_to_history(char *str, t_history *history);
 
 void				termcaps_up(char **str, t_cursor_pos *pos, t_shell *shell);
@@ -181,6 +188,7 @@ void				termcaps_history_next(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_history_prev(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_home(char **str, t_cursor_pos *pos, t_shell *shell);
 void				termcaps_end(char **str, t_cursor_pos *pos, t_shell *shell);
+void				termcaps_visual_mode(char **str, t_cursor_pos *pos, t_shell *shell);
 
 void				termcaps_completion(char **str, t_cursor_pos *pos,
 																t_shell *shell);

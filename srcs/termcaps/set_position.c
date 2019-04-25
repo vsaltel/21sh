@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:41:58 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:39:24 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		move_cursor(size_t x, size_t y)
+void			move_cursor(size_t x, size_t y)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -22,13 +22,13 @@ void		move_cursor(size_t x, size_t y)
 	tputs(tmp2, 1, ft_putchar);
 }
 
-static void	move_prev_line(size_t *x, size_t *y, size_t x_dest)
+static void		move_prev_line(size_t *x, size_t *y, size_t x_dest)
 {
 	(*y)--;
 	(*x) = x_dest;
 }
 
-void		move_pos(t_cursor_pos *pos, size_t len)
+void			move_pos(t_cursor_pos *pos, size_t len)
 {
 	if (pos->x_lastc == pos->x_max || pos->x_lastc + len > pos->x_max)
 	{
@@ -64,60 +64,23 @@ void			final_position(t_cursor_pos *pos)
 		move_cursor(0, pos->y_lastc + 1);
 }
 
-static void		get_pos_rest(char *buf, t_cursor_pos *pos, int i)
+void			last_line(t_cursor_pos *pos, size_t len)
 {
-	int pow;
+	size_t	line_sup;
+	size_t	final_pos;
+	size_t	i;
 
-	pow = 1;
-	while (buf[--i] != ';')
+	line_sup = (pos->x_lastc + 1 + len) / (pos->x_max + 1);
+	if (line_sup + pos->y_lastc >= pos->y_max)
 	{
-		pos->x = pos->x + (buf[i] - '0') * pow;
-		pow = pow * 10;
+		final_pos = pos->y_max - pos->y_lastc + line_sup - 1;
+		move_cursor(0, pos->y_lastc);
+		i = -1;
+		while (++i < final_pos)
+			tputs(tgetstr("sf", NULL), 1, ft_putchar);
+		pos->y_min -= final_pos;
+		pos->y -= final_pos;
+		move_cursor(pos->x, pos->y);
+		pos->y_lastc -= final_pos;
 	}
-	pow = 1;
-	while (buf[--i] != '[')
-	{
-		pos->y = pos->y + (buf[i] - '0') * pow;
-		pow = pow * 10;
-	}
-}
-
-static int		get_pos(t_cursor_pos *pos)
-{
-	int		i;
-	char	c;
-	char	buf[30];
-
-	c = '\0';
-	pos->x = 0;
-	pos->y = 0;
-	ft_memset(buf, '\0', 30);
-	i = 0;
-	write(1, "\033[6n", 4);
-	while (c != 'R')
-	{
-		read(0, &c, 1);
-		buf[i++] = c;
-	}
-	if (i-- < 2)
-		return (1);
-	get_pos_rest(buf, pos, i);
-	move_cursor(--(pos->x), --(pos->y));
-	return (0);
-}
-
-int				memset_pos(t_cursor_pos *pos)
-{
-	if (get_pos(pos))
-		return (0);
-	pos->x_min = pos->x;
-	pos->x_lastc = pos->x;
-	pos->y_lastc = pos->y;
-	pos->x_rel = 0;
-	pos->x_max = tgetnum("co") - 1;
-	pos->y_min = pos->y;
-	pos->y_max = tgetnum("li");
-	pos->compl = 0;
-	pos->o_input = NULL;
-	return (1);
 }

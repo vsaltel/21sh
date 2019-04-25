@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/25 17:11:17 by frossiny         ###   ########.fr        #
+#    Updated: 2019/04/25 17:37:24 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ FILES 	=	main.c									\
 			termcaps/termcaps.c						\
 			termcaps/initialization.c				\
 			termcaps/set_position.c					\
+			termcaps/set_position_utils.c			\
 			termcaps/completion/t_completion.c		\
 			termcaps/completion/files.c				\
 			termcaps/completion/path.c				\
@@ -41,7 +42,10 @@ FILES 	=	main.c									\
 			termcaps/t_delete.c						\
 			termcaps/t_home.c						\
 			termcaps/t_end.c						\
+			termcaps/t_visual_mode.c				\
 			termcaps/history.c						\
+			termcaps/history_utils.c				\
+			termcaps/signal.c						\
 			lexer/lexer.c							\
 			lexer/is_escaped.c						\
 			lexer/is_word_token.c					\

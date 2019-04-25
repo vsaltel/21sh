@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 18:24:16 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 14:04:30 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/18 11:18:00 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ void				ft_putstrtable(char **tb);
 char				*ft_strfdup(const char *s1, const char *f);
 char				*ft_strfjoin(char const *s1, char const *s2, char const *f);
 char				*ft_strpathfile(const char *s1, const char *s2);
+void				ft_multifree(char **s1, char **s2, char **s3);
 
 #endif

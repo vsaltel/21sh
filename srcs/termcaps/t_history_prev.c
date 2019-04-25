@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:57:50 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:11:49 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/18 11:40:45 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void		termcaps_history_prev(char **str, t_cursor_pos *pos
 		free(*str);
 	shell->history.pos--;
 	if (shell->history.pos == 0)
-		*str = shell->history.first_command ? ft_strdup(shell->history.first_command)
-			: ft_strdup("");
+		*str = shell->history.first_command
+			? ft_strdup(shell->history.first_command) : ft_strdup("");
 	else
 	{
 		curr = shell->history.lst;
