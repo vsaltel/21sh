@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 15:58:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/25 17:01:38 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/26 15:14:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,12 @@ static int		complete_file(char **str, char *word,
 
 	path = get_path(word);
 	tmp = ft_strjoint(path, "/", dirc->d_name);
-	include_word(ft_strequ(path, ".") ? dirc->d_name : tmp, str, pos);
-	free(tmp);
+	if (ft_strnequ(word, ".", 1) || ft_strcmp(path, "."))
+		tmp = ft_strjoint(path, "/", dirc->d_name);
+	else
+		tmp = dirc->d_name;
+	include_word(tmp, str, pos);
+	(ft_strnequ(word, ".", 1) || ft_strcmp(path, ".")) ? free(tmp) : 0;
 	t_new_pos(*str, pos);
 	return (1);
 }

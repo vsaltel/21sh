@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/18 18:28:52 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/26 15:16:15 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 	ft_printf("%s", *str);
 	move_pos(pos, ft_strlen(buf));
 	histo->pos = 0;
+	pos->compl = 0;
 }
 
 static int	check_input(char *buf, char **str, t_cursor_pos *pos

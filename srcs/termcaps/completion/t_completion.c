@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:43:39 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/25 17:33:23 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/26 16:12:34 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,17 @@ void		include_word(char *word, char **str, t_cursor_pos *pos)
 	char	*right;
 	size_t	i;
 	size_t	j;
-	size_t	tmp;
 
 	i = pos->x_rel;
 	if (pos->o_input)
 		free(pos->o_input);
 	pos->o_input = ft_strdup(*str);
 	pos->opos = pos->x_rel;
-	tmp = ft_strlen(*str);
-	while (i > 0 && (*str)[i] != ' ')
+	while (i > 0 && !ft_isspace((*str)[i - 1]))
 		i--;
 	left = ft_strndup(*str, i);
 	j = i;
-	while ((*str)[j] && (*str)[j] != ' ')
+	while ((*str)[j] && !ft_isspace((*str)[j]))
 		j++;
 	right = ft_strdup(*str + j);
 	left = ft_strfjoin(left, word, left);
@@ -132,15 +130,19 @@ void		termcaps_completion(char **str, t_cursor_pos *pos, t_shell *shell)
 	ci.str = str;
 	ci.pos = pos;
 	ci.word = actual_word(*str, pos);
-	if (!complete_builtins(&ci))
-		if (!complete_files(&ci))
-			if (!complete_path(&ci, shell))
-			{
-				ci.pos->compl = 0;
-				free(ci.word);
-				!ci.index ? termcaps_completion(ci.str, ci.pos, shell) : 0;
-				return ;
-			}
+	tputs(tgoto(tgetstr("cm", NULL), 0, 0), 1, ft_putchar);
+	ft_printf("Word: |%s|\n", ci.word);
+	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
+	if (ft_strcmp(ci.word, ""))
+		if (!complete_builtins(&ci))
+			if (!complete_files(&ci))
+				if (!complete_path(&ci, shell))
+				{
+					ci.pos->compl = 0;
+					free(ci.word);
+					!ci.index ? termcaps_completion(ci.str, ci.pos, shell) : 0;
+					return ;
+				}
 	free(ci.word);
 	pos->compl++;
 }
