@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:43:39 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:37:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/29 14:58:21 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	new_pos(char *str, t_cursor_pos *pos)
 	pos->y = pos->y_min;
 	pos->y_lastc = pos->y_min;
 	pos->x_rel = 0;
-	move_pos(pos, len);
+	move_pos(pos, len, len);
 }
 
 int		complete_path(char **str, char *word, t_cursor_pos *pos, t_shell *shell, int *index)

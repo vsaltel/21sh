@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strfcut.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/18 13:17:57 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/26 16:27:11 by vsaltel          ###   ########.fr       */
+/*   Created: 2019/04/25 15:58:10 by vsaltel           #+#    #+#             */
+/*   Updated: 2019/04/25 15:58:13 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
 
-void		resize(int sig)
+char	*ft_strfcut(char *str, size_t beg, size_t end)
 {
-	struct winsize	w;
-	t_cursor_pos	tmp;
+	char	*l;
+	char	*r;
+	char	*dest;
 
-	(void)sig;
-	ioctl(0, TIOCGWINSZ, &w);
-	if (!get_pos(&tmp))
-	{
-		if (tmp.y != g_pos.y)
-		{
-			if (tmp.x < g_pos.x)
-				g_pos.y_min--;
-			if (tmp.x > g_pos.x)
-				g_pos.y_min++;
-		}
-	}
-	g_pos.x_max = w.ws_col - 1;
-	g_pos.y_max = w.ws_row;
-	reprint(g_pos.str, &g_pos, g_pos.x_rel);
+	if (beg > end)
+		return (NULL);
+	l = ft_strndup(str, beg);
+	if (str[end])
+		r = ft_strdup(str + end + 1);
+	else
+		r = ft_strdup(str + end);
+	dest = ft_strjoin(l, r);
+	free(l);
+	free(r);
+	free(str);
+	return (dest);
 }

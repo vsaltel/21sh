@@ -6,11 +6,30 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/18 18:18:54 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/29 14:53:27 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+void			reprint(char *str, t_cursor_pos *pos, size_t cursor_pos)
+{
+	tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min), 1, ft_putchar);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
+	last_line(str, pos);
+	g_return ? ft_printf("\033[1;31m$> \033[0m")
+		: ft_printf("\033[1;32m$> \033[0m");
+	if (pos->visual_mode)
+		visual_print(str, pos);
+	else
+		write(1, str, ft_strlen(str));
+	pos->x = pos->x_min;
+	pos->x_lastc = pos->x_min;
+	pos->y = pos->y_min;
+	pos->y_lastc = pos->y_min;
+	pos->x_rel = 0;
+	move_pos(pos, ft_strlen(str), cursor_pos);
+}
 
 static void		get_pos_rest(char *buf, t_cursor_pos *pos, int i)
 {
@@ -68,8 +87,8 @@ int				memset_pos(t_cursor_pos *pos)
 	pos->x_max = w.ws_col - 1;
 	pos->y_min = pos->y;
 	pos->y_max = w.ws_row;
-	pos->visual_mode = 0;
 	pos->compl = 0;
-	pos->o_input = NULL;
+	pos->visual_mode = 0;
+	pos->v_beg = 0;
 	return (1);
 }

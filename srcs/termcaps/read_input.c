@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/18 18:28:52 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/29 14:52:20 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	read_all(int fd, char **dest)
 		move_cursor(10, 10);
 		while (buf[++i])
 			ft_printf("%d |", buf[i]);
-			*/
+		*/
 		if (!str)
 			str = ft_strdup(buf);
 		else
@@ -48,9 +48,14 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 	char *l;
 	char *r;
 
-	last_line(pos, ft_strlen(buf));
+	histo->pos = 0;
 	if (!*str)
 		*str = ft_strdup(buf);
+	else if (pos->visual_mode)
+	{
+		visual_replace(str, buf, pos);
+		return (reprint(*str, pos, pos->x_rel));
+	}
 	else if ((*str)[pos->x_rel])
 	{
 		l = ft_strndup(*str, pos->x_rel);
@@ -60,16 +65,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 	}
 	else
 		*str = ft_strfjoin(*str, buf, *str);
-	if (pos->y_lastc > pos->y_min)
-	{
-		move_cursor(0, pos->y_min + 1);
-		tputs(tgetstr("cd", NULL), 1, ft_putchar);
-	}
-	move_cursor(pos->x_min, pos->y_min);
-	tputs(tgetstr("ce", NULL), 1, ft_putchar);
-	ft_printf("%s", *str);
-	move_pos(pos, ft_strlen(buf));
-	histo->pos = 0;
+	reprint(*str, pos, pos->x_rel + ft_strlen(buf));
 }
 
 static int	check_input(char *buf, char **str, t_cursor_pos *pos
@@ -86,13 +82,12 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 	{
 		free(buf);
 		ft_strdel(str);
-		if (!memset_pos(pos))
-			return (0);
-		pos->x_rel = 0;
 		g_clear_buffer = 0;
 		shell->ret = 1;
+		final_position(pos);
+		return (1);
 	}
-	return (1);
+	return (2);
 }
 
 int			termcaps_gnl(int fd, char **dest, t_shell *shell)
@@ -105,13 +100,23 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 	signal(SIGWINCH, &resize);
 	while ((ret = read_all(fd, &buf)))
 	{
-		if (ret == -1 || !(ret = check_input(buf, &(g_pos.str), &g_pos, shell)))
+		if (ret == -1
+			|| (ret = check_input(buf, &(g_pos.str), &g_pos, shell)) <= 1)
 			return (ret);
 		if (buf[0] == '\n')
 			break ;
-		if (!execute_termcaps(buf, &(g_pos.str), &g_pos, shell))
+		if (is_special(buf))
+			execute_termcaps(buf, &(g_pos.str), &g_pos, shell);
+		else
 			new_entry(&(g_pos.str), buf, &g_pos, &(shell->history));
 		free(buf);
+
+		int i;
+		i = -1;
+		move_cursor(0, 0);
+		ft_printf("x = %d, y = %d x_rel = %d\nx_lastc = %d, y_lastc = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_lastc, g_pos.y_lastc, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg);
+		move_cursor(g_pos.x, g_pos.y);
+
 	}
 	final_position(&g_pos);
 	ft_strdel(&(shell->history.first_command));
@@ -124,7 +129,6 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 int			get_input(int fd, char **dest, t_shell *shell)
 {
 	int				ret;
-	char			*buf;
 
 	*dest = NULL;
 	if (shell->able_termcaps)

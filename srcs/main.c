@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:43:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/15 17:33:51 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/26 13:31:51 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int		main(int argc, char *argv[], char *envp[])
 	shell.env = copy_env(envp, 1);
 	shell.ast = NULL;
 	shell.history = get_history();
+	g_pos.v_str = NULL;
 	return (minishell(&shell));
 }

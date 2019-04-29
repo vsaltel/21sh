@@ -4,4 +4,6 @@
 *.a
 *.png
 *.dot
+*.swp
 .vscode
+tags

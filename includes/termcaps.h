@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/18 17:34:31 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/25 12:50:57 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef struct	s_cursor_pos
 	char				*o_input;
 	size_t				opos;
 	int					visual_mode : 1;
-	char				*visual_str;
+	size_t				v_beg;
+	char				*v_str;
 }				t_cursor_pos;
 
 typedef struct	s_ex_caps

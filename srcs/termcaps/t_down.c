@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:57:00 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:13:16 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/29 14:49:09 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	termcaps_down(char **str, t_cursor_pos *pos, t_shell *shell)
 {
 	(void)shell;
+	if (!str || !*str)
+		return ;
 	if ((pos->y == pos->y_lastc - 1 && pos->x <= pos->x_lastc)
 		|| (pos->y < pos->y_lastc - 1))
 	{

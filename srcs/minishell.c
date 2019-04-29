@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 18:41:44 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/26 13:33:36 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ int		minishell(t_shell *shell)
 	overwrite_history(shell->history.lst);
 	free_history(&(shell->history));
 	restore_shell(shell->prev_term);
+	free(g_pos.v_str);
 	return (shell->ret);
 }

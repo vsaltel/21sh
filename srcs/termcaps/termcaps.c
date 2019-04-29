@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/18 18:33:41 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/29 14:05:30 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,35 @@ static const t_ex_caps g_caps_list[] =
 	{"\e[1;2B", 6, &termcaps_down},
 	{"\e[1;2C", 6, &termcaps_right_word},
 	{"\e[1;2D", 6, &termcaps_left_word},
+	{"\e[3~", 4, &termcaps_delete_right},
 	{"\e[D", 3, &termcaps_left},
 	{"\e[C", 3, &termcaps_right},
 	{"\e[A", 3, &termcaps_history_next},
 	{"\e[B", 3, &termcaps_history_prev},
 	{"\e[H", 3, &termcaps_home},
 	{"\e[F", 3, &termcaps_end},
+	{"\026", 1, &termcaps_visual_mode},
+	{"\031", 1, &termcaps_visual_copy},
+	{"\030", 1, &termcaps_visual_cut},
+	{"\020", 1, &termcaps_visual_paste},
 	{"\177", 1, &termcaps_delete},
 	{"\011", 1, &termcaps_completion},
-	{"\e[5~", 1, &termcaps_visual_mode},
 	{NULL, 1, NULL}
 };
+
+int					is_special(const char *s)
+{
+	int		i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (!ft_isprint(s[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 static t_ex_caps	search_caps(const char *s)
 {
@@ -44,6 +62,7 @@ static t_ex_caps	search_caps(const char *s)
 			return (g_caps_list[i]);
 		i++;
 	}
+	tputs(tgetstr("vb", NULL), 1, ft_putchar);
 	return (empty);
 }
 
@@ -62,6 +81,7 @@ int					execute_termcaps(char *buf, char **str
 			pos->compl = 0;
 		}
 		termcaps.func(str, pos, shell);
+		reprint(*str, pos, pos->x_rel);
 	}
 	return (1);
 }

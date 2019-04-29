@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:33:37 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/16 18:13:54 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/29 14:49:22 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void		termcaps_left(char **str, t_cursor_pos *pos, t_shell *shell)
 {
 	(void)shell;
 	(void)str;
+	if (!str || !*str)
+		return ;
 	if (pos->x > pos->x_min || (pos->y > pos->y_min && pos->x > 0))
 	{
 		tputs(tgetstr("le", NULL), 1, ft_putchar);
