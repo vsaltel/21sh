@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:43:39 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/26 16:12:34 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:03:35 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		termcaps_completion(char **str, t_cursor_pos *pos, t_shell *shell)
 {
 	t_compl_info	ci;
 
-	if (!str || !*str || !ft_strlen(*str))
+	if (pos->visual_mode || !str || !*str || !ft_strlen(*str))
 		return ;
 	ci.index = pos->compl;
 	if (ci.index > 0 && pos->o_input)
@@ -102,9 +102,6 @@ void		termcaps_completion(char **str, t_cursor_pos *pos, t_shell *shell)
 	ci.str = str;
 	ci.pos = pos;
 	ci.word = actual_word(*str, pos);
-	tputs(tgoto(tgetstr("cm", NULL), 0, 0), 1, ft_putchar);
-	ft_printf("Word: |%s|\n", ci.word);
-	tputs(tgoto(tgetstr("cm", NULL), pos->x, pos->y), 1, ft_putchar);
 	if (ft_strcmp(ci.word, ""))
 		if (!complete_builtins(&ci))
 			if (!complete_files(&ci))
@@ -112,7 +109,6 @@ void		termcaps_completion(char **str, t_cursor_pos *pos, t_shell *shell)
 				{
 					ci.pos->compl = 0;
 					free(ci.word);
-					!ci.index ? termcaps_completion(ci.str, ci.pos, shell) : 0;
 					return ;
 				}
 	free(ci.word);

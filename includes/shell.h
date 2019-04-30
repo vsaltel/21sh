@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/29 13:52:46 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/30 15:08:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct		s_env
 
 typedef struct		s_shell
 {
-	int				ret;
 	t_env			*env;
 	t_lexer			lexer;
 	t_anode			*ast;

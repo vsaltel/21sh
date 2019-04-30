@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/26 13:33:36 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/30 15:10:00 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ int		minishell(t_shell *shell)
 	shell->lexer.tokens = NULL;
 	shell->lexer.state = ST_GENERAL;
 	ft_printf("\033[1;32m$> \033[0m");
-	while (get_input(0, &input, shell) > 0)
+	while ((g_return = get_input(0, &input, shell)) > 0)
 	{
 		eval_exec(shell, &input);
-		if (shell->ret)
+		if (g_return)
 			ft_printf("\033[1;31m$> \033[0m");
 		else
 			ft_printf("\033[1;32m$> \033[0m");
@@ -137,5 +137,5 @@ int		minishell(t_shell *shell)
 	free_history(&(shell->history));
 	restore_shell(shell->prev_term);
 	free(g_pos.v_str);
-	return (shell->ret);
+	return (g_return);
 }

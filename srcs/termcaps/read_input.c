@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 14:52:20 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/30 15:10:38 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 		free(buf);
 		ft_strdel(str);
 		g_clear_buffer = 0;
-		shell->ret = 1;
+		g_return = 1;
 		final_position(pos);
 		return (1);
 	}

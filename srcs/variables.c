@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 17:37:38 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:13:11 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	handle_var(char **dst, t_shell *shell, char *var_name)
 	var = get_enve(shell->env, var_name);
 	if (var_name[0] == '?')
 	{
-		tmp2 = ft_itoa(shell->ret);
+		tmp2 = ft_itoa(g_return);
 		tmp = ft_strjoin(*dst, tmp2);
 		free(tmp2);
 	}

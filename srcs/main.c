@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:43:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/26 13:31:51 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/04/30 15:09:00 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int		main(int argc, char *argv[], char *envp[])
 	g_ignore_signals = 0;
 	g_return = 0;
 	register_signals();
-	shell.ret = 0;
 	shell.env = NULL;
 	shell.env = copy_env(envp, 1);
 	shell.ast = NULL;
