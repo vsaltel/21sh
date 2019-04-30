@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -132,6 +132,7 @@ int		minishell(t_shell *shell)
 		ft_strdel(&input);
 	ft_putchar('\n');
 	free_env(&(shell->env));
+	ht_delete(shell);
 	overwrite_history(shell->history.lst);
 	free_history(&(shell->history));
 	restore_shell(shell->prev_term);

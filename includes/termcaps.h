@@ -67,4 +67,13 @@ typedef struct	s_ex_caps
 	void				(*func)();
 }				t_ex_caps;
 
+typedef struct	s_compl_info
+{
+	char			**str;
+	char			*word;
+	t_cursor_pos	*pos;
+	int				index;
+}				t_compl_info;
+
+
 #endif

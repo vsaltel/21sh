@@ -49,6 +49,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 	char *r;
 
 	histo->pos = 0;
+	pos->compl = 0;
 	if (!*str)
 		*str = ft_strdup(buf);
 	else if (pos->visual_mode)
