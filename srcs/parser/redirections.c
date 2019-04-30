@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 15:27:23 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 13:46:54 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:53:14 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void			redirect_output(t_redirect *redir)
+static void		redirect_output(t_redirect *redir)
 {
 	int		fd;
 	int		otype;
@@ -25,7 +25,7 @@ void			redirect_output(t_redirect *redir)
 	close(fd);
 }
 
-void			redirect_input(t_redirect *redir)
+static void		redirect_input(t_redirect *redir)
 {
 	int		fd;
 	int		otype;

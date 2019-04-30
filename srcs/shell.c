@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 15:10:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 16:33:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int		handle_input(t_shell *shell, char **input)
 		else
 			return (ret);
 	}
-	//disp_tokens(shell->lexer);
+	//disp_tokens(&(shell->lexer));
 	return (0);
 }
 
@@ -113,7 +113,7 @@ int		eval_exec(t_shell *shell, char **input)
 	return (ret);
 }
 
-int		minishell(t_shell *shell)
+int		shell(t_shell *shell)
 {
 	char	*input;
 

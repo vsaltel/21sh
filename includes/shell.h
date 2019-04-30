@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 15:08:46 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:20:10 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ extern int			g_clear_buffer;
 extern int			g_ignore_signals;
 extern int			g_return;
 
-int					minishell(t_shell *shell);
+int					shell(t_shell *shell);
 int					check_quotes(char *str, char c);
 
 int					lex(char *s, t_lexer *lexer);

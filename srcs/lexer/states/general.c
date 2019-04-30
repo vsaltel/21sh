@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:17:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 13:59:58 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 16:32:06 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,11 @@ static void	lex_state_general_else(t_lexer *lexer)
 	}
 	else if (*(lexer->in) == '\\'
 						&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
-	{
-		lexer->pin = lexer->in;
 		lexer->state = ST_ESCAPED;
-	}
 	else if (*(lexer->in) == '#'
 						&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
 	{
+		create_token(lexer, lexer->pin, lexer->in - lexer->pin, TOKEN_NAME);
 		lexer->pin = lexer->in;
 		lexer->state = ST_COMMENT;
 	}

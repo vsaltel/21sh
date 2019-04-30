@@ -6,101 +6,63 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 15:13:11 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 17:15:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	handle_var(char **dst, t_shell *shell, char *var_name)
+static char	*handle_var(t_shell *shell, char *var_name)
 {
 	t_env	*var;
-	char	*tmp;
-	char	*tmp2;
 
 	var = get_enve(shell->env, var_name);
 	if (var_name[0] == '?')
-	{
-		tmp2 = ft_itoa(g_return);
-		tmp = ft_strjoin(*dst, tmp2);
-		free(tmp2);
-	}
+		return (ft_itoa(g_return));
 	else if (!var)
-		return ;
+		return (NULL);
 	else
-		tmp = ft_strjoin(*dst, var->value);
-	ft_strdel(dst);
-	*dst = tmp;
+		return (ft_strdup(var->value));
 }
 
-static int	get_var(char *str, char *buf, char **new, t_shell *shell)
+static char	*find_dollar(char *str, size_t index)
 {
-	char	*tmp;
-	size_t	vsize;
+	char *dollar;
 
-	if ((vsize = get_var_size(str)) == 0)
-		return (0);
-	if (!(*new))
-		*new = ft_strdup(buf);
-	else
-	{
-		if (!(tmp = ft_strjoin(*new, buf)))
-			exit(1);
-		free(*new);
-		*new = tmp;
-	}
-	if (!(tmp = ft_strndup(str + 1, vsize)))
-		exit(1);
-	handle_var(new, shell, tmp);
-	free(tmp);
-	return (vsize);
-}
-
-static void	replace_token(t_token *dst, char *s1, char *s2)
-{
-	char	*tmp;
-
-	if (s1)
-	{
-		if (!(tmp = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
-			return ;
-		ft_strcpy(tmp, s1);
-		ft_strcat(tmp, s2);
-		free(s1);
-	}
-	else
-		tmp = ft_strdup(s2);
-	free(dst->content);
-	dst->content = tmp;
+	ft_printf("Indexxx: %ld - |%s|\n", index, str);
+	dollar = ft_strchr(str + index, '$');
+	ft_printf("%p: %p - %ld = %c\n", str, dollar, dollar - str, dollar ? str[dollar - str] : '\0');
+	while (dollar && is_escaped(dollar, dollar - str, 0))
+		dollar = ft_strchr(dollar + 1, '$');
+	return (dollar);
 }
 
 static void	parse_token(t_token *token, t_shell *shell)
 {
+	char	*dollar;
 	char	*new;
-	char	buf[BUFF_SIZE + 1];
-	size_t	i;
-	size_t	j;
+	char	*left;
+	char	*key;
+	char	*tmp;
 
-	i = -1;
-	j = 0;
-	buf[0] = '\0';
-	new = NULL;
-	while (++i < token->len && (token->content)[i])
+	dollar = find_dollar(token->content, 0);
+	while (dollar)
 	{
-		if (token->content[i] == '$' && (!i || token->content[i - 1] != '\\'))
+		key = ft_strndup(dollar + 1, get_var_size(dollar));
+		tmp = handle_var(shell, key);
+		free(key);
+		if (tmp)
 		{
-			buf[j] = '\0';
-			i += get_var(token->content + i, buf, &new, shell);
-			j = 0;
-			buf[j] = '\0';
-			continue ;
+			left = ft_strndup(token->content, dollar - token->content);
+			new = ft_strjoint(left, tmp, dollar + 1 + get_var_size(dollar));
+			ft_multifree(&left, &tmp, &(token->content));
+			token->content = new;
+			token->len = ft_strlen(new);
+			dollar = find_dollar(token->content, 0);
 		}
-		if (token->content[i] == '\\')
-			i++;
-		buf[j++] = token->content[i];
+		else
+			dollar = find_dollar(token->content, (dollar - token->content) + 1);
 	}
-	buf[j] = '\0';
-	replace_token(token, new, buf);
 }
 
 int			replace_vars(t_token *token, t_shell *shell)
