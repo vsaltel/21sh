@@ -32,6 +32,7 @@ int		main(int argc, char *argv[], char *envp[])
 	shell.env = NULL;
 	shell.env = copy_env(envp, 1);
 	shell.ast = NULL;
+	shell.bin_ht.table = NULL;
 	shell.history = get_history();
 	g_pos.v_str = NULL;
 	return (minishell(&shell));

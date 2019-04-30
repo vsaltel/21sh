@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 15:54:40 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/25 12:58:22 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ static int	start_process(t_cmd *cmd, t_shell *shell)
 	char	*file;
 	int		status;
 
-	if (!(file = get_exe(shell->env, cmd->exe->content, 1))
-													|| access(file, X_OK))
+	if (!(file = get_exe(shell, cmd->exe->content, 1)) || access(file, X_OK))
 		return (file ? 126 : 127);
 	get_here_doc(cmd->redir);
 	if ((g_child = fork()) == 0)

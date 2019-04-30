@@ -31,6 +31,7 @@ int		b_exit(t_cmd *cmd, t_shell *shell)
 	restore_shell(shell->prev_term);
 	destroy_lexer(&(shell->lexer));
 	destroy_ast(shell);
+	ht_delete(shell);
 	exit(ret);
 	return (ret);
 }

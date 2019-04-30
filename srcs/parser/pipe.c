@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 15:54:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/25 12:59:17 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 
 	cmd = pline->cmd;
 	if ((pline->previous && is_builtin(cmd->exe->content))
-							|| !is_exe(shell->env, cmd->exe->content, 1))
+							|| !is_exe(shell, cmd->exe->content, 1))
 		return (1);
 	if ((g_child = fork()) == 0)
 	{
 		restore_shell(shell->prev_term);
 		init_fd(pline, op, np, shell);
-		if (execve(get_exe(shell->env, cmd->exe->content, 1),
+		if (execve(get_exe(shell, cmd->exe->content, 1),
 								cmd->args, build_env(shell->env)) == -1)
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);
