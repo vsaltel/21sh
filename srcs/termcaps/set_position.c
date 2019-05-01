@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/26 18:20:21 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 15:30:55 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void			final_position(t_cursor_pos *pos)
 	}
 	else
 		move_cursor(0, pos->y_lastc + 1);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 }
 
 void			last_line(char *str, t_cursor_pos *pos)
@@ -69,13 +70,19 @@ void			last_line(char *str, t_cursor_pos *pos)
 	size_t	len;
 	size_t	i;
 
-	len = (pos->x_min + ft_strlen(str) + 1) / (pos->x_max + 1);
+	if (pos->search_mode)
+		len = (pos->x_min + ft_strlen(str) +
+			ft_strlen("history_search: _") + ft_strlen(pos->s_str) +
+				pos->x_max + 1) / (pos->x_max + 1);
+	else
+		len = (pos->x_min + ft_strlen(str) + 1) / (pos->x_max + 1);
 	if (len + pos->y_min >= pos->y_max)
 	{
 		len = pos->y_min + len + 1 - pos->y_max;
+		move_cursor(pos->x, pos->y);
 		i = -1;
 		while (++i < len)
-			tputs(tgetstr("do", NULL), 1, ft_putchar);
+			tputs(tgetstr("sf", NULL), 1, ft_putchar);
 		pos->y_min -= len;
 		move_cursor(0, pos->y_min);
 	}

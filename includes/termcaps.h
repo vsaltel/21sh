@@ -6,7 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/01 14:04:17 by frossiny         ###   ########.fr       */
+=======
+/*   Updated: 2019/05/01 12:39:46 by vsaltel          ###   ########.fr       */
+>>>>>>> 5a4c1dade61e6562fed227eb1b12e325660ddf67
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +62,8 @@ typedef struct	s_cursor_pos
 	int					visual_mode : 1;
 	size_t				v_beg;
 	char				*v_str;
+	int					search_mode : 1;
+	char				*s_str;
 }				t_cursor_pos;
 
 typedef struct	s_ex_caps

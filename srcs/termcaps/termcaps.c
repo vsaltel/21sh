@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/30 15:06:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:26:10 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static const t_ex_caps g_caps_list[] =
 	{"\e[C", 3, &termcaps_right},
 	{"\e[A", 3, &termcaps_history_next},
 	{"\e[B", 3, &termcaps_history_prev},
+	{"\022", 3, &termcaps_history_search},
 	{"\e[H", 3, &termcaps_home},
 	{"\e[F", 3, &termcaps_end},
 	{"\026", 1, &termcaps_visual_mode},
@@ -77,6 +78,11 @@ int					execute_termcaps(char *buf, char **str
 		return (0);
 	if (termcaps.func)
 	{
+		if (pos->search_mode && ft_strcmp(buf, "\022"))
+		{
+			ft_strdel(&pos->s_str);
+			pos->search_mode = 0;
+		}
 		if (!ft_strnequ("\011", termcaps.content, 1))
 		{
 			pos->compl = 0;

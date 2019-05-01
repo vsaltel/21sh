@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 14:37:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:06:28 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 
 	histo->pos = 0;
 	pos->compl = 0;
-	if (!*str)
+	if (pos->search_mode)
+		history_search_replace(str, buf, pos, histo);
+	else if (!*str)
 		*str = ft_strdup(buf);
 	else if (pos->visual_mode)
 	{
@@ -72,10 +74,11 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 static int	check_input(char *buf, char **str, t_cursor_pos *pos
 		, t_shell *shell)
 {
-	if (!ft_strcmp(buf, "\004"))
+	if (!ft_strcmp(buf, "\004") && str && *str && **str == 0)
 	{
 		free(buf);
 		ft_strdel(&(shell->history.first_command));
+		ft_strdel(&(pos->s_str));
 		ft_strdel(str);
 		return (0);
 	}
@@ -83,6 +86,8 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 	{
 		free(buf);
 		ft_strdel(str);
+		ft_strdel(&(pos->s_str));
+		ft_strdel(&(shell->history.first_command));
 		g_clear_buffer = 0;
 		g_return = 1;
 		final_position(pos);
@@ -115,11 +120,13 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 		int i;
 		i = -1;
 		move_cursor(0, 0);
-		//ft_printf("x = %d, y = %d x_rel = %d\nx_lastc = %d, y_lastc = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_lastc, g_pos.y_lastc, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg);
+		ft_printf("x = %d, y = %d x_rel = %d\nx_lastc = %d, y_lastc = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d\n, search = %d, s_str = %s", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_lastc, g_pos.y_lastc, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg, g_pos.search_mode, g_pos.s_str);
 		move_cursor(g_pos.x, g_pos.y);
 
 	}
 	final_position(&g_pos);
+	ft_strdel(&g_pos.s_str);
+	g_pos.search_mode = 0;
 	ft_strdel(&(shell->history.first_command));
 	add_to_history(g_pos.str, &(shell->history));
 	free(buf);

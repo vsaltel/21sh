@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/01 14:42:16 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/01 16:05:22 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ FILES 	=	main.c									\
 			termcaps/t_down.c						\
 			termcaps/t_history_next.c				\
 			termcaps/t_history_prev.c				\
+			termcaps/t_history_search.c				\
 			termcaps/t_left_word.c					\
 			termcaps/t_right_word.c					\
 			termcaps/t_left.c						\
