@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 18:06:44 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/30 15:56:00 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd, t_shell *shell)
 	return (new);
 }
 
+static void		init_redirect_output(t_redirect *redir)
+{
+	int		fd;
+	int		otype;
+
+	if (!redir)
+		return ;
+	otype = O_RDONLY | O_CREAT | O_APPEND;
+	if ((fd = open(redir->value->content, otype, FILE_PERM)) == -1)
+		return ;
+	close(fd);
+}
+
 t_pipel			*build_pipeline(t_anode *node, t_shell *shell, t_anode **cn)
 {
 	t_pipel	*pipel;
@@ -38,9 +51,10 @@ t_pipel			*build_pipeline(t_anode *node, t_shell *shell, t_anode **cn)
 	{
 		curr->next = create_pipel(curr, node->right->cmd, shell);
 		curr = curr->next;
+		init_redirect_output(curr->cmd->redir);
 		node = node->parent;
 	}
-	*cn = node;
+	*cn = node ? node->left : node;
 	return (pipel);
 }
 

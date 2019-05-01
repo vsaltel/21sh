@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:11:23 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 16:03:28 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ extern int			g_clear_buffer;
 extern int			g_ignore_signals;
 extern int			g_return;
 
-int					minishell(t_shell *shell);
+int					shell(t_shell *shell);
 int					check_quotes(char *str, char c);
 
 int					lex(char *s, t_lexer *lexer);
@@ -165,7 +165,6 @@ int					execute_termcaps(char *buf, char **str,
 void				resize(int sig);
 
 int					memset_pos(t_cursor_pos *pos);
-//void				del_char(char **str, t_cursor_pos *pos);
 void				move_cursor(size_t x, size_t y);
 void				move_pos(t_cursor_pos *pos, size_t len, size_t len_dest);
 void				final_position(t_cursor_pos *pos);

@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2019/04/25 15:59:41 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/01 12:55:43 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ FILES 	=	ft_memset.c							\
 			ft_strnjoin.c						\
 			ft_strjoint.c						\
 			ft_strjointf.c						\
+			ft_strnfjoin.c						\
 			ft_multifree.c						\
 			ft_strtrim.c						\
 			ft_strctrim.c						\
