@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/25 12:58:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:27:22 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	start_process(t_cmd *cmd, t_shell *shell)
 	get_here_doc(cmd->redir);
 	if ((g_child = fork()) == 0)
 	{
+		unregister_signals();
 		restore_shell(shell->prev_term);
 		cmd->redir ? handle_redirections(cmd->redir, shell) : 0;
 		if (execve(file, cmd->args, build_env(shell->env)) == -1)

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 16:07:09 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:27:08 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int					b_cd(t_cmd *cmd, t_shell *shell);
 int					b_echo(t_cmd *cmd, t_shell *shell);
 
 void				register_signals(void);
+void				unregister_signals(void);
 
 int					is_local_exe(char *name);
 int					is_relative_path(char *name);
