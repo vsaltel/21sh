@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/30 16:32:52 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/01 12:53:11 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -158,13 +158,4 @@ re: fclean
 norm:
 	@norminette $(INCDIR) $(SRCDIR)
 
--include $(OBJDIR)/*.d
--include $(OBJDIR)/ast/*.d
--include $(OBJDIR)/builtins/*.d
--include $(OBJDIR)/env/*.d
--include $(OBJDIR)/lexer/*.d
--include $(OBJDIR)/lexer/states/*.d
--include $(OBJDIR)/parser/*.d
--include $(OBJDIR)/termcaps/*.d
--include $(OBJDIR)/termcaps/completion/*.d
--include $(OBJDIR)/utils/*.d
+-include $(OBJSD)

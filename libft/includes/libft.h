@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 18:24:16 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/25 15:58:45 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 12:53:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char				*ft_strjoint(char const *s1, char const *s2,
 															char const *s3);
 char				*ft_strjointf(char const *s1, char const *s2,
 															char const *s3);
+char				*ft_strfnjoin(char const *s1, char const *s2,
+													size_t n, char const *f);
 char				*ft_strtrim(char const *s);
 char				*ft_strctrim(char const *s, char c);
 char				**ft_strsplit(char const *s, char c);
