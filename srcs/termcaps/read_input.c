@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 16:06:28 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:10:15 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 static int	check_input(char *buf, char **str, t_cursor_pos *pos
 		, t_shell *shell)
 {
-	if (!ft_strcmp(buf, "\004") && str && *str && **str == 0)
+	if (ft_strequ(buf, "\004") && (!str || !(*str) || ft_strequ(*str, "")))
 	{
 		free(buf);
 		ft_strdel(&(shell->history.first_command));
@@ -119,10 +119,9 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 
 		int i;
 		i = -1;
-		move_cursor(0, 0);
+		/*move_cursor(0, 0);
 		ft_printf("x = %d, y = %d x_rel = %d\nx_lastc = %d, y_lastc = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d\n, search = %d, s_str = %s", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_lastc, g_pos.y_lastc, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg, g_pos.search_mode, g_pos.s_str);
-		move_cursor(g_pos.x, g_pos.y);
-
+		move_cursor(g_pos.x, g_pos.y);*/
 	}
 	final_position(&g_pos);
 	ft_strdel(&g_pos.s_str);
@@ -131,6 +130,7 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 	add_to_history(g_pos.str, &(shell->history));
 	free(buf);
 	*dest = g_pos.str;
+	signal(SIGWINCH, SIG_DFL);
 	return (ret > 0 ? 1 : ret);
 }
 
