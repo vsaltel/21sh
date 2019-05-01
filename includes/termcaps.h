@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/25 12:50:57 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 14:04:17 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,5 @@ typedef struct	s_compl_info
 	t_cursor_pos	*pos;
 	int				index;
 }				t_compl_info;
-
 
 #endif

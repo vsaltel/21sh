@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hashtable.h                                        :+:      :+:    :+:   */
+/*   ht_delete.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/25 12:26:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:13:32 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/01 14:09:30 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/01 14:09:52 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HASHTABLE_H
-# define HASHTABLE_H
+#include "shell.h"
 
-# include "shell.h"
-
-typedef struct	s_hashval
+void	ht_delete(t_shell *shell)
 {
-	char	*key;
-	char	*value;
-}				t_hashval;
+	int		i;
 
-typedef struct	s_hashtable
-{
-	int			size;
-	t_hashval	*table;
-}				t_hashtable;
-
-#endif
+	if (!shell->bin_ht.table)
+		return ;
+	i = -1;
+	while (++i < shell->bin_ht.size)
+	{
+		free(shell->bin_ht.table[i].key);
+		free(shell->bin_ht.table[i].value);
+	}
+	free(shell->bin_ht.table);
+}

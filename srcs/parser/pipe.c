@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 15:12:16 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 15:55:43 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ void		init_fd(t_pipel *pline, int op[], int np[], t_shell *shell)
 	handle_redirections(pline->cmd->redir, shell);
 }
 
+static void	close_fd(int fd[])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
+
 static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 {
 	t_cmd	*cmd;
-	int		ret;
 
 	cmd = pline->cmd;
 	if ((pline->previous && is_builtin(cmd->exe->content))
@@ -48,16 +53,14 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 		exit(EXIT_SUCCESS);
 	}
 	else if (pline->previous)
-	{
-		close(op[0]);
-		close(op[1]);
-	}
-	waitpid(g_child, &ret, 0);
-	termcaps_init(NULL);
-	g_child = 0;
-	if (WIFSIGNALED(ret))
-		return (128 + ret);
-	return (WEXITSTATUS(ret));
+		close_fd(op);
+	return (0);
+}
+
+static void	copy_fd(int op[], int np[])
+{
+	op[0] = np[0];
+	op[1] = np[1];
 }
 
 int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
@@ -65,6 +68,7 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 	int		op[2];
 	int		np[2];
 	t_pipel	*pipeline;
+	int		ret;
 
 	pipeline = build_pipeline(node, shell, cn);
 	while (pipeline && pipeline->cmd)
@@ -72,16 +76,17 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 		if (pipeline->next)
 			pipe(np);
 		get_here_doc(pipeline->cmd->redir);
-		g_return = execute_pipe_cmd(pipeline, op, np, shell);
+		execute_pipe_cmd(pipeline, op, np, shell);
 		if (pipeline->next)
-		{
-			op[0] = np[0];
-			op[1] = np[1];
-		}
+			copy_fd(op, np);
 		if (!pipeline->next)
 			break ;
 		pipeline = pipeline->next;
 	}
+	waitpid(g_child, &ret, 0);
+	g_return = WIFSIGNALED(ret) ? 128 + ret : ret;
 	del_pipeline(pipeline);
+	g_child = 0;
+	termcaps_init(NULL);
 	return (g_return);
 }

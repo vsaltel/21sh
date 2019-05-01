@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:19:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 17:17:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 15:15:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void				free_history(t_history *history)
 	t_histo_lst	*curr;
 	t_histo_lst	*tmp;
 
+	if (!isatty(0) || !history)
+		return ;
 	curr = history->lst;
 	while (curr)
 	{

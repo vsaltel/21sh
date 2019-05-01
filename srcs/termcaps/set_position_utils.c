@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_position_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 14:53:27 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 14:44:08 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void			reprint(char *str, t_cursor_pos *pos, size_t cursor_pos)
 	tputs(tgoto(tgetstr("cm", NULL), 0, pos->y_min), 1, ft_putchar);
 	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 	last_line(str, pos);
-	g_return ? ft_printf("\033[1;31m$> \033[0m")
-		: ft_printf("\033[1;32m$> \033[0m");
+	prompt();
 	if (pos->visual_mode)
 		visual_print(str, pos);
 	else

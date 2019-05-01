@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/16 11:23:33 by frossiny          #+#    #+#              #
-#    Updated: 2019/05/01 12:55:43 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/01 14:26:44 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -121,6 +121,7 @@ FILES 	=	ft_memset.c							\
 			printf/converters/unknown.c
 SRCS	=	$(addprefix $(SRCDIR)/, $(FILES))
 OBJS	=	$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+OBJSD	=	$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.d)
 
 ##### Colors #####
 _END=\x1b[0m
@@ -148,13 +149,14 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR)/printf ] || mkdir -p $(OBJDIR)/printf
 	@[ -d $(OBJDIR)/printf/converters ] || mkdir -p $(OBJDIR)/printf/converters
 	@echo -n -e "\r\033[K${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
-	@$(CC) $(CFLAGS) -I $(INCDIR) -o $@ -c $<
+	@$(CC) $(CFLAGS) -I $(INCDIR) -MMD -o $@ -c $<
 
 all: $(NAME)
 
 clean:
 	@echo -e "${_RED}${_BOLD}Removing obj files...${_END}"
 	@rm -f $(OBJS)
+	@rm -f $(OBJSD)
 
 fclean: clean
 	@echo -e "${_RED}${_BOLD}Removing $(NAME)...${_END}"
@@ -162,3 +164,5 @@ fclean: clean
 
 re: fclean
 	$(MAKE) $(NAME)
+
+-include $(OBJSD)

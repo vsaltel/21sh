@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 17:47:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 17:15:51 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 15:15:50 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ t_history			get_history(void)
 	char		*path;
 
 	histo.lst = NULL;
+	if (!isatty(0))
+		return (histo);
 	path = NULL;
 	path = ft_strpathfile(getenv("HOME"), ".21sh_history");
 	if (access(path, F_OK))

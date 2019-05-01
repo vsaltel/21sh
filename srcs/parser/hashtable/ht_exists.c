@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hashtable.h                                        :+:      :+:    :+:   */
+/*   ht_exists.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/25 12:26:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:13:32 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/01 14:10:53 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/01 14:11:03 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HASHTABLE_H
-# define HASHTABLE_H
+#include "shell.h"
 
-# include "shell.h"
-
-typedef struct	s_hashval
+int			ht_exists(t_shell *shell, char *key)
 {
-	char	*key;
-	char	*value;
-}				t_hashval;
+	int hash;
 
-typedef struct	s_hashtable
-{
-	int			size;
-	t_hashval	*table;
-}				t_hashtable;
-
-#endif
+	if (shell->bin_ht.table == NULL)
+		return (0);
+	hash = ht_hash(shell->bin_ht.size, key);
+	if (shell->bin_ht.table[hash].key)
+		return (1);
+	return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 16:33:44 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:44:56 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,11 @@ int		shell(t_shell *shell)
 
 	shell->lexer.tokens = NULL;
 	shell->lexer.state = ST_GENERAL;
-	ft_printf("\033[1;32m$> \033[0m");
+	prompt();
 	while ((g_return = get_input(0, &input, shell)) > 0)
 	{
 		eval_exec(shell, &input);
-		if (g_return)
-			ft_printf("\033[1;31m$> \033[0m");
-		else
-			ft_printf("\033[1;32m$> \033[0m");
+		prompt();
 	}
 	if (input)
 		ft_strdel(&input);

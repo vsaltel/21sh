@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 15:20:10 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:43:45 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ extern int			g_ignore_signals;
 extern int			g_return;
 
 int					shell(t_shell *shell);
+void				prompt(void);
 int					check_quotes(char *str, char c);
 
 int					lex(char *s, t_lexer *lexer);
@@ -77,20 +78,8 @@ t_token				*create_token(t_lexer *lexer, char *content,
 void				destroy_tokens(t_token *token);
 int					is_word_token(t_token *token);
 
-int					lex_state_general(t_lexer *lexer);
-int					lex_state_quotes(t_lexer *lexer);
-int					lex_state_dquotes(t_lexer *lexer);
-int					lex_state_comment(t_lexer *lexer);
-int					lex_state_escaped(t_lexer *lexer);
-int					lex_state_operator(t_lexer *lexer);
-int					lex_state_semic(t_lexer *lexer);
-
 int					build_ast(t_shell *shell, t_anode **ast);
 int					build_args(t_cmd *cmd, t_shell *shell);
-t_anode				*create_node(t_token *ope, t_cmd *cmd);
-t_token				*create_ope_node(t_anode **tree, t_token *tokens);
-t_token				*create_cmd_node(t_anode **tree, t_token *tokens);
-t_cmd				*create_cmd(t_token *exe);
 void				destroy_ast(t_shell *shell);
 
 int					parse(t_shell *shell, t_anode *ast);
@@ -108,6 +97,8 @@ void				ht_put(t_shell *shell, char *key, char *value);
 char				*ht_get(t_shell *shell, char *key);
 int					ht_exists(t_shell *shell, char *key);
 void				ht_delete(t_shell *shell);
+int					ht_hash(size_t size, char *key);
+int					ht_create(t_shell *shell, size_t size);
 
 t_env				*copy_env(char **envp, int inc);
 int					disp_env(t_env *env);
@@ -165,7 +156,6 @@ int					execute_termcaps(char *buf, char **str,
 void				resize(int sig);
 
 int					memset_pos(t_cursor_pos *pos);
-//void				del_char(char **str, t_cursor_pos *pos);
 void				move_cursor(size_t x, size_t y);
 void				move_pos(t_cursor_pos *pos, size_t len, size_t len_dest);
 void				final_position(t_cursor_pos *pos);

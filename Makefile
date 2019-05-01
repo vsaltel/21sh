@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/01 12:53:11 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/01 14:42:16 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc -g3
 #CFLAGS	+=	-Wall -Werror -Wextra -g3
-#CFLAGS	+= -g3 -fsanitize=address
+CFLAGS	+= -g3 -fsanitize=address
 
 SHELL	=	bash
 
@@ -23,6 +23,7 @@ INCDIR	=	includes
 OBJDIR	=	objs
 FILES 	=	main.c									\
 			shell.c									\
+			prompt.c								\
 			termcaps/read_input.c					\
 			termcaps/termcaps.c						\
 			termcaps/initialization.c				\
@@ -69,7 +70,12 @@ FILES 	=	main.c									\
 			parser/redirections.c					\
 			parser/executables.c					\
 			parser/here_doc.c						\
-			parser/hashtable.c						\
+			parser/hashtable/ht_create.c			\
+			parser/hashtable/ht_hash.c				\
+			parser/hashtable/ht_delete.c			\
+			parser/hashtable/ht_put.c				\
+			parser/hashtable/ht_get.c				\
+			parser/hashtable/ht_exists.c			\
 			ast/build_ast.c							\
 			ast/create_node.c						\
 			ast/build_args.c						\
@@ -135,6 +141,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
 	@[ -d $(OBJDIR)/lexer/states ] || mkdir -p $(OBJDIR)/lexer/states
 	@[ -d $(OBJDIR)/parser ] || mkdir -p $(OBJDIR)/parser
+	@[ -d $(OBJDIR)/parser/hashtable ] || mkdir -p $(OBJDIR)/parser/hashtable
 	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
 	@[ -d $(OBJDIR)/termcaps/completion ] || mkdir -p $(OBJDIR)/termcaps/completion
 	@[ -d $(OBJDIR)/utils ] || mkdir -p $(OBJDIR)/utils

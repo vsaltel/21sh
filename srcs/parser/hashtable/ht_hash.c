@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hashtable.h                                        :+:      :+:    :+:   */
+/*   ht_hash.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/25 12:26:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:13:32 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/01 14:08:15 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/01 14:08:50 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HASHTABLE_H
-# define HASHTABLE_H
+#include "shell.h"
 
-# include "shell.h"
-
-typedef struct	s_hashval
+int	ht_hash(size_t size, char *key)
 {
-	char	*key;
-	char	*value;
-}				t_hashval;
+	unsigned int	hash;
+	unsigned int	g;
+	register char	*p;
 
-typedef struct	s_hashtable
-{
-	int			size;
-	t_hashval	*table;
-}				t_hashtable;
-
-#endif
+	hash = 0;
+	p = key;
+	while (*p)
+	{
+		hash = (hash << 4) + *p;
+		if ((g = hash & 0xf0000000))
+		{
+			hash ^= g >> 24;
+			hash ^= g;
+		}
+		p++;
+	}
+	return (hash % size);
+}

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:12 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/25 18:09:38 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 15:11:35 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int				termcaps_init(struct termios *prev_term)
 	char			*term_var;
 	struct termios	term;
 
+	if (!isatty(0))
+		return (0);
 	tcgetattr(0, &term);
 	if (prev_term)
 	{
@@ -37,6 +39,8 @@ int				termcaps_init(struct termios *prev_term)
 
 void			restore_shell(struct termios prev_term)
 {
+	if (!isatty(0))
+		return ;
 	tcsetattr(0, TCSANOW, &prev_term);
 }
 

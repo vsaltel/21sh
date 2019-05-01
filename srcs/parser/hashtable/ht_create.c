@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hashtable.h                                        :+:      :+:    :+:   */
+/*   ht_create.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/25 12:26:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:13:32 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/01 14:09:05 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/01 14:13:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HASHTABLE_H
-# define HASHTABLE_H
+#include "shell.h"
 
-# include "shell.h"
-
-typedef struct	s_hashval
+int		ht_create(t_shell *shell, size_t size)
 {
-	char	*key;
-	char	*value;
-}				t_hashval;
+	t_hashval	*htab;
+	size_t		i;
 
-typedef struct	s_hashtable
-{
-	int			size;
-	t_hashval	*table;
-}				t_hashtable;
-
-#endif
+	if (shell->bin_ht.table)
+		return (0);
+	if (!(htab = (t_hashval *)malloc(sizeof(t_hashval) * size)))
+		return (0);
+	shell->bin_ht.size = size;
+	i = -1;
+	while (++i < size)
+	{
+		htab[i].key = NULL;
+		htab[i].value = NULL;
+	}
+	shell->bin_ht.table = htab;
+	return (1);
+}

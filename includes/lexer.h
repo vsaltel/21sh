@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 13:11:43 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:14:11 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,13 @@ static const t_ex_token g_tokens_list[] =
 	{"\f", 1, TOKEN_IGN, ST_GENERAL},
 	{NULL, 1, TOKEN_NULL, ST_GENERAL}
 };
+
+int				lex_state_general(t_lexer *lexer);
+int				lex_state_quotes(t_lexer *lexer);
+int				lex_state_dquotes(t_lexer *lexer);
+int				lex_state_comment(t_lexer *lexer);
+int				lex_state_escaped(t_lexer *lexer);
+int				lex_state_operator(t_lexer *lexer);
+int				lex_state_semic(t_lexer *lexer);
 
 #endif

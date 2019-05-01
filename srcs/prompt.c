@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hashtable.h                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/25 12:26:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:13:32 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/01 14:41:10 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/01 15:11:47 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HASHTABLE_H
-# define HASHTABLE_H
+#include "shell.h"
 
-# include "shell.h"
-
-typedef struct	s_hashval
+void	prompt(void)
 {
-	char	*key;
-	char	*value;
-}				t_hashval;
-
-typedef struct	s_hashtable
-{
-	int			size;
-	t_hashval	*table;
-}				t_hashtable;
-
-#endif
+	if (!isatty(0))
+		return ;
+	if (g_return)
+		ft_printf("\033[1;31m$> \033[0m");
+	else
+		ft_printf("\033[1;32m$> \033[0m");
+}
