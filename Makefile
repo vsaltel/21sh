@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/04/29 15:25:02 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/01 12:29:38 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc -g3
 #CFLAGS	+=	-Wall -Werror -Wextra -g3
-#CFLAGS	+= -g3 -fsanitize=address
+CFLAGS	+= -g3 -fsanitize=address
 
 SHELL	=	bash
 
@@ -35,6 +35,7 @@ FILES 	=	main.c									\
 			termcaps/t_down.c						\
 			termcaps/t_history_next.c				\
 			termcaps/t_history_prev.c				\
+			termcaps/t_history_search.c				\
 			termcaps/t_left_word.c					\
 			termcaps/t_right_word.c					\
 			termcaps/t_left.c						\

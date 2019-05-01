@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 17:47:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 17:15:51 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 15:59:38 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ t_histo_lst			*read_history(int fd, size_t *history_size)
 	t_histo_lst			*begin;
 	t_histo_lst			*curr;
 	int					ret;
-	size_t				nb_nl;
 	char				*buf;
 
 	begin = NULL;
-	nb_nl = 0;
 	while ((ret = get_next_line(fd, &buf)) == 1)
 	{
 		(*history_size)++;
@@ -49,8 +47,6 @@ t_histo_lst			*read_history(int fd, size_t *history_size)
 			begin = new_link(buf);
 			curr = begin;
 		}
-		if (nb_nl++ >= MAX_HISTORY)
-			break ;
 	}
 	return (ret == -1 ? (NULL) : (begin));
 }
