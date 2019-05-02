@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 16:07:09 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:22:36 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,8 @@ void				reprint(char *str, t_cursor_pos *pos, size_t cursor_pos);
 void				visual_delete(char **str, t_cursor_pos *pos);
 void				visual_replace(char **str, char *buf, t_cursor_pos *pos);
 void				visual_print(char *str, t_cursor_pos *pos);
+void				history_search_delete(char **str, t_cursor_pos *pos,
+														t_history *histo);
 void				history_search_replace(char **str, char *buf,
 								t_cursor_pos *pos, t_history *histo);
 

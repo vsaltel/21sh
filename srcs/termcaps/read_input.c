@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 16:06:28 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:22:35 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 	histo->pos = 0;
 	pos->compl = 0;
 	if (pos->search_mode)
+	{
 		history_search_replace(str, buf, pos, histo);
+		return (reprint(*str, pos, pos->x_rel));
+	}
 	else if (!*str)
 		*str = ft_strdup(buf);
 	else if (pos->visual_mode)
@@ -116,13 +119,13 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 		else
 			new_entry(&(g_pos.str), buf, &g_pos, &(shell->history));
 		free(buf);
-
+/*
 		int i;
 		i = -1;
 		move_cursor(0, 0);
 		ft_printf("x = %d, y = %d x_rel = %d\nx_lastc = %d, y_lastc = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d\n, search = %d, s_str = %s", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_lastc, g_pos.y_lastc, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg, g_pos.search_mode, g_pos.s_str);
 		move_cursor(g_pos.x, g_pos.y);
-
+*/
 	}
 	final_position(&g_pos);
 	ft_strdel(&g_pos.s_str);
