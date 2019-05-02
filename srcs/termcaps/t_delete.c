@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 15:32:13 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 17:16:21 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/01 18:24:10 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void	del_char(char **str, t_cursor_pos *pos)
 void		termcaps_delete(char **str, t_cursor_pos *pos, t_shell *shell)
 {
 	(void)shell;
+	if (pos->search_mode)
+		return (history_search_delete(str, pos, &(shell->history)));
 	if (!str || !*str)
 		return ;
 	if (pos->visual_mode)

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 16:06:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:12:07 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			reprint(char *str, t_cursor_pos *pos, size_t cursor_pos)
 	if (pos->search_mode)
 	{
 		move_cursor(0, pos->y_lastc + 1);
-		ft_printf("history_search: %s_", (pos->s_str ? pos->s_str : ""));
+		ft_printf("history_search: %s_", pos->s_str);
 		move_cursor(pos->x, pos->y);
 	}
 }
