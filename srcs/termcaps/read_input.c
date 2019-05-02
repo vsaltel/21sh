@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 14:22:35 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/02 14:29:01 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 static int	check_input(char *buf, char **str, t_cursor_pos *pos
 		, t_shell *shell)
 {
-	if (!ft_strcmp(buf, "\004") && str && *str && **str == 0)
+	if (ft_strequ(buf, "\004") && (!str || !(*str) || ft_strequ(*str, "")))
 	{
 		free(buf);
 		ft_strdel(&(shell->history.first_command));
@@ -134,6 +134,7 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 	add_to_history(g_pos.str, &(shell->history));
 	free(buf);
 	*dest = g_pos.str;
+	signal(SIGWINCH, SIG_DFL);
 	return (ret > 0 ? 1 : ret);
 }
 

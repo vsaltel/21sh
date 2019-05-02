@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:44:56 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 18:25:22 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int		bslash_error(t_shell *shell, char **input, int ret)
 	char	*ninput;
 	char	*tmp;
 
-	g_ignore_signals = 1;
-	write(1, "> ", 2);
+	g_ignore_signals = 3;
+	prompt();
 	if (!(ret = get_input(0, &ninput, shell)))
 	{
 		if (g_ignore_signals)
@@ -33,6 +33,7 @@ int		bslash_error(t_shell *shell, char **input, int ret)
 	free(*input);
 	free(ninput);
 	*input = tmp;
+	g_ignore_signals = 0;
 	return (0);
 }
 
@@ -41,8 +42,8 @@ int		quote_error(t_shell *shell, char **input, int ret)
 	char	*ninput;
 	char	*tmp;
 
-	g_ignore_signals = 1;
-	ret ? write(1, "dquote> ", 8) : write(1, "quote> ", 7);
+	g_ignore_signals = ret == -3 ? 2 : 1;
+	prompt();
 	if (!(ret = get_input(0, &ninput, shell)))
 	{
 		if (g_ignore_signals)
@@ -58,6 +59,7 @@ int		quote_error(t_shell *shell, char **input, int ret)
 	free(*input);
 	free(ninput);
 	*input = tmp;
+	g_ignore_signals = 0;
 	return (0);
 }
 
@@ -82,10 +84,16 @@ int		handle_input(t_shell *shell, char **input)
 	while ((ret = lex(*input, &(shell->lexer))) < 1)
 	{
 		destroy_lexer(&(shell->lexer));
-		if ((ret == -3 || ret == -2) && (ret = quote_error(shell, input, ret)))
-			return (ret);
-		else if (ret == -4 && (ret = bslash_error(shell, input, ret)))
-			return (ret);
+		if (ret == -3 || ret == -2)
+		{
+			if ((ret = quote_error(shell, input, ret)))
+				return (ret);
+		}
+		else if (ret == -4)
+		{
+			if ((ret = bslash_error(shell, input, ret)))
+				return (ret);
+		}
 		else
 			return (ret);
 	}
