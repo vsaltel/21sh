@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 15:02:48 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 20:43:10 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,6 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 	int				ret;
 	char			*buf;
 
-	if (!memset_all(&(g_pos.str), &(shell->history), &g_pos))
-		return (-1);
-	signal(SIGWINCH, &resize);
 	while ((ret = read_all(fd, &buf)))
 	{
 		if (ret == -1
@@ -119,13 +116,13 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 		else
 			new_entry(&(g_pos.str), buf, &g_pos, &(shell->history));
 		free(buf);
-/*
+		/*
 		int i;
 		i = -1;
 		move_cursor(0, 0);
-		ft_printf("x = %d, y = %d x_rel = %d\nx_lastc = %d, y_lastc = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d\n, search = %d, s_str = %s", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_lastc, g_pos.y_lastc, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg, g_pos.search_mode, g_pos.s_str);
+		ft_printf("x = %d, y = %d x_rel = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d\n, search = %d, s_str = %s", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg, g_pos.search_mode, g_pos.s_str);
 		move_cursor(g_pos.x, g_pos.y);
-*/
+		*/
 	}
 	final_position(&g_pos);
 	ft_strdel(&g_pos.s_str);
@@ -134,7 +131,6 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 	add_to_history(g_pos.str, &(shell->history));
 	free(buf);
 	*dest = g_pos.str;
-	signal(SIGWINCH, SIG_DFL);
 	return (ret > 0 ? 1 : ret);
 }
 
@@ -144,7 +140,13 @@ int			get_input(int fd, char **dest, t_shell *shell)
 
 	*dest = NULL;
 	if (shell->able_termcaps)
+	{
+		if (!memset_all(&(g_pos.str), &(shell->history), &g_pos))
+			return (-1);
+		signal(SIGWINCH, &resize);
 		ret = termcaps_gnl(fd, dest, shell);
+		signal(SIGWINCH, SIG_DFL);
+	}
 	else
 	{
 		ret = get_next_line(fd, dest);

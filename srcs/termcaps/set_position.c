@@ -6,66 +6,38 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 15:30:55 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/02 20:33:17 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void			move_cursor(size_t x, size_t y)
+static void		move_pos(char *str, t_cursor_pos *pos, int len_dest)
 {
-	char	*tmp;
-	char	*tmp2;
-
-	tmp = tgetstr("cm", NULL);
-	tmp2 = tgoto(tmp, x, y);
-	tputs(tmp2, 1, ft_putchar);
-}
-
-static void		move_prev_line(size_t *x, size_t *y, size_t x_dest)
-{
-	(*y)--;
-	(*x) = x_dest;
-}
-
-void			move_pos(t_cursor_pos *pos, size_t len, size_t len_dest)
-{
-	if (pos->x_lastc == pos->x_max || pos->x_lastc + len > pos->x_max)
-	{
-		pos->y_lastc += (pos->x_lastc + 1 + len) / (pos->x_max + 1);
-		pos->x_lastc = ((pos->x_lastc + 1 + len) % (pos->x_max + 1)) - 1;
-		if (pos->x_lastc == (size_t)-1)
-			move_prev_line(&pos->x_lastc, &pos->y_lastc, pos->x_max);
-	}
-	else
-		pos->x_lastc += len;
+	pos->len_str = ft_strlen(str);
+	if (len_dest < 0)
+		len_dest = 0;
+	else if (len_dest > pos->len_str)
+		len_dest = pos->len_str;
+	pos->x_rel = len_dest;
+	pos->x = pos->x_min;
+	pos->y = (pos->y_min >= 0 ? pos->y_min : 0);
 	if (pos->x == pos->x_max || pos->x + len_dest > pos->x_max)
 	{
 		pos->y += (pos->x + 1 + len_dest) / (pos->x_max + 1);
 		pos->x = ((pos->x + 1 + len_dest) % (pos->x_max + 1)) - 1;
-		if (pos->x == (size_t)-1)
-			move_prev_line(&pos->x, &pos->y, pos->x_max);
+		if (pos->x == -1)
+		{
+			pos->y--;
+			pos->x = pos->x_max;
+		}
 	}
 	else
 		pos->x += len_dest;
 	move_cursor(pos->x, pos->y);
-	pos->x_rel += len_dest;
 }
 
-void			final_position(t_cursor_pos *pos)
-{
-	if (pos->y_lastc == pos->y_max - 1)
-	{
-		move_cursor(0, pos->y_lastc);
-		tputs(tgetstr("do", NULL), 1, ft_putchar);
-		move_cursor(0, pos->y_lastc);
-	}
-	else
-		move_cursor(0, pos->y_lastc + 1);
-	tputs(tgetstr("cd", NULL), 1, ft_putchar);
-}
-
-void			last_line(char *str, t_cursor_pos *pos)
+static void		last_line(char *str, t_cursor_pos *pos)
 {
 	size_t	len;
 	size_t	i;
@@ -86,4 +58,35 @@ void			last_line(char *str, t_cursor_pos *pos)
 		pos->y_min -= len;
 		move_cursor(0, pos->y_min);
 	}
+}
+
+void			reprint(char *str, t_cursor_pos *pos, int cursor_pos)
+{
+	move_cursor(0, (pos->y_min >= 0 ? pos->y_min : 0));
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
+	last_line(str, pos);
+	prompt();
+	if (pos->visual_mode)
+		visual_print(str, pos);
+	else
+		write(1, str, ft_strlen(str));
+	if (pos->search_mode)
+		ft_printf("\nhistory_search: %s_", pos->s_str);
+	move_pos(str, pos, cursor_pos);
+}
+
+void			final_position(t_cursor_pos *pos)
+{
+	size_t	len;
+
+	len = (pos->x_min + pos->len_str + 1) / (pos->x_max + 1);
+	if (len + pos->y_min >= pos->y_max - 1)
+	{
+		move_cursor(0, pos->y_max - 1);
+		tputs(tgetstr("do", NULL), 1, ft_putchar);
+		move_cursor(0, pos->y_max - 1);
+	}
+	else
+		move_cursor(0, len + pos->y_min + 1);
+	tputs(tgetstr("cd", NULL), 1, ft_putchar);
 }

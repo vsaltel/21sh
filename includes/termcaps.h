@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 16:07:10 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 20:28:59 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ typedef struct	s_history
 typedef struct	s_cursor_pos
 {
 	char				*str;
-	size_t				x;
-	size_t				y;
-	size_t				x_min;
-	size_t				x_max;
-	size_t				x_lastc;
-	size_t				y_lastc;
-	size_t				x_rel;
-	size_t				y_min;
-	size_t				y_max;
+	int					len_str;
+	int					x;
+	int					y;
+	int					x_rel;
+	int					x_min;
+	int					x_max;
+	int					y_min;
+	int					y_max;
 	int					compl;
 	char				*o_input;
 	size_t				opos;

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 14:41:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 16:37:15 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 20:24:11 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,17 @@ void	prompt(void)
 		ft_printf("dquote> ");
 	else if (g_ignore_signals == 3)
 		ft_printf("> ");
+}
+
+int		prompt_len(void)
+{
+	if (g_ignore_signals == 0)
+		return (ft_strlen("$> "));
+	else if (g_ignore_signals == 1)
+		return (ft_strlen("quote> "));
+	else if (g_ignore_signals == 2)
+		return (ft_strlen("dquote> "));
+	else if (g_ignore_signals == 3)
+		return (ft_strlen("> "));
+	return (0);
 }

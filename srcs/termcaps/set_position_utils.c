@@ -6,76 +6,41 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 18:12:07 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/02 20:37:46 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void			reprint(char *str, t_cursor_pos *pos, size_t cursor_pos)
+void			move_cursor(int x, int y)
 {
-	move_cursor(0, ((int)pos->y_min >= 0 ? pos->y_min : 0));
-	tputs(tgetstr("cd", NULL), 1, ft_putchar);
-	last_line(str, pos);
-	prompt();
-	if (pos->visual_mode)
-		visual_print(str, pos);
-	else
-		write(1, str, ft_strlen(str));
-	pos->x = pos->x_min;
-	pos->x_lastc = pos->x_min;
-	pos->y = (int)pos->y_min >= 0 ? pos->y_min : 0;
-	pos->y_lastc = (int)pos->y_min >= 0 ? pos->y_min : 0;
-	pos->x_rel = 0;
-	move_pos(pos, ft_strlen(str), cursor_pos);
-	if (pos->search_mode)
-	{
-		move_cursor(0, pos->y_lastc + 1);
-		ft_printf("history_search: %s_", pos->s_str);
-		move_cursor(pos->x, pos->y);
-	}
-}
+	char	*tmp;
+	char	*tmp2;
 
-static void		get_pos_rest(char *buf, t_cursor_pos *pos, int i)
-{
-	int pow;
-
-	pow = 1;
-	while (buf[--i] != ';')
-	{
-		pos->x = pos->x + (buf[i] - '0') * pow;
-		pow = pow * 10;
-	}
-	pow = 1;
-	while (buf[--i] != '[')
-	{
-		pos->y = pos->y + (buf[i] - '0') * pow;
-		pow = pow * 10;
-	}
+	tmp = tgetstr("cm", NULL);
+	tmp2 = tgoto(tmp, x, y);
+	tputs(tmp2, 1, ft_putchar);
 }
 
 int				get_pos(t_cursor_pos *pos)
 {
 	int		i;
-	char	c;
-	char	buf[30];
+	char	buf[17];
 
-	c = '\0';
-	pos->x = 0;
-	pos->y = 0;
-	ft_memset(buf, '\0', 30);
-	i = 0;
 	write(1, "\033[6n", 4);
-	while (c != 'R')
+	if ((i = read(0, buf, 16)) <= 0)
+		return (0);
+	buf[i] = 0;
+	i = 0;
+	while (buf[i])
 	{
-		read(0, &c, 1);
-		buf[i++] = c;
+		if (buf[i] == '[')
+			pos->y = ft_atoi(&buf[i + 1]) - 1;
+		if (buf[i] == ';')
+			pos->x = ft_atoi(&buf[i + 1]) - 1;
+		i++;
 	}
-	if (i-- < 2)
-		return (1);
-	get_pos_rest(buf, pos, i);
-	move_cursor(--(pos->x), --(pos->y));
-	return (0);
+	return (1);
 }
 
 int				memset_pos(t_cursor_pos *pos)
@@ -83,11 +48,16 @@ int				memset_pos(t_cursor_pos *pos)
 	struct winsize	w;
 
 	ioctl(0, TIOCGWINSZ, &w);
-	if (get_pos(pos))
+	if (!get_pos(pos))
+	{
+		move_cursor(0, 0);
+		tputs(tgetstr("cd", NULL), 1, ft_putchar);
+		pos->y = 0;
+		pos->x = prompt_len();
 		return (0);
+	}
+	pos->len_str = 0;
 	pos->x_min = pos->x;
-	pos->x_lastc = pos->x;
-	pos->y_lastc = pos->y;
 	pos->x_rel = 0;
 	pos->x_max = w.ws_col - 1;
 	pos->y_min = pos->y;
