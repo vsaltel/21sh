@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/01 16:05:22 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/02 14:07:30 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc -g3
 #CFLAGS	+=	-Wall -Werror -Wextra -g3
-CFLAGS	+= -g3 -fsanitize=address
+#CFLAGS	+= -g3 -fsanitize=address
 
 SHELL	=	bash
 
@@ -82,6 +82,7 @@ FILES 	=	main.c									\
 			ast/build_args.c						\
 			ast/redirections.c						\
 			ast/destroy_ast.c						\
+			ast/create_cmd.c						\
 			exec_utils.c							\
 			env/build_env.c							\
 			env/copy_env.c							\
@@ -91,6 +92,7 @@ FILES 	=	main.c									\
 			env/free_env.c							\
 			env/get_enve.c							\
 			env/new_envl.c							\
+			env/dup_env.c							\
 			builtins.c								\
 			builtins_errors.c						\
 			builtins/env.c							\

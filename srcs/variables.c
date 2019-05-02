@@ -6,17 +6,17 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 13:02:03 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 13:57:02 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static char	*handle_var(t_shell *shell, char *var_name)
+static char	*handle_var(t_env *env, char *var_name)
 {
 	t_env	*var;
 
-	var = get_enve(shell->env, var_name);
+	var = get_enve(env, var_name);
 	if (var_name[0] == '?')
 		return (ft_itoa(g_return));
 	else if (!var)
@@ -36,7 +36,7 @@ static void	fill_new(char **new, char *tmp)
 	free(tmp);
 }
 
-static void	parse_token(t_token *token, char *str, t_shell *shell)
+static void	parse_token(t_token *token, char *str, t_env *env)
 {
 	char	*new;
 	char	*tmp;
@@ -51,26 +51,26 @@ static void	parse_token(t_token *token, char *str, t_shell *shell)
 		if (!(str[i] == '$' && !is_escaped(str, i, 0)))
 			continue ;
 		fill_new(&new, ft_strndup(str + li, i - li));
-		tmp = handle_var(shell,
+		tmp = handle_var(env,
 					ft_strndup(str + i + 1, get_var_size(str + i)));
 		if (tmp)
 			fill_new(&new, tmp);
 		i += get_var_size(str + i);
 		li = i + 1;
 	}
-	if (i > li)
+	if (new && i > li)
 		fill_new(&new, ft_strndup(str + li, i - li));
 	new ? token->content = new : 0;
 	new ? token->len = ft_strlen(new) : 0;
 }
 
-int			replace_vars(t_token *token, t_shell *shell)
+int			replace_vars(t_token *token, t_env *env)
 {
 	while (token && is_word_token(token))
 	{
-		parse_token(token, token->content, shell);
+		parse_token(token, token->content, env);
 		if (token->type == TOKEN_NAME && token->content[0] == '~')
-			if (!(handle_home(token, shell->env)))
+			if (!(handle_home(token, env)))
 				return (0);
 		token = token->next;
 	}

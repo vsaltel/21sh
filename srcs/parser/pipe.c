@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 18:27:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 12:56:03 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 	{
 		if (pipeline->next)
 			pipe(np);
-		get_here_doc(pipeline->cmd->redir);
+		get_here_doc(pipeline->cmd->redir, shell);
 		execute_pipe_cmd(pipeline, op, np, shell);
 		if (pipeline->next)
 			copy_fd(op, np);

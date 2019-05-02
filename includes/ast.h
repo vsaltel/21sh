@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:50:15 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/15 16:45:19 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 13:45:30 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_cmd
 	char			**args;
 	int				argc;
 	t_redirect		*redir;
+	int				allow_builtins : 1;
 }					t_cmd;
 
 typedef struct		s_anode

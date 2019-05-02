@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 11:24:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 14:03:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 12:58:28 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,28 @@ static void	write_doc(int p[], char **str)
 	ft_strdel(str);
 }
 
-void		get_here_doc(t_redirect *redir)
+void		get_here_doc(t_redirect *redir, t_shell *shell)
 {
 	int		ret;
 	char	*buf;
 	char	*res;
 
 	res = ft_strnew(0);
+	g_ignore_signals = 3;
 	while (redir && redir->type == TOKEN_REDIRI && redir->append)
 	{
-		write(1, "> ", 2);
-		while ((ret = get_input(0, &buf, NULL)))
+		prompt();
+		while ((ret = get_input(0, &buf, shell)))
 		{
 			if (ft_strcmp(buf, redir->value->content) == 0)
 				break ;
 			res = ft_strjointf(res, buf, "\n");
-			write(1, "> ", 2);
+			prompt();
 		}
 		write_doc(redir->p, &res);
 		redir = redir->next;
 	}
+	g_ignore_signals = 0;
 	ft_strdel(&res);
 }
 

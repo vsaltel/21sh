@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 18:10:15 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:12:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,13 @@ int			get_input(int fd, char **dest, t_shell *shell)
 	if (shell->able_termcaps)
 		ret = termcaps_gnl(fd, dest, shell);
 	else
+	{
 		ret = get_next_line(fd, dest);
+		if (g_clear_buffer)
+		{
+			ft_strdel(dest);
+			g_clear_buffer = 0;
+		}
+	}
 	return (ret);
 }

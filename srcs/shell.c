@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 18:25:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 13:53:32 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,6 @@ int		quote_error(t_shell *shell, char **input, int ret)
 	return (0);
 }
 
-void 	disp_tokens(t_lexer *lexer)
-{
-	ft_printf("Size: %d - Final State: %d\n", lexer->size, lexer->state);
-
-	t_token *cur = lexer->tokens;
-	while (cur)
-	{
-		ft_printf("(%d = %s)\n", cur->type, cur->content);
-		cur = cur->next;
-	}
-}
-
 int		handle_input(t_shell *shell, char **input)
 {
 	int		ret;
@@ -97,7 +85,6 @@ int		handle_input(t_shell *shell, char **input)
 		else
 			return (ret);
 	}
-	//disp_tokens(&(shell->lexer));
 	return (0);
 }
 
@@ -135,7 +122,7 @@ int		shell(t_shell *shell)
 	}
 	if (input)
 		ft_strdel(&input);
-	ft_putchar('\n');
+	isatty(0) ? ft_putchar('\n') : 0;
 	free_env(&(shell->env));
 	ht_delete(shell);
 	overwrite_history(shell->history.lst);

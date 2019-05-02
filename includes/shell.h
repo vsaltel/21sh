@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 18:27:08 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 14:07:07 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void				destroy_tokens(t_token *token);
 int					is_word_token(t_token *token);
 
 int					build_ast(t_shell *shell, t_anode **ast);
-int					build_args(t_cmd *cmd, t_shell *shell);
+int					build_args(t_cmd *cmd, t_env *env);
 void				destroy_ast(t_shell *shell);
 
 int					parse(t_shell *shell, t_anode *ast);
@@ -89,7 +89,7 @@ t_pipel				*build_pipeline(t_anode *node, t_shell *shell,
 t_redirect			*parse_redirections(t_token *tok, int offset);
 void				del_pipeline(t_pipel *pline);
 void				handle_redirections(t_redirect *redir, t_shell *shell);
-void				get_here_doc(t_redirect *redir);
+void				get_here_doc(t_redirect *redir, t_shell *shell);
 void				apply_here_doc(t_redirect *redir);
 void				close_here_docs(t_redirect *redir);
 
@@ -104,6 +104,7 @@ t_env				*copy_env(char **envp, int inc);
 int					disp_env(t_env *env);
 t_env				*get_enve(t_env *env, char *key);
 t_env				*new_envl(t_env **env, char *key, char *value, int inc);
+t_env				*dup_env(t_env *env, int option);
 int					delete_env(t_env **env, char *key);
 char				**build_env(t_env *env);
 void				free_env(t_env **env);
@@ -111,13 +112,14 @@ int					disp_free_env(t_env **env);
 size_t				count_env(t_env *env);
 char				**dup_argv(int argc, char **args, char ***argv);
 
-int					replace_vars(t_token *curr, t_shell *shell);
+int					replace_vars(t_token *curr, t_env *env);
 size_t				get_var_size(char *key);
 int					handle_home(t_token *token, t_env *env);
 
 char				*get_exe(t_shell *shell, char *name, int verbose);
 int					is_exe(t_shell *shell, char *name, int verbose);
 int					execute(t_cmd *cmd, t_shell *shell);
+int					execute_env(t_cmd *cmd, t_env *env, t_shell *shell);
 int					handle_builtin(t_cmd *cmd, t_shell *shell);
 int					is_builtin(char *name);
 int					b_env(t_cmd *cmd, t_shell *shell);
