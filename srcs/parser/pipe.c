@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 12:56:03 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:23:35 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 	t_cmd	*cmd;
 
 	cmd = pline->cmd;
-	if ((pline->previous && is_builtin(cmd->exe->content))
-							|| !is_exe(shell, cmd->exe->content, 1))
+	if ((pline->previous && is_builtin(cmd->exe->content)))
 		return (1);
+	if (!is_exe(shell, cmd->exe->content, 1))
+		return (-1);
 	if ((g_child = fork()) == 0)
 	{
 		unregister_signals();
-		restore_shell(shell->prev_term);
+		shell->able_termcaps ? restore_shell(shell->prev_term) : 0;
 		init_fd(pline, op, np, shell);
 		if (execve(get_exe(shell, cmd->exe->content, 1),
 								cmd->args, build_env(shell->env)) == -1)
@@ -85,9 +86,10 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 		pipeline = pipeline->next;
 	}
 	waitpid(g_child, &ret, 0);
-	g_return = WIFSIGNALED(ret) ? 128 + ret : ret;
+	g_return = WIFSIGNALED(ret) ? ret + 128
+										: WEXITSTATUS(ret);
 	del_pipeline(pipeline);
 	g_child = 0;
-	termcaps_init(NULL);
+	shell->able_termcaps ? termcaps_init(NULL) : 0;
 	return (g_return);
 }

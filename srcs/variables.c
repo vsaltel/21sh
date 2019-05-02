@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 13:57:02 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/02 17:50:42 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 
 static char	*handle_var(t_env *env, char *var_name)
 {
+	char	*ret;
 	t_env	*var;
 
+	ret = NULL;
 	var = get_enve(env, var_name);
 	if (var_name[0] == '?')
-		return (ft_itoa(g_return));
+		ret = ft_itoa(g_return);
 	else if (!var)
-		return (NULL);
+		ret = NULL;
 	else
-		return (ft_strdup(var->value));
+		ret = ft_strdup(var->value);
+	free(var_name);
+	return (ret);
 }
 
 static void	fill_new(char **new, char *tmp)
@@ -34,6 +38,13 @@ static void	fill_new(char **new, char *tmp)
 	else
 		*new = ft_strdup(tmp);
 	free(tmp);
+}
+
+static void	replace_token(t_token *token, char *str)
+{
+	free(token->content);
+	token->content = str;
+	token->len = ft_strlen(str);
 }
 
 static void	parse_token(t_token *token, char *str, t_env *env)
@@ -53,15 +64,12 @@ static void	parse_token(t_token *token, char *str, t_env *env)
 		fill_new(&new, ft_strndup(str + li, i - li));
 		tmp = handle_var(env,
 					ft_strndup(str + i + 1, get_var_size(str + i)));
-		if (tmp)
-			fill_new(&new, tmp);
+		(tmp) ? fill_new(&new, tmp) : 0;
 		i += get_var_size(str + i);
 		li = i + 1;
 	}
-	if (new && i > li)
-		fill_new(&new, ft_strndup(str + li, i - li));
-	new ? token->content = new : 0;
-	new ? token->len = ft_strlen(new) : 0;
+	(new && i > li) ? fill_new(&new, ft_strndup(str + li, i - li)) : 0;
+	new ? replace_token (token , new) : 0;
 }
 
 int			replace_vars(t_token *token, t_env *env)
