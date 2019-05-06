@@ -6,13 +6,14 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 14:21:20 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 12:50:25 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/06 13:01:21 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char			*ft_strfnjoin(char const *s1, char const *s2, size_t n, char const *f)
+char			*ft_strfnjoin(char const *s1, char const *s2,
+		size_t n, char const *f)
 {
 	char	*dst;
 

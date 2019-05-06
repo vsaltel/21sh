@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 20:33:17 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/06 16:04:03 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		move_pos(char *str, t_cursor_pos *pos, int len_dest)
 		len_dest = pos->len_str;
 	pos->x_rel = len_dest;
 	pos->x = pos->x_min;
-	pos->y = (pos->y_min >= 0 ? pos->y_min : 0);
+	pos->y = pos->y_min;
 	if (pos->x == pos->x_max || pos->x + len_dest > pos->x_max)
 	{
 		pos->y += (pos->x + 1 + len_dest) / (pos->x_max + 1);
@@ -34,13 +34,15 @@ static void		move_pos(char *str, t_cursor_pos *pos, int len_dest)
 	}
 	else
 		pos->x += len_dest;
+	pos->y = pos->y < 0 ? 0 : pos->y;
 	move_cursor(pos->x, pos->y);
+	pos->y_min = pos->y_min < 0 ? 0 : pos->y_min;
 }
 
 static void		last_line(char *str, t_cursor_pos *pos)
 {
-	size_t	len;
-	size_t	i;
+	long	len;
+	long	i;
 
 	if (pos->search_mode)
 		len = (pos->x_min + ft_strlen(str) +
@@ -56,7 +58,7 @@ static void		last_line(char *str, t_cursor_pos *pos)
 		while (++i < len)
 			tputs(tgetstr("sf", NULL), 1, ft_putchar);
 		pos->y_min -= len;
-		move_cursor(0, pos->y_min);
+		move_cursor(0, pos->y_min < 0 ? 0 : pos->y_min);
 	}
 }
 
@@ -77,7 +79,7 @@ void			reprint(char *str, t_cursor_pos *pos, int cursor_pos)
 
 void			final_position(t_cursor_pos *pos)
 {
-	size_t	len;
+	long	len;
 
 	len = (pos->x_min + pos->len_str + 1) / (pos->x_max + 1);
 	if (len + pos->y_min >= pos->y_max - 1)
