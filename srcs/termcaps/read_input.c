@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 20:43:10 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/07 15:19:29 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,6 @@ static int	read_all(int fd, char **dest)
 		if (ret == -1)
 			break ;
 		buf[ret] = '\0';
-		/*
-		int i;
-		i = -1;
-		move_cursor(10, 10);
-		while (buf[++i])
-			ft_printf("%d |", buf[i]);
-		*/
 		if (!str)
 			str = ft_strdup(buf);
 		else
@@ -45,9 +38,6 @@ static int	read_all(int fd, char **dest)
 void		new_entry(char **str, char *buf, t_cursor_pos *pos
 		, t_history *histo)
 {
-	char *l;
-	char *r;
-
 	histo->pos = 0;
 	pos->compl = 0;
 	if (pos->search_mode)
@@ -63,12 +53,8 @@ void		new_entry(char **str, char *buf, t_cursor_pos *pos
 		return (reprint(*str, pos, pos->x_rel));
 	}
 	else if ((*str)[pos->x_rel])
-	{
-		l = ft_strndup(*str, pos->x_rel);
-		r = ft_strjoin(buf, *str + pos->x_rel);
-		*str = ft_strfjoin(l, r, *str);
-		ft_multifree(&l, &r, NULL);
-	}
+		*str = ft_strjoinf(ft_strndup(*str, pos->x_rel),
+				ft_strfjoin(buf, *str + pos->x_rel, *str));
 	else
 		*str = ft_strfjoin(*str, buf, *str);
 	reprint(*str, pos, pos->x_rel + ft_strlen(buf));
@@ -116,13 +102,6 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 		else
 			new_entry(&(g_pos.str), buf, &g_pos, &(shell->history));
 		free(buf);
-		/*
-		int i;
-		i = -1;
-		move_cursor(0, 0);
-		ft_printf("x = %d, y = %d x_rel = %d\nx_max = %d, y_max = %d\nvisual = %d, v_beg = %d\n, search = %d, s_str = %s", g_pos.x, g_pos.y, g_pos.x_rel, g_pos.x_max, g_pos.y_max, g_pos.visual_mode, g_pos.v_beg, g_pos.search_mode, g_pos.s_str);
-		move_cursor(g_pos.x, g_pos.y);
-		*/
 	}
 	final_position(&g_pos);
 	ft_strdel(&g_pos.s_str);
