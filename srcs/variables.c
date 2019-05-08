@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 17:50:42 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/07 14:57:33 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	parse_token(t_token *token, char *str, t_env *env)
 		li = i + 1;
 	}
 	(new && i > li) ? fill_new(&new, ft_strndup(str + li, i - li)) : 0;
-	new ? replace_token (token , new) : 0;
+	new ? replace_token(token, new) : 0;
 }
 
 int			replace_vars(t_token *token, t_env *env)

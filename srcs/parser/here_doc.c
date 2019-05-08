@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 11:24:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 12:58:28 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/07 18:25:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static void	write_doc(int p[], char **str)
 
 void		get_here_doc(t_redirect *redir, t_shell *shell)
 {
-	int		ret;
 	char	*buf;
 	char	*res;
 
@@ -47,13 +46,16 @@ void		get_here_doc(t_redirect *redir, t_shell *shell)
 	g_ignore_signals = 3;
 	while (redir && redir->type == TOKEN_REDIRI && redir->append)
 	{
-		prompt();
-		while ((ret = get_input(0, &buf, shell)))
+		while (g_ignore_signals && (get_input(0, &buf, shell) || 1))
 		{
-			if (ft_strcmp(buf, redir->value->content) == 0)
+			if (!buf)
+			{
+				ft_putchar('\n');
 				break ;
-			res = ft_strjointf(res, buf, "\n");
-			prompt();
+			}
+			else if (ft_strcmp(buf, redir->value->content) == 0)
+				break ;
+			res = ft_strjointf(res, buf, ft_strdup("\n"));
 		}
 		write_doc(redir->p, &res);
 		redir = redir->next;

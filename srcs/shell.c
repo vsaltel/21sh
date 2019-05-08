@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 17:05:13 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/07 18:25:02 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int		bslash_error(t_shell *shell, char **input, int ret)
 	char	*tmp;
 
 	g_ignore_signals = 3;
-	prompt();
 	if (!(ret = get_input(0, &ninput, shell)))
 	{
 		if (g_ignore_signals)
@@ -43,7 +42,6 @@ int		quote_error(t_shell *shell, char **input, int ret)
 	char	*tmp;
 
 	g_ignore_signals = ret == -3 ? 2 : 1;
-	prompt();
 	if (!(ret = get_input(0, &ninput, shell)))
 	{
 		if (g_ignore_signals)
@@ -114,12 +112,8 @@ int		shell(t_shell *shell)
 
 	shell->lexer.tokens = NULL;
 	shell->lexer.state = ST_GENERAL;
-	prompt();
 	while ((get_input(0, &input, shell)) > 0)
-	{
 		g_return = eval_exec(shell, &input);
-		prompt();
-	}
 	if (input)
 		ft_strdel(&input);
 	isatty(0) ? ft_putchar('\n') : 0;

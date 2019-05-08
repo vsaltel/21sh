@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 20:37:46 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/07 18:11:59 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ int				get_pos(t_cursor_pos *pos)
 	return (1);
 }
 
+static void		check_cursor_pos(t_cursor_pos *pos)
+{
+	if (pos->x > 0)
+		ft_putchar('\n');
+	prompt();
+	get_pos(pos);
+}
+
 int				memset_pos(t_cursor_pos *pos)
 {
 	struct winsize	w;
@@ -56,6 +64,7 @@ int				memset_pos(t_cursor_pos *pos)
 		pos->x = prompt_len();
 		return (0);
 	}
+	check_cursor_pos(pos);
 	pos->len_str = 0;
 	pos->x_min = pos->x;
 	pos->x_rel = 0;

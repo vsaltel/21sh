@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ht_get.c                                           :+:      :+:    :+:   */
+/*   ht_delone.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/01 14:10:30 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 15:28:18 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/07 15:18:09 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/07 15:35:07 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-char	*ht_get(t_shell *shell, char *key)
+int		ht_delone(char *key, t_shell *shell)
 {
 	int hash;
 
 	if (!shell->bin_ht.table)
-		return (NULL);
+		return (0);
 	hash = ht_hash(shell->bin_ht.size, key);
 	if (shell->bin_ht.table[hash].key)
 	{
-		if (access(shell->bin_ht.table[hash].value, F_OK)
-						|| access(shell->bin_ht.table[hash].value, X_OK))
-		{
-			ht_delone(key, shell);
-			return (NULL);
-		}
-		return (ft_strdup(shell->bin_ht.table[hash].value));
+		free(shell->bin_ht.table[hash].key);
+		shell->bin_ht.table[hash].key = NULL;
+		free(shell->bin_ht.table[hash].value);
+		shell->bin_ht.table[hash].value = NULL;
+		return (1);
 	}
-	return (NULL);
+	return (0);
 }

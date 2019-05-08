@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/06 15:07:11 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/07 16:37:08 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,17 +73,18 @@ FILES 	=	main.c									\
 			parser/here_doc.c						\
 			parser/hashtable/ht_create.c			\
 			parser/hashtable/ht_hash.c				\
+			parser/hashtable/ht_delone.c			\
 			parser/hashtable/ht_delete.c			\
 			parser/hashtable/ht_put.c				\
 			parser/hashtable/ht_get.c				\
 			parser/hashtable/ht_exists.c			\
+			parser/exec_utils.c						\
 			ast/build_ast.c							\
 			ast/create_node.c						\
 			ast/build_args.c						\
 			ast/redirections.c						\
 			ast/destroy_ast.c						\
 			ast/create_cmd.c						\
-			exec_utils.c							\
 			env/build_env.c							\
 			env/copy_env.c							\
 			env/count_env.c							\
@@ -93,8 +94,8 @@ FILES 	=	main.c									\
 			env/get_enve.c							\
 			env/new_envl.c							\
 			env/dup_env.c							\
-			builtins.c								\
-			builtins_errors.c						\
+			builtins/builtins.c						\
+			builtins/builtins_errors.c				\
 			builtins/env.c							\
 			builtins/setenv.c						\
 			builtins/unsetenv.c						\
@@ -166,6 +167,7 @@ re: fclean
 	@$(MAKE)
 
 norm:
-	@norminette $(INCDIR) $(SRCDIR)
+	@norminette $(INCDIR) $(SRCDIR) | grep "Warning\|Error" || true
+	@echo "Norm done!"
 
 -include $(OBJSD)

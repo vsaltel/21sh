@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 15:58:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/26 15:14:44 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/07 18:22:49 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,23 @@
 
 static char		*get_path(char *word)
 {
+	char	*search;
 	size_t	i;
 
-	i = ft_strlen(word);
-	while (i)
-	{
-		if (word[i] == '/')
-			return (ft_strndup(word, i));
-		i--;
-	}
-	return (ft_strdup("."));
+	if (ft_strequ(word, "/"))
+		return (ft_strdup("/"));
+	if (!(search = ft_strrchr(word, '/')))
+		return (ft_strdup("."));
+	return (ft_strndup(word, search - word + 1));
 }
 
-static size_t	get_file_start(char *word)
+static char		*get_file_start(char *word)
 {
-	size_t	i;
+	char	*search;
 
-	i = ft_strlen(word);
-	while (i)
-	{
-		if (word[i] == '/')
-			return (i + 1);
-		i--;
-	}
-	return (0);
+	if (!(search = ft_strrchr(word, '/')))
+		return (word);
+	return (search + 1);
 }
 
 static int		complete_file(char **str, char *word,
@@ -46,14 +39,17 @@ static int		complete_file(char **str, char *word,
 	char	*tmp;
 	char	*path;
 
-	path = get_path(word);
-	tmp = ft_strjoint(path, "/", dirc->d_name);
-	if (ft_strnequ(word, ".", 1) || ft_strcmp(path, "."))
+	if (!(path = get_path(word)))
+		return (0);
+	if (path[ft_strlen(path) - 1] == '/')
+		tmp = ft_strjoin(path, dirc->d_name);
+	else if (ft_strnequ(word, ".", 1) || ft_strcmp(path, "."))
 		tmp = ft_strjoint(path, "/", dirc->d_name);
 	else
 		tmp = dirc->d_name;
 	include_word(tmp, str, pos);
 	(ft_strnequ(word, ".", 1) || ft_strcmp(path, ".")) ? free(tmp) : 0;
+	free(path);
 	return (1);
 }
 
@@ -62,24 +58,26 @@ int				complete_files(t_compl_info *ci)
 	DIR				*dirp;
 	struct dirent	*dirc;
 	char			*file;
+	char			*path;
 
-	file = ci->word + get_file_start(ci->word);
-	if ((dirp = opendir(get_path(ci->word))))
-	{
-		while ((dirc = readdir(dirp)))
-			if (dirc->d_name[0] != '.')
-				if (ft_strnequ(dirc->d_name, file, ft_strlen(file)))
+	file = get_file_start(ci->word);
+	path = get_path(ci->word);
+	(dirp = opendir(path)) ? free(path) : free(path);
+	if (!dirp)
+		return (0);
+	while ((dirc = readdir(dirp)))
+		if (dirc->d_name[0] != '.')
+			if (ft_strnequ(dirc->d_name, file, ft_strlen(file)))
+			{
+				if (ci->index == 0)
 				{
-					if (ci->index == 0)
-					{
-						complete_file(ci->str, ci->word, dirc, ci->pos);
-						closedir(dirp);
-						return (1);
-					}
-					else
-						ci->index--;
+					complete_file(ci->str, ci->word, dirc, ci->pos);
+					closedir(dirp);
+					return (1);
 				}
-		closedir(dirp);
-	}
+				else
+					ci->index--;
+			}
+	closedir(dirp);
 	return (0);
 }

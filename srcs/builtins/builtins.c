@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:03:28 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 14:40:15 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/07 14:58:14 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ const t_builtin g_builtins[] =
 	{ NULL, NULL }
 };
 
-int		is_builtin(char *name)
+int					is_builtin(char *name)
 {
 	size_t	i;
 
@@ -39,21 +39,51 @@ int		is_builtin(char *name)
 	return (0);
 }
 
-int		handle_builtin(t_cmd *cmd, t_shell *shell)
+static t_builtin	get_builtin(char *name)
 {
-	size_t	i;
-	int		argc;
-	char	**tmp;
+	const	t_builtin	nbuiltin = { NULL, NULL };
+	size_t				i;
 
 	i = 0;
-	if (!cmd->exe->content)
-		return (-1);
 	while (g_builtins[i].name)
 	{
-		if (ft_strcmp(cmd->exe->content, g_builtins[i].name) == 0
+		if (ft_strcmp(name, g_builtins[i].name) == 0
 												&& g_builtins[i].func)
-			return (g_builtins[i].func(cmd, shell));
+			return (g_builtins[i]);
 		i++;
 	}
-	return (-1);
+	return (nbuiltin);
+}
+
+static void			end_redir(int fd[])
+{
+	dup2(fd[0], 0);
+	dup2(fd[1], 1);
+	dup2(fd[2], 2);
+	close(fd[0]);
+	close(fd[1]);
+	close(fd[2]);
+}
+
+int					handle_builtin(t_cmd *cmd, t_shell *shell)
+{
+	t_builtin	builtin;
+	int			ret;
+	int			fd[3];
+
+	if (!cmd->exe->content)
+		return (-1);
+	if (!(builtin = get_builtin(cmd->exe->content)).func)
+		return (-1);
+	if (cmd->redir)
+	{
+		fd[0] = dup(0);
+		fd[1] = dup(1);
+		fd[2] = dup(2);
+	}
+	handle_redirections(cmd->redir, shell);
+	ret = builtin.func(cmd, shell);
+	if (cmd->redir)
+		end_redir(fd);
+	return (ret);
 }

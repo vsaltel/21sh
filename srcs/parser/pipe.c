@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 17:23:35 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:16:14 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void		init_fd(t_pipel *pline, int op[], int np[], t_shell *shell)
 		dup2(np[1], 1);
 		close(np[1]);
 	}
+	handle_aggregate(pline->cmd->redir, shell);
 	handle_redirections(pline->cmd->redir, shell);
 }
 

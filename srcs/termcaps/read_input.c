@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/07 15:19:29 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/07 18:08:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int			get_input(int fd, char **dest, t_shell *shell)
 	}
 	else
 	{
+		prompt();
 		ret = get_next_line(fd, dest);
 		if (g_clear_buffer)
 		{
