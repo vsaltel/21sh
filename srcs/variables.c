@@ -6,117 +6,81 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:45:51 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static void	handle_var(char **dst, t_env *var, char *dollar)
+static char	*handle_var(t_env *env, char *var_name)
 {
-	char	*tmp;
-	char	*tmp2;
+	char	*ret;
+	t_env	*var;
 
-	if (dollar[1] == '?')
-	{
-		tmp2 = ft_itoa(g_return);
-		tmp = ft_strjoin(*dst, tmp2);
-		free(tmp2);
-	}
+	ret = NULL;
+	var = get_enve(env, var_name);
+	if (var_name[0] == '?')
+		ret = ft_itoa(g_return);
 	else if (!var)
+		ret = NULL;
+	else
+		ret = ft_strdup(var->value);
+	free(var_name);
+	return (ret);
+}
+
+static void	fill_new(char **new, char *tmp, int esc)
+{
+	if (!tmp)
 		return ;
+	if (*new)
+		*new = esc ? strjoin_escape(*new, tmp) : ft_strfjoin(*new, tmp, *new);
 	else
-		tmp = ft_strjoin(*dst, var->value);
-	ft_strdel(dst);
-	*dst = tmp;
-}
-
-static int	get_var(char *str, char *buf, char **new, t_env *env)
-{
-	char	*tmp;
-	size_t	vsize;
-
-	if ((vsize = get_var_size(str)) == 0)
-		return (0);
-	if (!(*new))
-		*new = ft_strdup(buf);
-	else
-	{
-		if (!(tmp = ft_strjoin(*new, buf)))
-			exit(1);
-		free(*new);
-		*new = tmp;
-	}
-	if (!(tmp = ft_strndup(str + 1, vsize)))
-		exit(1);
-	handle_var(new, get_enve(env, tmp), str);
+		*new = esc ? strdup_escape(tmp) : ft_strdup(tmp);
 	free(tmp);
-	return (vsize);
 }
 
-static void	replace_token(t_token *dst, char *s1, char *s2)
+static void	replace_token(t_token *token, char *str)
 {
-	char	*tmp;
-
-	if (s1)
-	{
-		if (!(tmp = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
-			return ;
-		ft_strcpy(tmp, s1);
-		ft_strcat(tmp, s2);
-		free(s1);
-	}
-	else
-		tmp = ft_strdup(s2);
-	free(dst->content);
-	dst->content = tmp;
+	free(token->content);
+	token->content = str;
+	token->len = ft_strlen(str);
 }
 
-static void	parse_token(t_token *token, t_env *env)
+static void	parse_token(t_token *token, char *str, t_env *env)
 {
 	char	*new;
-	char	buf[BUFF_SIZE + 1];
+	char	*tmp;
+	size_t	li;
 	size_t	i;
-	size_t	j;
 
 	i = -1;
-	j = 0;
-	buf[0] = '\0';
+	li = 0;
 	new = NULL;
-	while (++i < token->len && (token->content)[i])
+	while (str[++i])
 	{
-		if (token->content[i] == '$' && (!i || token->content[i - 1] != '\\'))
-		{
-			buf[j] = '\0';
-			i += get_var(token->content + i, buf, &new, env);
-			j = 0;
-			buf[j] = '\0';
+		if (!(str[i] == '$' && !is_escaped(str, i, 0)))
 			continue ;
-		}
-		if (token->content[i] == '\\')
-			i++;
-		buf[j++] = token->content[i];
+		fill_new(&new, ft_strndup(str + li, i - li), 1);
+		tmp = handle_var(env,
+					ft_strndup(str + i + 1, get_var_size(str + i)));
+		(tmp) ? fill_new(&new, tmp, 0) : 0;
+		i += get_var_size(str + i);
+		li = i + 1;
 	}
-	buf[j] = '\0';
-	replace_token(token, new, buf);
+	i > li ? fill_new(&new, ft_strndup(str + li, i - li), 1) : 0;
+	replace_token(token, new);
 }
 
-int			replace_vars(t_token *curr, t_env *env)
+int			replace_vars(t_token *token, t_env *env)
 {
-	while (curr)
+	while (token && is_word_token(token))
 	{
-		if (curr->type == TOKEN_DQUOTES || curr->type == TOKEN_NAME)
-		{
-			parse_token(curr, env);
-			if (curr->type == TOKEN_NAME && curr->content[0] == '~')
-				if (!(handle_home(curr, env)))
-					return (0);
-		}
-		else if (curr->type == TOKEN_QUOTES)
-			;
-		else
-			break ;
-		curr = curr->next;
+		parse_token(token, token->content, env);
+		if (token->type == TOKEN_NAME && token->content[0] == '~')
+			if (!(handle_home(token, env)))
+				return (0);
+		token = token->next;
 	}
 	return (1);
 }

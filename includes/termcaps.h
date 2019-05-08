@@ -3,78 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   termcaps.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/02 16:24:20 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/08 15:33:09 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TERMCAPS_H
 # define TERMCAPS_H
 
+typedef struct	s_histo_lst
+{
+	char				*str;
+	size_t				len;
+	struct s_histo_lst	*next;
+}				t_histo_lst;
+
+typedef struct	s_history
+{
+	t_histo_lst			*lst;
+	size_t				pos;
+	size_t				size;
+	char				*first_command;
+}				t_history;
+
+/*
+**	x; 			position x dans le shell
+**	y; 			position y dans le shell
+**	x_min; 		position x apres le prompt dans le shell
+**	x_max; 		position x du dernier char de la ligne
+**	x_lastc; 	postion x du dernier char rentre dans le shell
+**	y_lastc; 	postion y du dernier char rentre dans le shell
+**	x_rel; 		postion x dans la string
+**	y_min; 		position y initiale de la ligne du prompt dans le shell
+**	y_max; 		position y de la derniere affichable dans le shell
+*/
+
 typedef struct	s_cursor_pos
 {
-	size_t			x; //position x dans le shell
-	size_t			y; //position y dans le shell
-	size_t			x_min; //position x apres le prompt dans le shell
-	size_t			x_max; //position x du dernier char de la ligne
-	size_t			x_lastc; //postion x du dernier char rentre dans le shell
-	size_t			y_lastc; //postion y du dernier char rentre dans le shell
-	size_t			x_rel; //postion x dans la string
-	size_t			y_min; //position y initiale de la ligne du prompt dans le shell
-	size_t			y_max; //position y de la derniere affichable dans le shell
-	int				auto_wrap : 1;
+	char				*str;
+	long				len_str;
+	long				x;
+	long				y;
+	long				x_rel;
+	long				x_min;
+	long				x_max;
+	long				y_min;
+	long				y_max;
+	long				compl;
+	char				*o_input;
+	size_t				opos;
+	int					visual_mode : 1;
+	long				v_beg;
+	char				*v_str;
+	int					search_mode : 1;
+	char				*s_str;
 }				t_cursor_pos;
-
-typedef enum	e_caps_type
-{
-	CAPS_NULL,
-	CAPS_DELETE,
-	CAPS_LEFT,
-	CAPS_UP,
-	CAPS_DOWN,
-	CAPS_RIGHT
-}				t_caps_type;
 
 typedef struct	s_ex_caps
 {
-	const char		*content;
-	size_t			size;
-	t_caps_type		type;
-	int     		(*func)(char **str, t_cursor_pos *pos);
+	const char			*content;
+	size_t				size;
+	void				(*func)();
 }				t_ex_caps;
 
-int		termcaps_left(char **str, t_cursor_pos *pos);
-int		termcaps_right(char **str, t_cursor_pos *pos);
-int		termcaps_delete(char **str, t_cursor_pos *pos);
-int		termcaps_up(char **str, t_cursor_pos *pos);
-int		termcaps_down(char **str, t_cursor_pos *pos);
-
-static const t_ex_caps g_caps_list[] =
+typedef struct	s_compl_info
 {
-	{"\e[D", 3, CAPS_LEFT, &termcaps_left},
-	{"\e[C", 3, CAPS_RIGHT, &termcaps_right},
-	{"\e[A", 3, CAPS_UP, &termcaps_up},
-	{"\e[B", 3, CAPS_DOWN, &termcaps_down},
-	{"\177", 1, CAPS_DELETE, &termcaps_delete},
-	{"\011", 1, CAPS_NULL, NULL},
-	{NULL, 1, CAPS_NULL, NULL}
-};
-
-//tgetnum("co");
-//tgetnum("li");
-//tgetflag("os");
-//tputs(tgetstr("cl", NULL), 1, ft_putchar);
-
-//co = nb colomn
-//li = nb line
-//AF = define color text
-//AB = define color background text
-//md = grass text
-//cm = replace cursor
-//cl = clean text
-//me = delete all set
-//os = over strike
+	char			**str;
+	char			*word;
+	t_cursor_pos	*pos;
+	int				index;
+}				t_compl_info;
 
 #endif

@@ -1,4 +1,10 @@
 *.o
-.dSYM
+*.d
+*.dSYM
 21sh
 *.a
+*.png
+*.dot
+*.swp
+.vscode
+objs/

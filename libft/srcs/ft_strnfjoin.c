@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   ft_strnfjoin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/21 15:25:22 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Created: 2019/03/21 14:21:20 by vsaltel           #+#    #+#             */
+/*   Updated: 2019/05/06 13:01:21 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
 
-int		check_quotes(char *str, char c)
+char			*ft_strfnjoin(char const *s1, char const *s2,
+		size_t n, char const *f)
 {
-	size_t	i;
+	char	*dst;
 
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	if (str[i] != c)
-		return (0);
-	return (1);
+	if (!s1 || !s2 || !(dst = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
+		return (NULL);
+	ft_strcpy(dst, s1);
+	ft_strncat(dst, s2, n);
+	free((char *)f);
+	return (dst);
 }

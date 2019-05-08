@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   create_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/25 12:02:17 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 12:21:01 by frossiny         ###   ########.fr       */
+/*   Created: 2019/05/02 13:23:37 by frossiny          #+#    #+#             */
+/*   Updated: 2019/05/08 15:43:40 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		is_escaped(char *s, size_t index, int endquote)
+t_cmd			*create_cmd(t_token *exe)
 {
-	int	prev;
+	t_cmd	*cmd;
 
-	prev = 0;
-	if (index == 0)
-		return (0);
-	if (s[index - 1] == '\\')
-		prev = !is_escaped(s, index - 1, 0);
-	if (s[index] == '\'' && endquote)
-		return (0);
-	return (prev);
-}
-
-int		is_start_quote(char *s, size_t index)
-{
-	if (s[index] != '\'' && s[index] != '"')
-		return (0);
-	return (is_escaped(s, index, 0));
+	if (!(cmd = (t_cmd *)malloc(sizeof(t_cmd))))
+		return (NULL);
+	cmd->exe = exe;
+	cmd->argc = -1;
+	cmd->args = NULL;
+	cmd->redir = NULL;
+	cmd->allow_builtins = 1;
+	return (cmd);
 }

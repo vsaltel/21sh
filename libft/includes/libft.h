@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 18:24:16 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/28 18:25:06 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/07 15:12:01 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,19 @@ int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strjoinf(char const *s1, char const *s2);
 char				*ft_strnjoin(char const *s1, char const *s2, size_t n);
 char				*ft_strjoint(char const *s1, char const *s2,
 															char const *s3);
+char				*ft_strjointf(char const *s1, char const *s2,
+															char const *s3);
+char				*ft_strfnjoin(char const *s1, char const *s2,
+													size_t n, char const *f);
 char				*ft_strtrim(char const *s);
 char				*ft_strctrim(char const *s, char c);
 char				**ft_strsplit(char const *s, char c);
 int					ft_strisalnum(char *str);
+int					ft_strisdigit(char *str);
 
 int					ft_atoi(const char *str);
 char				*ft_itoa(int n);
@@ -85,7 +91,7 @@ int					ft_isascii(int c);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
 
-void				ft_putchar(char c);
+int					ft_putchar(int c);
 void				ft_putstr(char const *s);
 void				ft_putnstr(char const *s, size_t n);
 void				ft_putendl(char const *s);
@@ -108,4 +114,9 @@ void				ft_lstfold(t_list **lst, void (*del)(void *, size_t));
 void				ft_putstrtable(char **tb);
 char				*ft_strfdup(const char *s1, const char *f);
 char				*ft_strfjoin(char const *s1, char const *s2, char const *f);
+char				*ft_strpathfile(const char *s1, const char *s2);
+void				ft_multifree(char **s1, char **s2, char **s3);
+char				*ft_strcut(char *str, size_t beg, size_t end);
+char				*ft_strfcut(char *str, size_t beg, size_t end);
+
 #endif

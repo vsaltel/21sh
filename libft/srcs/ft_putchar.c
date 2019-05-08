@@ -6,13 +6,17 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/08 16:41:23 by frossiny          #+#    #+#             */
-/*   Updated: 2018/11/08 16:41:50 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/11 14:44:55 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putchar(char c)
+int		ft_putchar(int c)
 {
-	write(1, &c, 1);
+	char x;
+
+	x = (char)c;
+	write(1, &x, 1);
+	return (c);
 }

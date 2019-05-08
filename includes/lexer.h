@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 14:13:23 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/01 14:14:11 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 # define LEXER_H
 
 # include "shell.h"
+
+typedef enum	e_state
+{
+	ST_GENERAL,
+	ST_QUOTES,
+	ST_DQUOTES,
+	ST_ESCAPED,
+	ST_COMMENT,
+	ST_OPERATOR,
+	ST_SEMIC
+}				t_state;
+
+typedef struct	s_state_func
+{
+	t_state		key;
+	int			(*lex)();
+}				t_state_func;
 
 typedef enum	e_token_type
 {
@@ -24,8 +41,10 @@ typedef enum	e_token_type
 	TOKEN_SEMI,
 	TOKEN_AND,
 	TOKEN_OR,
-	TOKEN_REDIR,
+	TOKEN_REDIRI,
+	TOKEN_REDIRO,
 	TOKEN_PIPE,
+	TOKEN_AGGR,
 	TOKEN_IGN
 }				t_token_type;
 
@@ -34,6 +53,7 @@ typedef struct	s_ex_token
 	const char		*op;
 	size_t			len;
 	t_token_type	type;
+	t_state			state;
 }				t_ex_token;
 
 typedef struct	s_token
@@ -46,38 +66,41 @@ typedef struct	s_token
 
 typedef struct	s_lexer
 {
+	char		*in;
+	char		*pin;
 	t_token		*tokens;
+	t_token		*last_token;
 	size_t		size;
+	t_state		state;
 }				t_lexer;
 
 static const t_ex_token g_tokens_list[] =
 {
-	{"|", 1, TOKEN_PIPE},
-	{"<<", 2, TOKEN_REDIR},
-	{"<", 1, TOKEN_REDIR},
-	{">", 1, TOKEN_REDIR},
-	{">&", 2, TOKEN_REDIR},
-	{"<&", 2, TOKEN_REDIR},
-	{"&&", 2, TOKEN_AND},
-	{"||", 2, TOKEN_OR},
-	{";", 1, TOKEN_SEMI},
-	{" ", 1, TOKEN_IGN},
-	{"\n", 1, TOKEN_IGN},
-	{"\v", 1, TOKEN_IGN},
-	{"\t", 1, TOKEN_IGN},
-	{"\r", 1, TOKEN_IGN},
-	{"\f", 1, TOKEN_IGN},
-	{NULL, 1, TOKEN_NULL}
+	{"<<", 2, TOKEN_REDIRI, ST_OPERATOR},
+	{">>", 2, TOKEN_REDIRO, ST_OPERATOR},
+	{"&&", 2, TOKEN_AND, ST_OPERATOR},
+	{"||", 2, TOKEN_OR, ST_OPERATOR},
+	{"<&", 2, TOKEN_AGGR, ST_OPERATOR},
+	{">&", 2, TOKEN_AGGR, ST_OPERATOR},
+	{"|", 1, TOKEN_PIPE, ST_OPERATOR},
+	{"<", 1, TOKEN_REDIRI, ST_OPERATOR},
+	{">", 1, TOKEN_REDIRO, ST_OPERATOR},
+	{";", 1, TOKEN_SEMI, ST_SEMIC},
+	{" ", 1, TOKEN_IGN, ST_GENERAL},
+	{"\n", 1, TOKEN_IGN, ST_GENERAL},
+	{"\v", 1, TOKEN_IGN, ST_GENERAL},
+	{"\t", 1, TOKEN_IGN, ST_GENERAL},
+	{"\r", 1, TOKEN_IGN, ST_GENERAL},
+	{"\f", 1, TOKEN_IGN, ST_GENERAL},
+	{NULL, 1, TOKEN_NULL, ST_GENERAL}
 };
 
-int lex(char *s, t_lexer *lexer);
-int is_escaped(char *s, size_t index, int endquote);
-int is_start_quote(char *s, size_t index);
-void destroy_lexer(t_lexer *lexer);
-t_token *push_token(t_token *list, t_token *new);
-t_token *create_token(t_lexer *lexer, char *content,
-					  size_t len, t_token_type type);
-t_ex_token search_token(const char *s);
-void destroy_tokens(t_token *token);
+int				lex_state_general(t_lexer *lexer);
+int				lex_state_quotes(t_lexer *lexer);
+int				lex_state_dquotes(t_lexer *lexer);
+int				lex_state_comment(t_lexer *lexer);
+int				lex_state_escaped(t_lexer *lexer);
+int				lex_state_operator(t_lexer *lexer);
+int				lex_state_semic(t_lexer *lexer);
 
 #endif

@@ -6,87 +6,82 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:45 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 14:13:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/04/12 14:49:10 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-static int	handle_quotes(t_lexer *lexer, char **prev, char **s)
+const t_state_func	g_state_funcs[] =
 {
-	char	*str;
-	char	quote;
+	{ ST_GENERAL, &lex_state_general },
+	{ ST_QUOTES, &lex_state_quotes },
+	{ ST_DQUOTES, &lex_state_dquotes },
+	{ ST_ESCAPED, &lex_state_escaped },
+	{ ST_COMMENT, &lex_state_comment },
+	{ ST_OPERATOR, &lex_state_operator },
+	{ ST_SEMIC, &lex_state_semic },
+	{ -1, NULL }
+};
 
-	str = *s;
-	quote = *str;
-	str++;
-	while (*str)
+static t_state_func	get_func(t_state state)
+{
+	const t_state_func	null_state = { -1, NULL };
+	int					i;
+
+	i = 0;
+	while (g_state_funcs[i].lex)
 	{
-		if (*str == quote && !is_escaped(*s, str - *s, 1))
-			break ;
-		str++;
+		if (g_state_funcs[i].key == state)
+			return (g_state_funcs[i]);
+		i++;
 	}
-	if (!*str || *str != quote)
-		return (quote == '\'' ? 0 : -1);
-	(*prev)++;
-	create_token(lexer, *prev, str - *prev,
-				quote == '"' ? TOKEN_DQUOTES : TOKEN_QUOTES);
-	*prev = ++str;
-	*s = str;
-	return (1);
+	return (null_state);
 }
 
-static int	add_quotes(t_lexer *lexer, char **s, char **prev)
+static int			lex_end(t_lexer *lexer)
 {
-	int		ret;
-
-	if (*s == *prev || (*s > *prev && *((*s) - 1) != '\\'))
+	if (lexer->state == ST_GENERAL)
 	{
-		if ((ret = handle_quotes(lexer, prev, s)) < 1)
-			return (ret);
+		if (lexer->in > lexer->pin)
+			create_token(lexer, lexer->pin, lexer->in - lexer->pin, TOKEN_NAME);
 	}
 	else
-		(*s)++;
+	{
+		if (lexer->state == ST_DQUOTES)
+			return (-3);
+		else if (lexer->state == ST_QUOTES)
+			return (-2);
+		else if (lexer->state == ST_SEMIC)
+			return (1);
+		else if (lexer->state == ST_COMMENT)
+			return (1);
+		else
+			return (parse_error(lexer->pin, lexer->in - lexer->pin + 1, -1));
+	}
 	return (1);
 }
 
-static void	add_current_token(t_lexer *lexer, t_ex_token cur,
-												char **s, char **prev)
+static int			lex_loop(t_lexer *lexer)
 {
-	*s += cur.len;
-	if (cur.type != TOKEN_IGN)
-		create_token(lexer, (char *)cur.op, cur.len, cur.type);
-	*prev = *s;
-}
+	int				ret;
+	t_state_func	cur;
 
-static int	rlex(char *s, char *prev, t_lexer *lexer)
-{
-	t_ex_token	cur;
-	int			ret;
-
-	while (s && *s)
+	while (lexer->in && *(lexer->in))
 	{
-		if (*s == '\\' && s++)
-			continue;
-		cur = search_token(s);
-		if (((cur.op && !is_escaped(prev, s - prev, 0))
-						|| is_start_quote(s, prev - s)) && prev != s)
-			create_token(lexer, prev, s - prev, TOKEN_NAME);
-		if (cur.op && !is_escaped(prev, s - prev, 0))
-			add_current_token(lexer, cur, &s, &prev);
-		else if (*s == '"' || *s == '\'')
+		cur = get_func(lexer->state);
+		if (cur.lex)
 		{
-			if ((ret = add_quotes(lexer, &s, &prev)) < 1)
+			if ((ret = cur.lex(lexer)) < 1)
 				return (ret);
 		}
 		else
-			s++;
+			return (parse_error("", 0, 0));
 	}
-	(prev != s) ? create_token(lexer, prev, s - prev, TOKEN_NAME) : 0;
-	return (1);
+	return (lex_end(lexer));
 }
 
-int			lex(char *s, t_lexer *lexer)
+int					lex(char *s, t_lexer *lexer)
 {
 	size_t	last_char;
 
@@ -94,6 +89,8 @@ int			lex(char *s, t_lexer *lexer)
 		return (1);
 	last_char = ft_strlen(s) - 1;
 	if (*s && s[last_char] == '\\' && !is_escaped(s, last_char, 0))
-		return (-2);
-	return (rlex(s, s, lexer));
+		return (-4);
+	lexer->in = s;
+	lexer->pin = s;
+	return (lex_loop(lexer));
 }
