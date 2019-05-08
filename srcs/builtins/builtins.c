@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:03:28 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 14:58:14 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:44:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int					handle_builtin(t_cmd *cmd, t_shell *shell)
 		fd[1] = dup(1);
 		fd[2] = dup(2);
 	}
-	handle_redirections(cmd->redir, shell);
+	handle_redirections(cmd->redir);
 	ret = builtin.func(cmd, shell);
 	if (cmd->redir)
 		end_redir(fd);

@@ -6,13 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:16:14 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:43:12 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void		init_fd(t_pipel *pline, int op[], int np[], t_shell *shell)
+static void	init_fd(t_pipel *pline, int op[], int np[])
 {
 	if (pline->previous)
 	{
@@ -26,8 +26,8 @@ void		init_fd(t_pipel *pline, int op[], int np[], t_shell *shell)
 		dup2(np[1], 1);
 		close(np[1]);
 	}
-	handle_aggregate(pline->cmd->redir, shell);
-	handle_redirections(pline->cmd->redir, shell);
+	handle_aggregate(pline->cmd->redir);
+	handle_redirections(pline->cmd->redir);
 }
 
 static void	close_fd(int fd[])
@@ -49,7 +49,7 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 	{
 		unregister_signals();
 		shell->able_termcaps ? restore_shell(shell->prev_term) : 0;
-		init_fd(pline, op, np, shell);
+		init_fd(pline, op, np);
 		if (execve(get_exe(shell, cmd->exe->content, 1),
 								cmd->args, build_env(shell->env)) == -1)
 			exit(EXIT_FAILURE);

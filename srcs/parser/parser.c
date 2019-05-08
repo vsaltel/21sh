@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 15:17:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/30 15:11:44 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:40:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static int	parse_condition(int *ret, t_anode *cond, t_shell *shell)
 
 int			parse(t_shell *shell, t_anode *ast)
 {
-	int		pipe[2];
-
 	while (ast->left)
 		ast = ast->left;
 	while (ast)

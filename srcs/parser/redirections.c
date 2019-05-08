@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 15:27:23 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:12:45 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:41:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static void		redirect_output(t_redirect *redir)
 static void		redirect_input(t_redirect *redir)
 {
 	int		fd;
-	int		otype;
 
 	if ((fd = open(redir->value->content, O_RDONLY)) == -1)
 		return ;
@@ -36,7 +35,7 @@ static void		redirect_input(t_redirect *redir)
 	close(fd);
 }
 
-void			handle_redirections(t_redirect *redir, t_shell *shell)
+void			handle_redirections(t_redirect *redir)
 {
 	while (redir && redir->value)
 	{
@@ -53,7 +52,7 @@ void			handle_redirections(t_redirect *redir, t_shell *shell)
 	}
 }
 
-void			handle_aggregate(t_redirect *redir, t_shell *shell)
+void			handle_aggregate(t_redirect *redir)
 {
 	while (redir && redir->value)
 	{
