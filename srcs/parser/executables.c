@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:42:19 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 17:35:29 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,8 @@ static int	start(t_cmd *cmd, t_env *env, t_shell *shell)
 	{
 		if (!(file = get_exe(shell, cmd->exe->content, 1)))
 			return (127);
-		if (access(file, X_OK))
-		{
-			permission_denied(file);
-			free(file);
-			return (126);
-		}
+		if ((ret = can_execute(cmd->exe->content, shell)))
+			return (ret);
 		ret = start_process(file, cmd, env, shell);
 		free(file);
 	}

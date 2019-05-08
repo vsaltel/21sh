@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 11:24:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 18:25:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 18:34:55 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	write_doc(int p[], char **str)
 	write(fd[1], *str, ft_strlen(*str));
 	p[0] = fd[0];
 	p[1] = fd[1];
-	close(fd[1]);
 	ft_strdel(str);
 }
 
@@ -42,10 +41,10 @@ void		get_here_doc(t_redirect *redir, t_shell *shell)
 	char	*buf;
 	char	*res;
 
-	res = ft_strnew(0);
 	g_ignore_signals = 3;
 	while (redir && redir->type == TOKEN_REDIRI && redir->append)
 	{
+		res = ft_strnew(0);
 		while (g_ignore_signals && (get_input(0, &buf, shell) || 1))
 		{
 			if (!buf)
@@ -54,14 +53,16 @@ void		get_here_doc(t_redirect *redir, t_shell *shell)
 				break ;
 			}
 			else if (ft_strcmp(buf, redir->value->content) == 0)
+			{
+				free(buf);
 				break ;
+			}
 			res = ft_strjointf(res, buf, ft_strdup("\n"));
 		}
 		write_doc(redir->p, &res);
 		redir = redir->next;
 	}
 	g_ignore_signals = 0;
-	ft_strdel(&res);
 }
 
 void		apply_here_doc(t_redirect *redir)

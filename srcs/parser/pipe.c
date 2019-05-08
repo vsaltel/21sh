@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:43:12 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 17:54:06 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,16 @@ static void	init_fd(t_pipel *pline, int op[], int np[])
 	handle_redirections(pline->cmd->redir);
 }
 
-static void	close_fd(int fd[])
-{
-	close(fd[0]);
-	close(fd[1]);
-}
-
 static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 {
 	t_cmd	*cmd;
+	int		ret;
 
 	cmd = pline->cmd;
 	if ((pline->previous && is_builtin(cmd->exe->content)))
 		return (1);
-	if (!is_exe(shell, cmd->exe->content, 1))
-		return (-1);
+	if ((ret = can_execute(cmd->exe->content, shell)))
+		return (ret);
 	if ((g_child = fork()) == 0)
 	{
 		unregister_signals();
@@ -56,8 +51,11 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 		exit(EXIT_SUCCESS);
 	}
 	else if (pline->previous)
-		close_fd(op);
-	return (0);
+	{
+		close(op[0]);
+		close(op[1]);
+	}
+	return (ret);
 }
 
 static void	copy_fd(int op[], int np[])
@@ -66,12 +64,22 @@ static void	copy_fd(int op[], int np[])
 	op[1] = np[1];
 }
 
+static void	end_pipes(int pid, t_shell *shell)
+{
+	int		ret;
+
+	waitpid(pid, &ret, 0);
+	if (pid > 0 && !g_return)
+		g_return = WIFSIGNALED(ret) ? ret + 128 : WEXITSTATUS(ret);
+	shell->able_termcaps ? termcaps_init(NULL) : 0;
+	g_child = 0;
+}
+
 int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 {
 	int		op[2];
 	int		np[2];
 	t_pipel	*pipeline;
-	int		ret;
 
 	pipeline = build_pipeline(node, shell, cn);
 	while (pipeline && pipeline->cmd)
@@ -79,18 +87,14 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 		if (pipeline->next)
 			pipe(np);
 		get_here_doc(pipeline->cmd->redir, shell);
-		execute_pipe_cmd(pipeline, op, np, shell);
+		g_return = execute_pipe_cmd(pipeline, op, np, shell);
 		if (pipeline->next)
 			copy_fd(op, np);
 		if (!pipeline->next)
 			break ;
 		pipeline = pipeline->next;
 	}
-	waitpid(g_child, &ret, 0);
-	g_return = WIFSIGNALED(ret) ? ret + 128
-										: WEXITSTATUS(ret);
+	end_pipes(g_child, shell);
 	del_pipeline(pipeline);
-	g_child = 0;
-	shell->able_termcaps ? termcaps_init(NULL) : 0;
 	return (g_return);
 }
