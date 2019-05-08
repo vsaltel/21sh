@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/08 15:27:11 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/08 16:39:03 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	gcc -g3
-CFLAGS	+=	-Wall -Werror -Wextra -g3
-#CFLAGS	+= -g3 -fsanitize=address
+CC		=	gcc
+CFLAGS	+=	-Wall -Werror -Wextra
+CFLAGS	+= -g3 -fsanitize=address
 
 SHELL	=	bash
 
@@ -104,6 +104,7 @@ FILES 	=	main.c									\
 			builtins/echo.c							\
 			utils/dup_argv.c						\
 			utils/get_var_size.c					\
+			utils/str_escape.c						\
 			signals.c								\
 			errors.c								\
 			utils.c									\

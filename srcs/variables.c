@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 14:57:33 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:45:51 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static char	*handle_var(t_env *env, char *var_name)
 	return (ret);
 }
 
-static void	fill_new(char **new, char *tmp)
+static void	fill_new(char **new, char *tmp, int esc)
 {
 	if (!tmp)
 		return ;
 	if (*new)
-		*new = ft_strfjoin(*new, tmp, *new);
+		*new = esc ? strjoin_escape(*new, tmp) : ft_strfjoin(*new, tmp, *new);
 	else
-		*new = ft_strdup(tmp);
+		*new = esc ? strdup_escape(tmp) : ft_strdup(tmp);
 	free(tmp);
 }
 
@@ -61,15 +61,15 @@ static void	parse_token(t_token *token, char *str, t_env *env)
 	{
 		if (!(str[i] == '$' && !is_escaped(str, i, 0)))
 			continue ;
-		fill_new(&new, ft_strndup(str + li, i - li));
+		fill_new(&new, ft_strndup(str + li, i - li), 1);
 		tmp = handle_var(env,
 					ft_strndup(str + i + 1, get_var_size(str + i)));
-		(tmp) ? fill_new(&new, tmp) : 0;
+		(tmp) ? fill_new(&new, tmp, 0) : 0;
 		i += get_var_size(str + i);
 		li = i + 1;
 	}
-	(new && i > li) ? fill_new(&new, ft_strndup(str + li, i - li)) : 0;
-	new ? replace_token(token, new) : 0;
+	i > li ? fill_new(&new, ft_strndup(str + li, i - li), 1) : 0;
+	replace_token(token, new);
 }
 
 int			replace_vars(t_token *token, t_env *env)

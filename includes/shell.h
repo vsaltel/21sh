@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:42:29 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 16:36:16 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ char				**dup_argv(int argc, char **args, char ***argv);
 int					replace_vars(t_token *curr, t_env *env);
 size_t				get_var_size(char *key);
 int					handle_home(t_token *token, t_env *env);
+char				*strjoin_escape(char *s1, char *s2);
+char				*strdup_escape(char *str);
 
 char				*get_exe(t_shell *shell, char *name, int verbose);
 int					is_exe(t_shell *shell, char *name, int verbose);
