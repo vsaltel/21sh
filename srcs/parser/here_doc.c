@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 11:24:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 18:34:55 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 19:07:22 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	write_doc(int p[], char **str)
 	write(fd[1], *str, ft_strlen(*str));
 	p[0] = fd[0];
 	p[1] = fd[1];
+	close(fd[1]);
 	ft_strdel(str);
 }
 
