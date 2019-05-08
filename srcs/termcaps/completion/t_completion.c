@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:43:39 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/30 15:03:35 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:29:02 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void		include_word(char *word, char **str, t_cursor_pos *pos)
 
 static int	complete_builtins(t_compl_info *infos)
 {
-	char	*curr;
 	int		i;
 
 	i = -1;

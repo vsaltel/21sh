@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:28:40 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/25 17:29:48 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:30:18 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	complete_ht(t_compl_info *ci, t_shell *shell)
 {
-	size_t		i;
+	int		i;
 
 	i = -1;
 	if (!shell->bin_ht.table)

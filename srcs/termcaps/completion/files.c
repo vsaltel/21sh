@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 15:58:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 18:22:49 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/08 15:30:43 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static char		*get_path(char *word)
 {
 	char	*search;
-	size_t	i;
 
 	if (ft_strequ(word, "/"))
 		return (ft_strdup("/"));

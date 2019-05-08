@@ -6,12 +6,12 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/07 16:37:08 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/08 15:27:11 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc -g3
-#CFLAGS	+=	-Wall -Werror -Wextra -g3
+CFLAGS	+=	-Wall -Werror -Wextra -g3
 #CFLAGS	+= -g3 -fsanitize=address
 
 SHELL	=	bash

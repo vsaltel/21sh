@@ -6,7 +6,7 @@
 /*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:28:48 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 14:22:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/08 15:28:00 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void		history_search_delete(char **str, t_cursor_pos *pos,
 void		termcaps_history_search(char **str, t_cursor_pos *pos
 		, t_shell *shell)
 {
+	(void)shell;
 	if (pos->visual_mode)
 		return ;
 	if (pos->search_mode)

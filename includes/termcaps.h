@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 18:49:29 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/06 16:04:51 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/08 15:33:09 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct	s_cursor_pos
 	char				*o_input;
 	size_t				opos;
 	int					visual_mode : 1;
-	size_t				v_beg;
+	long				v_beg;
 	char				*v_str;
 	int					search_mode : 1;
 	char				*s_str;
