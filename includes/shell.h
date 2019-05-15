@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 17:35:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:54:47 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int					b_echo(t_cmd *cmd, t_shell *shell);
 
 void				register_signals(void);
 void				unregister_signals(void);
+int					display_signal(int sigid);
 
 /*
 **	utils.c

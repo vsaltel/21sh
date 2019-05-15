@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/15 11:50:08 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/15 14:56:09 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,6 +103,7 @@ FILES 	=	main.c									\
 			builtins/cd.c							\
 			builtins/echo.c							\
 			utils/dup_argv.c						\
+			utils/display_signal.c					\
 			utils/get_var_size.c					\
 			utils/str_escape.c						\
 			signals.c								\
