@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:53:08 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 15:20:52 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	end_pipes(int pid, t_shell *shell)
 
 	waitpid(pid, &ret, 0);
 	if (pid > 0 && !g_return)
-		g_return = WIFSIGNALED(ret) ? ret + 128 : WEXITSTATUS(ret);
+		g_return = WIFSIGNALED(ret) ? display_signal(ret) : WEXITSTATUS(ret);
 	shell->able_termcaps ? termcaps_init(NULL) : 0;
 	g_child = 0;
 }

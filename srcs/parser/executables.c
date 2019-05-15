@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:53:42 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 15:21:00 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	start_process(char *file, t_cmd *cmd, t_env *env, t_shell *shell)
 	shell->able_termcaps ? termcaps_init(NULL) : 0;
 	g_child = 0;
 	if (WIFSIGNALED(status))
-		return (128 + status);
+		return (display_signal(status));
 	return (WEXITSTATUS(status));
 }
 

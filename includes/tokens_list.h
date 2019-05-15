@@ -6,12 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/15 14:34:54 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:35:18 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 15:28:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKENS_LIST
-# define TOKENS_LIST
+#ifndef TOKENS_LIST_H
+# define TOKENS_LIST_H
 
 static const t_ex_token g_tokens_list[] =
 {

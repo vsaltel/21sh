@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 11:24:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:51:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 15:43:31 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,12 @@ int			get_here_doc(t_redirect *redir, t_shell *shell)
 		res = ft_strnew(0);
 		while (g_ignore_signals && (get_input(0, &buf, shell) || 1))
 		{
-			if (!buf)
-			{
-				ft_putchar('\n');
-				break ;
-			}
-			else if (ft_strcmp(buf, redir->value->content) == 0)
+			if (buf && ft_strcmp(buf, redir->value->content) == 0)
 			{
 				free(buf);
 				break ;
 			}
-			res = ft_strjointf(res, buf, ft_strdup("\n"));
+			buf ? res = ft_strjointf(res, buf, ft_strdup("\n")) : 0;
 		}
 		write_doc(redir->p, &res);
 		redir = redir->next;
