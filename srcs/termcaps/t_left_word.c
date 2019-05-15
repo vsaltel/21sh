@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   t_left_word.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:46 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/02 20:27:22 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:47:33 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
+#include "tokens_list.h"
 
 static int		is_delimiter(char *str)
 {

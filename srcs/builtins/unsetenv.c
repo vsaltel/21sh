@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 15:29:33 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 14:47:27 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:57:06 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 static void	free_link(t_env *link)

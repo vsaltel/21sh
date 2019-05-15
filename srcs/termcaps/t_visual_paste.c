@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_visual_paste.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:07:35 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 14:56:12 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:48:55 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void		visual_replace(char **str, char *buf, t_cursor_pos *pos)

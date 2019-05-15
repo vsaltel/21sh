@@ -6,10 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:46:01 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 17:36:03 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:58:36 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <sys/stat.h>
+#include "libft.h"
 #include "shell.h"
 
 char	*format_path_exe(char *dir, char *file)

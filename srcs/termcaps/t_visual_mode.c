@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_visual_mode.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 17:30:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 15:45:25 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:48:47 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void		visual_print(char *str, t_cursor_pos *pos)

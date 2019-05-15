@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 16:54:50 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 17:09:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:59:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void	inexistant(char *name)

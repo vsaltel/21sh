@@ -6,10 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:44 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/06 16:04:03 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:45:39 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+#include <term.h>
+#include "libft.h"
 #include "shell.h"
 
 static void		move_pos(char *str, t_cursor_pos *pos, int len_dest)

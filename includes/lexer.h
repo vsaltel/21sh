@@ -6,14 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:14:11 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:36:30 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
-
-# include "shell.h"
 
 typedef enum	e_state
 {
@@ -73,27 +71,6 @@ typedef struct	s_lexer
 	size_t		size;
 	t_state		state;
 }				t_lexer;
-
-static const t_ex_token g_tokens_list[] =
-{
-	{"<<", 2, TOKEN_REDIRI, ST_OPERATOR},
-	{">>", 2, TOKEN_REDIRO, ST_OPERATOR},
-	{"&&", 2, TOKEN_AND, ST_OPERATOR},
-	{"||", 2, TOKEN_OR, ST_OPERATOR},
-	{"<&", 2, TOKEN_AGGR, ST_OPERATOR},
-	{">&", 2, TOKEN_AGGR, ST_OPERATOR},
-	{"|", 1, TOKEN_PIPE, ST_OPERATOR},
-	{"<", 1, TOKEN_REDIRI, ST_OPERATOR},
-	{">", 1, TOKEN_REDIRO, ST_OPERATOR},
-	{";", 1, TOKEN_SEMI, ST_SEMIC},
-	{" ", 1, TOKEN_IGN, ST_GENERAL},
-	{"\n", 1, TOKEN_IGN, ST_GENERAL},
-	{"\v", 1, TOKEN_IGN, ST_GENERAL},
-	{"\t", 1, TOKEN_IGN, ST_GENERAL},
-	{"\r", 1, TOKEN_IGN, ST_GENERAL},
-	{"\f", 1, TOKEN_IGN, ST_GENERAL},
-	{NULL, 1, TOKEN_NULL, ST_GENERAL}
-};
 
 int				lex_state_general(t_lexer *lexer);
 int				lex_state_quotes(t_lexer *lexer);

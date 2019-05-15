@@ -6,17 +6,19 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 17:35:29 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:53:42 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "shell.h"
 
 static int	start_process(char *file, t_cmd *cmd, t_env *env, t_shell *shell)
 {
 	int		status;
 
-	get_here_doc(cmd->redir, shell);
+	if (!get_here_doc(cmd->redir, shell))
+		return (EXIT_FAILURE);
 	if ((g_child = fork()) == 0)
 	{
 		unregister_signals();

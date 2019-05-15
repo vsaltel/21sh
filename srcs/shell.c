@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 18:25:02 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:43:54 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "libft.h"
 #include "shell.h"
 
 int		bslash_error(t_shell *shell, char **input, int ret)
@@ -28,10 +30,13 @@ int		bslash_error(t_shell *shell, char **input, int ret)
 		}
 		return (130);
 	}
-	tmp = ft_strjoin(*input, (*ninput == '\\') ? ninput + 1 : ninput);
-	free(*input);
-	free(ninput);
-	*input = tmp;
+	if (ninput)
+	{
+		tmp = ft_strjoin(*input, (*ninput == '\\') ? ninput + 1 : ninput);
+		free(*input);
+		free(ninput);
+		*input = tmp;
+	}
 	g_ignore_signals = 0;
 	return (0);
 }
@@ -47,7 +52,7 @@ int		quote_error(t_shell *shell, char **input, int ret)
 		if (g_ignore_signals)
 		{
 			write(2,
-			"21sh: unexpected EOF while looking for quote\n", 50);
+			"21sh: unexpected EOF while looking for quote\n", 45);
 			g_ignore_signals = 0;
 			return (2);
 		}

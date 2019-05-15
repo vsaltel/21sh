@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 14:10:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 14:10:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:52:08 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void	ht_put(t_shell *shell, char *key, char *value)

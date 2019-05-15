@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 17:47:28 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/01 16:07:14 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:25:25 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include "get_next_line.h"
 #include "shell.h"
 
 void				add_to_history(char *str, t_history *history)

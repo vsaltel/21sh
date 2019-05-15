@@ -6,13 +6,14 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:45 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 14:49:10 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:49:39 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
-const t_state_func	g_state_funcs[] =
+const static t_state_func	g_state_funcs[] =
 {
 	{ ST_GENERAL, &lex_state_general },
 	{ ST_QUOTES, &lex_state_quotes },

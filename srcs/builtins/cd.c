@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:41:24 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 14:43:41 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:57:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include "libft.h"
 #include "shell.h"
 
 static void	update_env(t_env **env)

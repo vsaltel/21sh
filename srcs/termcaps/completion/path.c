@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:28:40 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:30:18 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:46:43 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <dirent.h>
+#include "libft.h"
 #include "shell.h"
 
 static int	complete_ht(t_compl_info *ci, t_shell *shell)

@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 14:10:30 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/07 15:28:18 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:52:02 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 char	*ht_get(t_shell *shell, char *key)

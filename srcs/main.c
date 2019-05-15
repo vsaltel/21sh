@@ -6,16 +6,17 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:43:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 15:03:03 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:43:41 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		g_child;
-int		g_ignore_signals;
-int		g_return;
-int		g_clear_buffer;
+t_cursor_pos	g_pos;
+int				g_child;
+int				g_ignore_signals;
+int				g_return;
+int				g_clear_buffer;
 
 int		main(int argc, char *argv[], char *envp[])
 {

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_delete_right.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 12:04:57 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 14:55:34 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:48:08 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 static void	del_char_right(char **str, t_cursor_pos *pos)

@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   t_history_search.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/01 12:28:48 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/08 15:28:00 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:47:21 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <dirent.h>
+#include "libft.h"
 #include "shell.h"
 
 void		history_search_replace(char **str, char *buf, t_cursor_pos *pos

@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:51:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 14:51:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:54:54 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 t_env	*copy_env(char **envp, int inc)

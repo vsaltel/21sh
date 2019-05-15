@@ -6,10 +6,14 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/07 18:08:46 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:25:42 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <curses.h>
+#include <term.h>
+#include <termios.h>
+#include "get_next_line.h"
 #include "shell.h"
 
 static int	read_all(int fd, char **dest)
@@ -77,7 +81,6 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 		ft_strdel(str);
 		ft_strdel(&(pos->s_str));
 		ft_strdel(&(shell->history.first_command));
-		g_clear_buffer = 0;
 		g_return = 1;
 		final_position(pos);
 		return (1);
@@ -117,6 +120,7 @@ int			get_input(int fd, char **dest, t_shell *shell)
 {
 	int				ret;
 
+	g_clear_buffer = 0;
 	*dest = NULL;
 	if (shell->able_termcaps)
 	{

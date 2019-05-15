@@ -6,10 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/07 18:11:59 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:45:56 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <term.h>
+#include <sys/ioctl.h>
+#include "libft.h"
 #include "shell.h"
 
 void			move_cursor(int x, int y)

@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:49:51 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/11 14:50:05 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:55:09 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 #include "shell.h"
 
 int		disp_env(t_env *env)

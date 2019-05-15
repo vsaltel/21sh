@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 11:24:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 19:07:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:51:21 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void		close_here_docs(t_redirect *redir)
@@ -37,7 +38,7 @@ static void	write_doc(int p[], char **str)
 	ft_strdel(str);
 }
 
-void		get_here_doc(t_redirect *redir, t_shell *shell)
+int			get_here_doc(t_redirect *redir, t_shell *shell)
 {
 	char	*buf;
 	char	*res;
@@ -64,6 +65,7 @@ void		get_here_doc(t_redirect *redir, t_shell *shell)
 		redir = redir->next;
 	}
 	g_ignore_signals = 0;
+	return (!g_clear_buffer);
 }
 
 void		apply_here_doc(t_redirect *redir)

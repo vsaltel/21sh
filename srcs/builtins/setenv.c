@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 14:30:34 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/16 13:57:19 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:57:03 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 static int	is_unique_key(t_env *env, char *key, char *value)

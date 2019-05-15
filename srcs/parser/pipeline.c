@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 13:17:35 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:51:03 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include "libft.h"
 #include "shell.h"
 
 static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd, t_shell *shell)
@@ -34,7 +36,7 @@ static void		init_redirect_output(t_redirect *redir)
 	if (!redir)
 		return ;
 	otype = O_RDONLY | O_CREAT | O_APPEND;
-	if ((fd = open(redir->value->content, otype, FILE_PERM)) == -1)
+	if ((fd = open(redir->value->content, otype, 420)) == -1)
 		return ;
 	close(fd);
 }

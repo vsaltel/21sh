@@ -6,10 +6,11 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/08 16:25:20 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 16:34:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:59:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 char	*strjoin_escape(char *s1, char *s2)

@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 15:27:23 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 18:24:41 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:51:09 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include "libft.h"
 #include "shell.h"
 
 static void		redirect_output(t_redirect *redir)
@@ -19,7 +21,7 @@ static void		redirect_output(t_redirect *redir)
 
 	otype = O_WRONLY | O_CREAT;
 	otype |= (redir->append) ? O_APPEND : O_TRUNC;
-	if ((fd = open(redir->value->content, otype, FILE_PERM)) == -1)
+	if ((fd = open(redir->value->content, otype, 420)) == -1)
 		return ;
 	dup2(fd, redir->filedes);
 	close(fd);

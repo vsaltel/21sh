@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_history_next.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:58:32 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 14:13:22 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:47:10 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void		termcaps_history_next(char **str, t_cursor_pos *pos

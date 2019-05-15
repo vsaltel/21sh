@@ -6,10 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:40:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/01 18:33:12 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 15:00:12 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <signal.h>
+#include <sys/ioctl.h>
+#include "ft_printf.h"
 #include "shell.h"
 
 static void	catch_sigquit(int signal)
@@ -23,8 +26,6 @@ static void	catch_sigint(int signal)
 {
 	(void)signal;
 	g_clear_buffer = 1;
-	if (g_child > 0)
-		write(1, "\n", 1);
 	if (g_ignore_signals)
 	{
 		g_ignore_signals = 0;

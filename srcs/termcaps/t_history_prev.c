@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_history_prev.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 15:57:50 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/06 14:08:01 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:47:07 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void		termcaps_history_prev(char **str, t_cursor_pos *pos

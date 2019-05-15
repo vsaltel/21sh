@@ -6,10 +6,12 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 15:58:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 15:30:43 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:46:48 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <dirent.h>
+#include "libft.h"
 #include "shell.h"
 
 static char		*get_path(char *word)

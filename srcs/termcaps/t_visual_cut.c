@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   t_visual_cut.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 15:55:07 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/04/29 14:56:00 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:48:39 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "shell.h"
 
 void		termcaps_visual_cut(char **str, t_cursor_pos *pos, t_shell *shell)

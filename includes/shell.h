@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/08 17:35:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/15 14:42:52 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,18 @@
 # define SHELL_H
 
 # include <stdlib.h>
-# include <unistd.h>
-# include <signal.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <sys/ioctl.h>
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <curses.h>
-# include <term.h>
 # include <termios.h>
-# include <fcntl.h>
-# include <dirent.h>
 
-# include "libft.h"
-# include "ft_printf.h"
-# include "get_next_line.h"
 # include "lexer.h"
 # include "ast.h"
 # include "parser.h"
 # include "termcaps.h"
 # include "builtins.h"
 # include "hashtable.h"
+# include "env.h"
 
 # define MAX_HISTORY	30
 # define HT_SIZE		150
-
-typedef struct		s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
 
 typedef struct		s_shell
 {
@@ -58,7 +38,7 @@ typedef struct		s_shell
 	int				able_termcaps : 1;
 }					t_shell;
 
-t_cursor_pos		g_pos;
+extern t_cursor_pos	g_pos;
 extern int			g_child;
 extern int			g_clear_buffer;
 extern int			g_ignore_signals;
@@ -91,7 +71,7 @@ t_redirect			*parse_redirections(t_token *tok, int offset);
 void				del_pipeline(t_pipel *pline);
 void				handle_redirections(t_redirect *redir);
 void				handle_aggregate(t_redirect *redir);
-void				get_here_doc(t_redirect *redir, t_shell *shell);
+int					get_here_doc(t_redirect *redir, t_shell *shell);
 void				apply_here_doc(t_redirect *redir);
 void				close_here_docs(t_redirect *redir);
 
