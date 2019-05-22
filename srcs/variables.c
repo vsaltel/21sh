@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:59:32 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/20 14:26:01 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static void	fill_new(char **new, char *tmp, int esc)
 static void	replace_token(t_token *token, char *str)
 {
 	free(token->content);
+	if (!str)
+		str = ft_strdup("");
 	token->content = str;
 	token->len = ft_strlen(str);
 }

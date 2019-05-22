@@ -8,3 +8,8 @@
 *.swp
 .vscode
 objs/
+42test
+tags
+fsan.output
+notes.tc
+objs

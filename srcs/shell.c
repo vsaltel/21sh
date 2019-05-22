@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/16 12:42:35 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 15:01:28 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,6 @@ int		shell(t_shell *shell)
 	isatty(0) ? ft_putchar('\n') : 0;
 	free_env(&(shell->env));
 	ht_delete(shell);
-	overwrite_history(shell->history.lst);
-	free_history(&(shell->history));
-	restore_shell(shell->prev_term);
-	free(g_pos.v_str);
+	free_termcaps(shell);
 	return (g_return);
 }

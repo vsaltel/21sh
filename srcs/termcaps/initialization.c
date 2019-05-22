@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:12 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/15 14:45:18 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:21:33 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,17 @@ void			restore_shell(struct termios prev_term)
 	if (!isatty(0))
 		return ;
 	tcsetattr(0, TCSANOW, &prev_term);
+}
+
+void			free_termcaps(t_shell *shell)
+{
+	if (shell->able_termcaps)
+	{
+		overwrite_history(shell->history.lst);
+		free_history(&(shell->history));
+		restore_shell(shell->prev_term);
+		free(g_pos.v_str);
+	}
 }
 
 int				memset_all(char **str, t_history *history, t_cursor_pos *pos)
