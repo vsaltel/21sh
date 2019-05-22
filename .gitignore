@@ -1,10 +1,5 @@
-*.o
-*.d
-*.dSYM
-21sh
-*.a
-*.png
-*.dot
-*.swp
-.vscode
-objs/
+42test
+tags
+fsan.output
+notes.tc
+objs

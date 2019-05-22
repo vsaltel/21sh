@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 15:20:33 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:21:58 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int					is_directory_err(char *name);
 
 int					termcaps_init(struct termios *prev_term);
 void				restore_shell(struct termios prev_term);
+void				free_termcaps(t_shell *shell);
 int					get_input(int fd, char **dest, t_shell *shell);
 int					get_pos(t_cursor_pos *pos);
 int					memset_all(char **str, t_history *history,
