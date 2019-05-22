@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/11 14:59:12 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/21 13:21:33 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/22 17:43:34 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void			free_termcaps(t_shell *shell)
 		free_history(&(shell->history));
 		restore_shell(shell->prev_term);
 		free(g_pos.v_str);
+		if (g_pos.o_input)
+			free(g_pos.o_input);
 	}
 }
 

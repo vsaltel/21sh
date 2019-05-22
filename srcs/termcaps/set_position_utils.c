@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/18 12:24:22 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/15 14:45:56 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 17:43:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int				memset_pos(t_cursor_pos *pos)
 	pos->y_min = pos->y;
 	pos->y_max = w.ws_row;
 	pos->compl = 0;
+	pos->o_input = NULL;
 	pos->visual_mode = 0;
 	pos->v_beg = 0;
 	pos->search_mode = 0;

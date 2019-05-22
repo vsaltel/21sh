@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vsaltel <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/22 16:48:58 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/22 17:03:43 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/22 17:39:53 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	end_reading(char **dest, char *buf, t_cursor_pos *pos, t_shell *shell)
 {
 	final_position(pos);
 	ft_strdel(&(pos->s_str));
+	ft_strdel(&(pos->o_input));
 	g_pos.search_mode = 0;
 	ft_strdel(&(shell->history.first_command));
 	add_to_history(pos->str, &(shell->history));

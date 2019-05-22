@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:28:40 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 16:34:35 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 17:32:18 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			complete_path(t_compl_info *ci, t_shell *shell)
 	while (array[++i] != NULL)
 	{
 		if (!(dirp = opendir(array[i])))
-			return (0);
+			break ;
 		if (check_files(dirp, ci, shell))
 		{
 			closedir(dirp);
