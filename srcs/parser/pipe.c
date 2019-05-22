@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 15:20:52 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:42:29 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 	int		np[2];
 	t_pipel	*pipeline;
 
-	pipeline = build_pipeline(node, shell, cn);
+	if (!(pipeline = build_pipeline(node, shell, cn)))
+		return (1);
 	while (pipeline && pipeline->cmd)
 	{
 		if (pipeline->next)

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 15:09:31 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:43:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd, t_shell *shell)
 {
 	t_pipel		*new;
 
-	if (!(new = (t_pipel *)malloc(sizeof(t_pipel))))
+	if (!cmd || !(new = (t_pipel *)malloc(sizeof(t_pipel))))
 		return (NULL);
 	if (build_args(cmd, shell->env) == -1)
 		return (NULL);
@@ -47,7 +47,7 @@ t_pipel			*build_pipeline(t_anode *node, t_shell *shell, t_anode **cn)
 	t_pipel	*pipel;
 	t_pipel *curr;
 
-	if (!(pipel = create_pipel(NULL, node->cmd, shell)))
+	if (!node || !cn || !(pipel = create_pipel(NULL, node->cmd, shell)))
 		return (NULL);
 	curr = pipel;
 	node = node->parent;

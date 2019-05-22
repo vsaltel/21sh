@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 15:04:44 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:27:39 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ int		eval_exec(t_shell *shell, char **input)
 	int		ret;
 	t_anode	*ast;
 
+	if (!input || !*input)
+		return (1);
+	if (ft_strcmp(*input, "") == 0)
+		return (g_return);
 	ast = NULL;
 	if ((ret = handle_input(shell, input)) == 0)
 	{

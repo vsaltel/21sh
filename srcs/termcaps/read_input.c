@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/21 13:15:36 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/22 16:26:00 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 
 	while ((ret = read_all(fd, &buf)))
 	{
+		g_pos.str = !g_pos.str ? ft_strdup("") : g_pos.str;
 		if (ret == -1
 			|| (ret = check_input(buf, &(g_pos.str), &g_pos, shell)) <= 1)
 			return (ret);

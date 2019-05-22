@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:46:01 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:58:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:39:26 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ int		can_execute(char *cmd, t_shell *shell)
 
 	if (!(file = get_exe(shell, cmd, 1)))
 		return (127);
-	else if (access(file, X_OK))
+	if (ft_strequ(file, "") || access(file, X_OK))
 	{
 		permission_denied(file);
 		free(file);
 		return (126);
 	}
-	else if ((lstat(file, &stats) == -1) || !S_ISREG(stats.st_mode))
+	else if ((stat(file, &stats) == -1) || !S_ISREG(stats.st_mode))
 	{
 		free(file);
 		return (is_directory_err(cmd));

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:40:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 15:00:12 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 16:16:21 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ static void	catch_sigint(int signal)
 		ioctl(0, TIOCSTI, "\4\0");
 	}
 	else if (!g_child)
+	{
+		g_return = 1;
 		ioctl(0, TIOCSTI, "\n");
+	}
 }
 
 void		register_signals(void)
