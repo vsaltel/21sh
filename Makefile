@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/22 16:56:09 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/22 17:11:01 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -95,6 +95,8 @@ FILES 	=	main.c									\
 			env/get_enve.c							\
 			env/new_envl.c							\
 			env/dup_env.c							\
+			env/exists_env.c						\
+			env/replace_env.c						\
 			builtins/builtins.c						\
 			builtins/builtins_errors.c				\
 			builtins/env.c							\

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 17:02:05 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/22 17:11:21 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,7 @@ void				ht_delete(t_shell *shell);
 int					ht_hash(size_t size, char *key);
 int					ht_create(t_shell *shell, size_t size);
 
-t_env				*copy_env(char **envp, int inc);
-int					disp_env(t_env *env);
-t_env				*get_enve(t_env *env, char *key);
-t_env				*new_envl(t_env **env, char *key, char *value, int inc);
-t_env				*dup_env(t_env *env, int option);
-int					delete_env(t_env **env, char *key);
-char				**build_env(t_env *env);
-void				free_env(t_env **env);
-int					disp_free_env(t_env **env);
-size_t				count_env(t_env *env);
 char				**dup_argv(int argc, char **args, char ***argv);
-
 int					replace_vars(t_token *curr, t_env *env);
 size_t				get_var_size(char *key);
 int					handle_home(t_token *token, t_env *env);
