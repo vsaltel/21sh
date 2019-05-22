@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/22 14:53:15 by vsaltel          ###   ########.fr        #
+#    Updated: 2019/05/22 16:56:09 by vsaltel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc
 #CFLAGS	+=	-Wall -Werror -Wextra
-CFLAGS = -g -fsanitize=address
+#CFLAGS = -g -fsanitize=address
 
 SHELL	=	bash
 
@@ -25,6 +25,7 @@ FILES 	=	main.c									\
 			shell.c									\
 			prompt.c								\
 			termcaps/read_input.c					\
+			termcaps/read_utils.c					\
 			termcaps/termcaps.c						\
 			termcaps/initialization.c				\
 			termcaps/set_position.c					\

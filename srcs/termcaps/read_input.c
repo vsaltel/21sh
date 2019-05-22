@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/22 16:26:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 17:09:28 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,7 @@
 #include "get_next_line.h"
 #include "shell.h"
 
-static int	read_all(int fd, char **dest)
-{
-	char	buf[BUFF_SIZE];
-	char	*str;
-	int		ret;
-
-	str = NULL;
-	while ((ret = read(fd, buf, BUFF_SIZE - 1)))
-	{
-		if (ret == -1)
-			break ;
-		buf[ret] = '\0';
-		if (!str)
-			str = ft_strdup(buf);
-		else
-			str = ft_strfjoin(str, buf, str);
-		if (ret < BUFF_SIZE - 1)
-			break ;
-	}
-	*dest = str;
-	return (ret);
-}
-
-void		new_entry(char **str, char *buf, t_cursor_pos *pos
+static void	new_entry(char **str, char *buf, t_cursor_pos *pos
 		, t_history *histo)
 {
 	histo->pos = 0;
@@ -88,14 +65,15 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 	return (2);
 }
 
-int			termcaps_gnl(int fd, char **dest, t_shell *shell)
+static int		termcaps_gnl(int fd, char **dest, t_shell *shell)
 {
 	int				ret;
 	char			*buf;
 
 	while ((ret = read_all(fd, &buf)))
 	{
-		g_pos.str = !g_pos.str ? ft_strdup("") : g_pos.str;
+		if (!g_pos.str)
+			g_pos.str = ft_strdup("");
 		if (ret == -1
 			|| (ret = check_input(buf, &(g_pos.str), &g_pos, shell)) <= 1)
 			return (ret);
@@ -107,13 +85,7 @@ int			termcaps_gnl(int fd, char **dest, t_shell *shell)
 			new_entry(&(g_pos.str), buf, &g_pos, &(shell->history));
 		free(buf);
 	}
-	final_position(&g_pos);
-	ft_strdel(&g_pos.s_str);
-	g_pos.search_mode = 0;
-	ft_strdel(&(shell->history.first_command));
-	add_to_history(g_pos.str, &(shell->history));
-	free(buf);
-	*dest = g_pos.str;
+	end_reading(dest, buf, &g_pos, shell);
 	return (ret > 0 ? 1 : ret);
 }
 

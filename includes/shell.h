@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/21 13:21:58 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/22 17:02:05 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,14 @@ void				restore_shell(struct termios prev_term);
 void				free_termcaps(t_shell *shell);
 int					get_input(int fd, char **dest, t_shell *shell);
 int					get_pos(t_cursor_pos *pos);
+int					read_all(int fd, char **dest);
 int					memset_all(char **str, t_history *history,
 												t_cursor_pos *pos);
 int					is_special(const char *s);
-void				new_entry(char **str, char *buf, t_cursor_pos *pos,
-														t_history *histo);
 int					execute_termcaps(char *buf, char **str,
 									t_cursor_pos *pos, t_shell *shell);
+void				end_reading(char **dest, char *buf, t_cursor_pos *pos,
+															t_shell *shell);
 void				resize(int sig);
 
 int					memset_pos(t_cursor_pos *pos);
