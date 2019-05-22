@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:43:54 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/16 12:42:35 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ int		eval_exec(t_shell *shell, char **input)
 		destroy_lexer(&(shell->lexer));
 		destroy_ast(shell);
 	}
+	else
+		ft_strdel(input);
 	return (ret);
 }
 
