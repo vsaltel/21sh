@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:51:03 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/22 15:09:31 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static t_pipel	*create_pipel(t_pipel *prev, t_cmd *cmd, t_shell *shell)
 
 	if (!(new = (t_pipel *)malloc(sizeof(t_pipel))))
 		return (NULL);
-	build_args(cmd, shell->env);
+	if (build_args(cmd, shell->env) == -1)
+		return (NULL);
 	cmd->redir = parse_redirections(cmd->exe, cmd->argc);
 	new->cmd = cmd;
 	new->previous = prev;
@@ -46,12 +47,14 @@ t_pipel			*build_pipeline(t_anode *node, t_shell *shell, t_anode **cn)
 	t_pipel	*pipel;
 	t_pipel *curr;
 
-	pipel = create_pipel(NULL, node->cmd, shell);
+	if (!(pipel = create_pipel(NULL, node->cmd, shell)))
+		return (NULL);
 	curr = pipel;
 	node = node->parent;
 	while (node && node->ope)
 	{
-		curr->next = create_pipel(curr, node->right->cmd, shell);
+		if (!(curr->next = create_pipel(curr, node->right->cmd, shell)))
+			break ;
 		curr = curr->next;
 		init_redirect_output(curr->cmd->redir);
 		node = node->parent;
