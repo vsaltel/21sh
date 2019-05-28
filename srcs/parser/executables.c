@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 17:35:34 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/28 15:38:40 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static int	start_process(char *file, t_cmd *cmd, t_env *env, t_shell *shell)
 		unregister_signals();
 		shell->able_termcaps ? restore_shell(shell->prev_term) : 0;
 		handle_redirections(cmd->redir);
-		handle_aggregate(cmd->redir);
 		if (execve(file, cmd->args, build_env(env)) == -1)
 			exit(EXIT_FAILURE);
 		exit(EXIT_SUCCESS);

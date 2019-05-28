@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 15:27:23 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:51:09 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/28 15:38:21 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,24 @@ static void		redirect_input(t_redirect *redir)
 	close(fd);
 }
 
+static void		handle_aggregate(t_redirect *redir)
+{
+	while (redir && redir->value)
+	{
+		if (redir->type == TOKEN_AGGR)
+		{
+			if (ft_strequ(redir->value->content, "-"))
+				close(redir->filedes);
+			else if (ft_isdigit(redir->value->content[0]))
+				dup2(ft_atoi(redir->value->content), redir->filedes);
+		}
+		redir = redir->next;
+	}
+}
+
 void			handle_redirections(t_redirect *redir)
 {
+	handle_aggregate(redir);
 	while (redir && redir->value)
 	{
 		if (redir->type == TOKEN_REDIRO)
@@ -49,21 +65,6 @@ void			handle_redirections(t_redirect *redir)
 				apply_here_doc(redir);
 			else
 				redirect_input(redir);
-		}
-		redir = redir->next;
-	}
-}
-
-void			handle_aggregate(t_redirect *redir)
-{
-	while (redir && redir->value)
-	{
-		if (redir->type == TOKEN_AGGR)
-		{
-			if (ft_strequ(redir->value->content, "-"))
-				close(redir->filedes);
-			else if (ft_isdigit(redir->value->content[0]))
-				dup2(ft_atoi(redir->value->content), redir->filedes);
 		}
 		redir = redir->next;
 	}

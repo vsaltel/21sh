@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:03:28 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:55:46 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/28 15:41:49 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int					is_builtin(char *name)
 	return (0);
 }
 
-static t_builtin	get_builtin(char *name)
+t_builtin			get_builtin(char *name)
 {
 	const	t_builtin	nbuiltin = { NULL, NULL };
 	size_t				i;

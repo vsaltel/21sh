@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 17:11:21 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/28 15:41:36 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ t_pipel				*build_pipeline(t_anode *node, t_shell *shell,
 t_redirect			*parse_redirections(t_token *tok, int offset);
 void				del_pipeline(t_pipel *pline);
 void				handle_redirections(t_redirect *redir);
-void				handle_aggregate(t_redirect *redir);
 int					get_here_doc(t_redirect *redir, t_shell *shell);
 void				apply_here_doc(t_redirect *redir);
 void				close_here_docs(t_redirect *redir);
@@ -95,6 +94,7 @@ int					is_exe(t_shell *shell, char *name, int verbose);
 int					execute(t_cmd *cmd, t_shell *shell);
 int					execute_env(t_cmd *cmd, t_env *env, t_shell *shell);
 int					handle_builtin(t_cmd *cmd, t_shell *shell);
+t_builtin			get_builtin(char *name);
 int					is_builtin(char *name);
 int					b_env(t_cmd *cmd, t_shell *shell);
 int					b_setenv(t_cmd *cmd, t_shell *shell);
