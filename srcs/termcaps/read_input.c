@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:12:36 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/22 17:09:28 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/05/28 18:17:25 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	check_input(char *buf, char **str, t_cursor_pos *pos
 	return (2);
 }
 
-static int		termcaps_gnl(int fd, char **dest, t_shell *shell)
+static int	termcaps_gnl(int fd, char **dest, t_shell *shell)
 {
 	int				ret;
 	char			*buf;
