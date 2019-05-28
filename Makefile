@@ -6,13 +6,13 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/05/22 17:38:21 by frossiny         ###   ########.fr        #
+#    Updated: 2019/05/28 17:23:34 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	gcc -g3
 #CFLAGS	+=	-Wall -Werror -Wextra
-#CFLAGS = -g -fsanitize=address
+CFLAGS = -g -fsanitize=address
 
 SHELL	=	bash
 
@@ -80,6 +80,7 @@ FILES 	=	main.c									\
 			parser/hashtable/ht_get.c				\
 			parser/hashtable/ht_exists.c			\
 			parser/exec_utils.c						\
+			parser/child_add.c						\
 			ast/build_ast.c							\
 			ast/create_node.c						\
 			ast/build_args.c						\
@@ -109,6 +110,7 @@ FILES 	=	main.c									\
 			utils/display_signal.c					\
 			utils/get_var_size.c					\
 			utils/str_escape.c						\
+			utils/copy_tab.c						\
 			signals.c								\
 			errors.c								\
 			utils.c									\

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/28 15:41:36 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/28 17:27:51 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,13 @@ int					b_unsetenv(t_cmd *cmd, t_shell *shell);
 int					b_exit(t_cmd *cmd, t_shell *shell);
 int					b_cd(t_cmd *cmd, t_shell *shell);
 int					b_echo(t_cmd *cmd, t_shell *shell);
+void				restore_fd(int fd[]);
 
 void				register_signals(void);
 void				unregister_signals(void);
 int					display_signal(int sigid);
+
+t_childs			*child_add(t_childs **childs, int pid);
 
 /*
 **	utils.c
@@ -115,6 +118,7 @@ int					is_relative_path(char *name);
 char				*format_path_exe(char *dir, char *file);
 int					cd_is_dir(char *file, char *name);
 int					can_execute(char *path, t_shell *shell);
+void				copy_tab(int op[], int np[]);
 
 void				inexistant(char *name);
 void				not_found(char *name);

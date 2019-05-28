@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/28 16:05:02 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/28 17:36:42 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,7 @@ static void	init_fd(t_pipel *pline, int op[], int np[])
 	handle_redirections(pline->cmd->redir);
 }
 
-static int	execute_pipe_builtin(t_pipel *pline, int op[], int np[], t_shell *shell)
-{
-	t_builtin	builtin;
-	t_cmd		*cmd;
-	int			ret;
-
-	cmd = pline->cmd;
-	if (!(builtin = get_builtin(cmd->exe->content)).func)
-		return (-1);
-	init_fd(pline, op, np);
-	ret = builtin.func(cmd, shell);
-	if (pline->previous)
-	{
-		close(op[0]);
-		close(op[1]);
-	}
-	return (ret);
-}
-
-static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
+static int	execute_pipe_cmd(t_pipel *pline, t_fd *fd, t_shell *shell)
 {
 	t_cmd	*cmd;
 	int		ret;
@@ -61,65 +42,83 @@ static int	execute_pipe_cmd(t_pipel *pline, int op[], int np[], t_shell *shell)
 	{
 		unregister_signals();
 		shell->able_termcaps ? restore_shell(shell->prev_term) : 0;
-		init_fd(pline, op, np);
+		init_fd(pline, fd->op, fd->np);
 		if (execve(get_exe(shell, cmd->exe->content, 1),
 								cmd->args, build_env(shell->env)) == -1)
 			exit(EXIT_FAILURE);
 	}
 	else if (pline->previous)
 	{
-		close(op[0]);
-		close(op[1]);
+		close(fd->op[0]);
+		close(fd->op[1]);
 	}
 	return (ret);
 }
 
-static void	copy_fd(int op[], int np[])
+static int	execute_pipe_builtin(t_pipel *pline, t_fd *fd, t_shell *shell)
 {
-	op[0] = np[0];
-	op[1] = np[1];
+	t_builtin	builtin;
+	t_cmd		*cmd;
+	int			ret;
+	int			sfd[3];
+
+	cmd = pline->cmd;
+	if (!is_builtin(cmd->exe->content))
+		return (execute_pipe_cmd(pline, fd, shell));
+	if (!(builtin = get_builtin(cmd->exe->content)).func)
+		return (-1);
+	if (cmd->redir)
+	{
+		sfd[0] = dup(0);
+		sfd[1] = fd->sfd;
+		sfd[2] = dup(2);
+	}
+	if (pline->next)
+		dup2(fd->np[1], 1);
+	handle_redirections(cmd->redir);
+	ret = builtin.func(cmd, shell);
+	cmd->redir ? restore_fd(sfd) : dup2(fd->sfd, 1);
+	return (ret);
 }
 
-static void	end_pipes(int pid, int sfd[], t_shell *shell)
+static void	end_pipes(t_childs *childs, t_shell *shell)
 {
 	int		ret;
 
-	waitpid(pid, &ret, 0);
-	if (pid > 0 && !g_return)
-		g_return = WIFSIGNALED(ret) ? display_signal(ret) : WEXITSTATUS(ret);
+	while (childs)
+	{
+		waitpid(childs->pid, &ret, 0);
+		if (!g_return)
+			g_return = WIFSIGNALED(ret) ? display_signal(ret) : WEXITSTATUS(ret);
+		childs = childs->next;
+	}
 	shell->able_termcaps ? termcaps_init(NULL) : 0;
 	g_child = 0;
-	ft_printf("Restore: %d -> %d\n", sfd[1], 1);
-	dup2(sfd[0], 0);
-	dup2(sfd[1], 1);
-	close(sfd[0]);
-	close(sfd[1]);
 }
 
 int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 {
-	int		op[2];
-	int		np[2];
-	int		sfd[3];
-	t_pipel	*pipeline;
+	t_fd		fd;
+	t_pipel		*pipeline;
+	t_childs	*childs;
 
 	if (!(pipeline = build_pipeline(node, shell, cn)))
 		return (1);
-	sfd[0] = dup(0);
-	sfd[1] = dup(1);
+	fd.sfd = dup(1);
+	childs = NULL;
 	while (pipeline && pipeline->cmd)
 	{
-		if (pipeline->next)
-			pipe(np);
+		pipeline->next ? pipe(fd.np) : 0;
 		get_here_doc(pipeline->cmd->redir, shell);
-		g_return = is_builtin(pipeline->cmd->exe->content) ? execute_pipe_builtin(pipeline, op, np, shell) : execute_pipe_cmd(pipeline, op, np, shell);
+		g_return = execute_pipe_builtin(pipeline, &fd, shell);
+		child_add(&childs, g_child);
 		if (pipeline->next)
-			copy_fd(op, np);
-		if (!pipeline->next)
-			break ;
+			copy_tab(fd.op, fd.np);
 		pipeline = pipeline->next;
 	}
-	end_pipes(g_child, sfd, shell);
+	dup2(fd.sfd, 1);
+	close(fd.sfd);
+	end_pipes(childs, shell);
 	del_pipeline(pipeline);
 	return (g_return);
 }
