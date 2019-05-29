@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/28 18:12:41 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/29 16:06:11 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,15 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 		get_here_doc(pipeline->cmd->redir, shell);
 		g_return = execute_pipe_builtin(pipeline, &fd, shell);
 		child_add(&childs, g_child);
-		if (pipeline->next)
-			copy_tab(fd.op, fd.np);
+		pipeline->next ? copy_tab(fd.op, fd.np) : 0;
+		if (!pipeline->next)
+			break ;
 		pipeline = pipeline->next;
 	}
 	dup2(fd.sfd, 1);
 	close(fd.sfd);
 	end_pipes(childs, shell);
+	child_del(childs);
 	del_pipeline(pipeline);
 	return (g_return);
 }

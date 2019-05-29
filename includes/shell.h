@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/28 17:27:51 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/29 15:47:14 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void				unregister_signals(void);
 int					display_signal(int sigid);
 
 t_childs			*child_add(t_childs **childs, int pid);
+void				child_del(t_childs *childs);
 
 /*
 **	utils.c
