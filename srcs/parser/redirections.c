@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 15:27:23 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/28 15:38:21 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/05/29 14:04:47 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ static void		handle_aggregate(t_redirect *redir)
 
 void			handle_redirections(t_redirect *redir)
 {
-	handle_aggregate(redir);
+	t_redirect	*save;
+
+	save = redir;
 	while (redir && redir->value)
 	{
 		if (redir->type == TOKEN_REDIRO)
@@ -68,4 +70,5 @@ void			handle_redirections(t_redirect *redir)
 		}
 		redir = redir->next;
 	}
+	handle_aggregate(save);
 }
