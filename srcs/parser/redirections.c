@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 15:27:23 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/29 14:04:47 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:57:51 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void		redirect_input(t_redirect *redir)
 	close(fd);
 }
 
-static void		handle_aggregate(t_redirect *redir)
+static int		handle_aggregate(t_redirect *redir)
 {
 	while (redir && redir->value)
 	{
@@ -46,13 +46,22 @@ static void		handle_aggregate(t_redirect *redir)
 			if (ft_strequ(redir->value->content, "-"))
 				close(redir->filedes);
 			else if (ft_isdigit(redir->value->content[0]))
-				dup2(ft_atoi(redir->value->content), redir->filedes);
+			{
+				if (dup2(ft_atoi(redir->value->content), redir->filedes) == -1)
+				{
+					write(2, "21sh: ", 6);
+					ft_putstr_fd(redir->value->content, 2);
+					write(2, ": bad file descriptor\n", 21);
+					return (0);
+				}
+			}
 		}
 		redir = redir->next;
 	}
+	return (1);
 }
 
-void			handle_redirections(t_redirect *redir)
+int				handle_redirections(t_redirect *redir)
 {
 	t_redirect	*save;
 
@@ -70,5 +79,7 @@ void			handle_redirections(t_redirect *redir)
 		}
 		redir = redir->next;
 	}
-	handle_aggregate(save);
+	if (!handle_aggregate(save))
+		return (0);
+	return (1);
 }
