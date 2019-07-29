@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/07/29 17:34:39 by frossiny         ###   ########.fr        #
+#    Updated: 2019/07/29 18:49:56 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ FILES 	=	main.c									\
 			parser/redirections.c					\
 			parser/executables.c					\
 			parser/here_doc.c						\
+			parser/get_pipes_docs.c					\
 			parser/hashtable/ht_create.c			\
 			parser/hashtable/ht_hash.c				\
 			parser/hashtable/ht_delone.c			\

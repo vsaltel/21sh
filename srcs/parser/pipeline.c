@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/29 16:06:50 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/07/29 18:53:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void		init_redirect_output(t_redirect *redir)
 	int		fd;
 	int		otype;
 
-	if (!redir)
+	if (!redir || redir->type == TOKEN_REDIRI)
 		return ;
 	otype = O_RDONLY | O_CREAT | O_APPEND;
 	if ((fd = open(redir->value->content, otype, 420)) == -1)
@@ -72,6 +72,7 @@ void			del_pipeline(t_pipel *pline)
 	while (pline)
 	{
 		next = pline->next;
+		close_here_docs(pline->cmd->redir);
 		free(pline);
 		pline = next;
 	}

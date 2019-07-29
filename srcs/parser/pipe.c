@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/29 16:06:11 by vsaltel          ###   ########.fr       */
+/*   Updated: 2019/07/29 18:50:50 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,10 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 		return (1);
 	fd.sfd = dup(1);
 	childs = NULL;
+	get_pipes_docs(shell, pipeline);
 	while (pipeline && pipeline->cmd)
 	{
 		pipeline->next ? pipe(fd.np) : 0;
-		get_here_doc(pipeline->cmd->redir, shell);
 		g_return = execute_pipe_builtin(pipeline, &fd, shell);
 		child_add(&childs, g_child);
 		pipeline->next ? copy_tab(fd.op, fd.np) : 0;

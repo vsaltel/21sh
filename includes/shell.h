@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 13:50:24 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 18:51:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int					handle_redirections(t_redirect *redir);
 int					get_here_doc(t_redirect *redir, t_shell *shell);
 void				apply_here_doc(t_redirect *redir);
 void				close_here_docs(t_redirect *redir);
+int					get_pipes_docs(t_shell *shell, t_pipel *pipes);
 
 void				ht_put(t_shell *shell, char *key, char *value);
 char				*ht_get(t_shell *shell, char *key);
