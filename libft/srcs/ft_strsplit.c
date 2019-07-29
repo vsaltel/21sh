@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 18:37:13 by frossiny          #+#    #+#             */
-/*   Updated: 2019/03/07 15:53:03 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:21:20 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_word_size(const char *s, char c)
 	return (i);
 }
 
-static int	ft_count_words(const char *s, char c)
+static int	ft_count_w(const char *s, char c)
 {
 	int	i;
 	int	count;
@@ -54,8 +54,8 @@ char		**ft_strsplit(char const *s, char c)
 	int		i;
 	int		j;
 
-	if (!s ||
-		!(tab = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1))))
+	if (!s
+		|| !(tab = (char **)malloc(sizeof(char *) * (ft_count_w(s, c) + 1))))
 		return (NULL);
 	i = 0;
 	j = 0;

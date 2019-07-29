@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 17:34:27 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:46:09 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,15 @@ int		handle_input(t_shell *shell, char **input)
 	return (0);
 }
 
+void	ptdeb(t_token *tokens)
+{
+	while (tokens->next)
+	{
+		ft_printf("Token (%d): %s\n", tokens->type, tokens->content);
+		tokens = tokens->next;
+	}
+}
+
 int		eval_exec(t_shell *shell, char **input)
 {
 	int		ret;
@@ -109,6 +118,7 @@ int		eval_exec(t_shell *shell, char **input)
 		if (!input)
 			return (1);
 		ft_strdel(input);
+		ptdeb(shell->lexer.tokens);
 		build_ast(shell, &ast);
 		shell->ast = ast;
 		shell->ast ? ret = parse(shell, shell->ast) : 0;

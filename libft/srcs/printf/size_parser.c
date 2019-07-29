@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 12:36:30 by frossiny          #+#    #+#             */
-/*   Updated: 2019/02/13 15:21:27 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:22:24 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void		parse_size(char *format, size_t i, t_arg *arg)
 	arg->wildcards = 0;
 	while (format[i] != '\0' && is_flag(format[i]))
 		i++;
-	if ((format[i] != '.' || format[i] != '*') &&
-							(is_type(format[i]) || is_size(format[i])))
+	if ((format[i] != '.' || format[i] != '*') 
+		&& (is_type(format[i]) || is_size(format[i])))
 		return ;
 	if (format[i] != '.')
 		while (format[i] == '*' || ft_isdigit(format[i]))

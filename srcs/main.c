@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:43:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:43:41 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:13:19 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int		main(int argc, char *argv[], char *envp[])
 	s_shell.env = copy_env(envp, 1);
 	s_shell.ast = NULL;
 	s_shell.bin_ht.table = NULL;
-	s_shell.history = get_history();
+	if (exists_env(s_shell.env, "HOME"))
+		s_shell.history = get_history();
 	g_pos.v_str = NULL;
 	return (shell(&s_shell));
 }

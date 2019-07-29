@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/21 15:06:21 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/02/08 16:42:00 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:21:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static int	size_str(t_arg *list, unsigned int base, unsigned int *size)
 
 	value2 = list->data.ull;
 	*size = 0;
-	if ((list->data.ull == 0 && list->precision != 0) ||
-			(list->type == 'o' && list->prefix))
+	if ((list->data.ull == 0 && list->precision != 0)
+		|| (list->type == 'o' && list->prefix))
 		(*size)++;
 	while (list->data.ull > 0)
 	{
@@ -29,8 +29,8 @@ static int	size_str(t_arg *list, unsigned int base, unsigned int *size)
 	list->data.ull = value2;
 	if ((unsigned int)list->precision > *size && list->precision != -1)
 		*size = list->precision;
-	if (list->prefix && list->data.ull != 0 &&
-			(list->type == 'x' || list->type == 'X'))
+	if (list->prefix && list->data.ull != 0
+		&& (list->type == 'x' || list->type == 'X'))
 		*size = *size + 2;
 	return (*size);
 }

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 16:45:33 by frossiny          #+#    #+#             */
-/*   Updated: 2019/02/08 19:27:56 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:23:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	parse_flags(char *format, size_t i, t_arg *arg)
 			arg->prefix = 1;
 		else if (format[i] == ' ')
 			arg->space = 1;
-		else if (format[i] == '0' &&
-			((arg->type == 'f' || arg->type == 'F') || arg->precision == -1))
+		else if (format[i] == '0'
+			&& (arg->type == 'f' || arg->type == 'F' || arg->precision == -1))
 			arg->zero = 1;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 11:02:25 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/15 14:44:39 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 10:19:55 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ int					execute_termcaps(char *buf, char **str
 		return (0);
 	if (termcaps.func)
 	{
-		if (pos->search_mode && ft_strcmp(buf, "\022") &&
-			ft_strcmp(buf, "\177"))
+		if (pos->search_mode && ft_strcmp(buf, "\022")
+				&& ft_strcmp(buf, "\177"))
 		{
 			ft_strdel(&pos->s_str);
 			pos->search_mode = 0;

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 14:03:28 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/28 17:27:54 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 11:31:13 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_builtin			get_builtin(char *name)
 
 void				restore_fd(int fd[])
 {
+	ft_printf("%d - %d - %d\n", fd[0], fd[1], fd[2]);
 	dup2(fd[0], 0);
 	dup2(fd[1], 1);
 	dup2(fd[2], 2);
