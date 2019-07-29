@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:28:42 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 18:53:58 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 19:00:54 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void		init_redirect_output(t_redirect *redir)
 	int		fd;
 	int		otype;
 
-	if (!redir || redir->type == TOKEN_REDIRI)
+	if (!redir || redir->type == TOKEN_REDIRI || redir->type == TOKEN_AGGR)
 		return ;
 	otype = O_RDONLY | O_CREAT | O_APPEND;
 	if ((fd = open(redir->value->content, otype, 420)) == -1)
