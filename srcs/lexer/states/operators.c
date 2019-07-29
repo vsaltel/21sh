@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:23:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/12 14:23:39 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 15:24:50 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		lex_state_operator(t_lexer *lexer)
 		lexer->pin += cur.len;
 	}
 	else
-		lexer->state = ST_GENERAL;
+		update_state(lexer, ST_GENERAL);
 	return (1);
 }
 
@@ -37,6 +37,6 @@ int		lex_state_semic(t_lexer *lexer)
 	if (cur.op && cur.type != TOKEN_IGN)
 		return (parse_error(cur.op, cur.len, 0));
 	else
-		lexer->state = ST_GENERAL;
+		update_state(lexer, ST_GENERAL);
 	return (1);
 }

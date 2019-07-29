@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 12:05:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 13:58:27 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 15:17:45 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int		shell(t_shell *shell)
 
 	shell->lexer.tokens = NULL;
 	shell->lexer.state = ST_GENERAL;
+	shell->lexer.lstate = ST_GENERAL;
 	while ((get_input(0, &input, shell)) > 0)
 		g_return = eval_exec(shell, &input);
 	if (input)

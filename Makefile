@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/07/29 10:39:43 by frossiny         ###   ########.fr        #
+#    Updated: 2019/07/29 17:34:39 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,8 @@ FILES 	=	main.c									\
 			lexer/lexer_search.c					\
 			lexer/create_token.c					\
 			lexer/push_token.c						\
+			lexer/replace_token.c					\
+			lexer/update_state.c					\
 			lexer/parse_error.c						\
 			lexer/states/general.c					\
 			lexer/states/quotes.c					\
@@ -113,8 +115,8 @@ FILES 	=	main.c									\
 			signals.c								\
 			errors.c								\
 			utils.c									\
-			variables.c								\
-			tilde.c
+			expansion/variables.c					\
+			expansion/tilde.c
 SRCS	=	$(addprefix $(SRCDIR)/, $(FILES))
 OBJS 	=	$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 OBJSD 	=	$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.d)
@@ -144,17 +146,7 @@ $(NAME): $(OBJS)
 	@echo -e "\n${_GREEN}${_BOLD}$(NAME) done.${_END}"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
-	@[ -d $(OBJDIR)/ast ] || mkdir -p $(OBJDIR)/ast
-	@[ -d $(OBJDIR)/builtins ] || mkdir -p $(OBJDIR)/builtins
-	@[ -d $(OBJDIR)/env ] || mkdir -p $(OBJDIR)/env
-	@[ -d $(OBJDIR)/lexer ] || mkdir -p $(OBJDIR)/lexer
-	@[ -d $(OBJDIR)/lexer/states ] || mkdir -p $(OBJDIR)/lexer/states
-	@[ -d $(OBJDIR)/parser ] || mkdir -p $(OBJDIR)/parser
-	@[ -d $(OBJDIR)/parser/hashtable ] || mkdir -p $(OBJDIR)/parser/hashtable
-	@[ -d $(OBJDIR)/termcaps ] || mkdir -p $(OBJDIR)/termcaps
-	@[ -d $(OBJDIR)/termcaps/completion ] || mkdir -p $(OBJDIR)/termcaps/completion
-	@[ -d $(OBJDIR)/utils ] || mkdir -p $(OBJDIR)/utils
+	@mkdir -p $(@D)
 	@echo -n -e "\r\033[K${_PURPLE}${BOLD}[${NAME}] Compiling $<${_END}"
 	@$(CC) $(CFLAGS) -I $(INCDIR) -I $(LIBFT)/$(INCDIR) -MMD -o $@ -c $<
 

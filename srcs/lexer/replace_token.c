@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   escaped.c                                          :+:      :+:    :+:   */
+/*   replace_token.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/12 14:24:26 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 15:23:02 by frossiny         ###   ########.fr       */
+/*   Created: 2019/07/29 17:30:43 by frossiny          #+#    #+#             */
+/*   Updated: 2019/07/29 17:31:34 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
+#include "lexer.h"
 
-int		lex_state_escaped(t_lexer *lexer)
+void	replace_token(t_token *token, char *str)
 {
-	lexer->in++;
-	update_state(lexer, ST_GENERAL);
-	return (1);
+	free(token->content);
+	if (!str)
+		str = ft_strdup("");
+	token->content = str;
+	token->len = ft_strlen(str);
 }

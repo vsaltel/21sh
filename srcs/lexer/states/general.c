@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:17:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:50:22 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 15:36:56 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,20 @@ static int	is_redirection(char *str, t_ex_token *tok)
 
 static void	lex_state_general_else(t_lexer *lexer)
 {
-	if (*(lexer->in) == '"'
+	if ((*(lexer->in) == '"' || *(lexer->in) == '\'')
 						&& !is_escaped(lexer->in, lexer->in - lexer->pin, 0))
 	{
-		lexer->pin = lexer->in;
-		lexer->state = ST_DQUOTES;
-	}
-	else if (*(lexer->in) == '\''
-						&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
-	{
-		lexer->pin = lexer->in;
-		lexer->state = ST_QUOTES;
+		update_state(lexer, *(lexer->in) == '"' ? ST_DQUOTES : ST_QUOTES);
 	}
 	else if (*(lexer->in) == '\\'
 						&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
-		lexer->state = ST_ESCAPED;
+		update_state(lexer, ST_ESCAPED);
 	else if (*(lexer->in) == '#'
 						&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
 	{
 		create_token(lexer, lexer->pin, lexer->in - lexer->pin, TOKEN_NAME);
 		lexer->pin = lexer->in;
-		lexer->state = ST_COMMENT;
+		update_state(lexer, ST_COMMENT);
 	}
 	lexer->in++;
 }
@@ -72,7 +65,7 @@ int			lex_state_general(t_lexer *lex)
 			create_token(lex, lex->pin, lex->in - lex->pin, TOKEN_NAME);
 		if (cur.type != TOKEN_IGN)
 			create_token(lex, lex->in, cur.len, cur.type);
-		lex->state = cur.state;
+		update_state(lex, cur.state);
 		lex->pin = (lex->in += cur.len);
 	}
 	else if (ft_isdigit(*(lex->in)) && (tmp = is_redirection(lex->in, &cur)))
@@ -80,7 +73,7 @@ int			lex_state_general(t_lexer *lex)
 		if (lex->in > lex->pin)
 			create_token(lex, lex->pin, lex->in - lex->pin, TOKEN_NAME);
 		create_token(lex, lex->in, tmp, cur.type);
-		lex->state = ST_OPERATOR;
+		update_state(lex, ST_OPERATOR);
 		lex->pin = (lex->in += tmp);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:45 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:49:39 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 15:33:29 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ const static t_state_func	g_state_funcs[] =
 {
 	{ ST_GENERAL, &lex_state_general },
 	{ ST_QUOTES, &lex_state_quotes },
-	{ ST_DQUOTES, &lex_state_dquotes },
+	{ ST_DQUOTES, &lex_state_quotes },
 	{ ST_ESCAPED, &lex_state_escaped },
 	{ ST_COMMENT, &lex_state_comment },
 	{ ST_OPERATOR, &lex_state_operator },

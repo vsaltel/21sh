@@ -6,12 +6,13 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/22 16:09:32 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 17:42:16 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "shell.h"
+#include "expansion.h"
 
 static char	*handle_var(t_env *env, char *var_name)
 {
@@ -41,47 +42,65 @@ static void	fill_new(char **new, char *tmp, int esc)
 	free(tmp);
 }
 
-static void	replace_token(t_token *token, char *str)
+static int	handle_quotes(char **new, t_expansion *e)
 {
-	free(token->content);
-	if (!str)
-		str = ft_strdup("");
-	token->content = str;
-	token->len = ft_strlen(str);
+	if ((e->str[e->i] == '\'' && e->isquote == 0)
+			|| (e->str[e->i] == '"' && e->isquote == 0))
+	{
+		fill_new(new, ft_strndup(e->str + e->li, e->i - e->li), 1);
+		e->li = e->i + 1;
+		e->isquote = e->str[e->i] == '"' ? 2 : 1;
+		return (1);
+	}
+	if ((e->str[e->i] == '\'' && e->isquote == 1)
+			|| (e->str[e->i] == '"' && e->isquote == 2))
+	{
+		fill_new(new, ft_strndup(e->str + e->li, e->i - e->li), 1);
+		e->li = e->i + 1;
+		e->isquote = 0;
+		return (1);
+	}
+	return (0);
 }
 
-static void	parse_token(t_token *token, char *str, t_env *env)
+static void	parse_token(t_token *token, t_expansion *e, t_env *env)
 {
 	char	*new;
 	char	*tmp;
-	size_t	li;
-	size_t	i;
 
-	i = -1;
-	li = 0;
 	new = NULL;
-	while (str[++i])
+	while (e->str[++(e->i)])
 	{
-		if (!(str[i] == '$' && !is_escaped(str, i, 0)))
+		if (handle_quotes(&new, e))
 			continue ;
-		fill_new(&new, ft_strndup(str + li, i - li), 1);
+		if (!(e->str[e->i] == '$' && !is_escaped(e->str, e->i, 0))
+					|| e->isquote == 1)
+			continue ;
+		fill_new(&new, ft_strndup(e->str + e->li, e->i - e->li), 1);
 		tmp = handle_var(env,
-					ft_strndup(str + i + 1, get_var_size(str + i)));
+			ft_strndup(e->str + e->i + 1, get_var_size(e->str + e->i)));
 		(tmp) ? fill_new(&new, tmp, 0) : 0;
-		i += get_var_size(str + i);
-		li = i + 1;
+		e->i += get_var_size(e->str + e->i);
+		e->li = e->i + 1;
 	}
-	i > li ? fill_new(&new, ft_strndup(str + li, i - li), 1) : 0;
+	(e->i > e->li)
+		? fill_new(&new, ft_strndup(e->str + e->li, e->i - e->li), 1)
+		: 0;
 	replace_token(token, new);
 }
 
 int			replace_vars(t_token *token, t_env *env)
 {
+	t_expansion	exp;
+
 	while (token && is_word_token(token))
 	{
-		if (token->type == TOKEN_NAME || token->type == TOKEN_DQUOTES)
-			parse_token(token, token->content, env);
-		if (token->type == TOKEN_NAME && token->content[0] == '~')
+		exp.i = -1;
+		exp.li = 0;
+		exp.isquote = 0;
+		exp.str = token->content;
+		parse_token(token, &exp, env);
+		if (token->content[0] == '~')
 			if (!(handle_home(token, env)))
 				return (0);
 		token = token->next;

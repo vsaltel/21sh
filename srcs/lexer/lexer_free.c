@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 12:12:12 by frossiny          #+#    #+#             */
-/*   Updated: 2019/04/03 17:35:02 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 15:22:48 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ void	destroy_lexer(t_lexer *lexer)
 	destroy_tokens(lexer->tokens);
 	lexer->tokens = NULL;
 	lexer->size = 0;
-	lexer->state = ST_GENERAL;
+	update_state(lexer, ST_GENERAL);
 }

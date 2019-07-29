@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:23:56 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:36:30 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 17:32:52 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ typedef enum	e_token_type
 {
 	TOKEN_NULL,
 	TOKEN_NAME,
-	TOKEN_QUOTES,
-	TOKEN_DQUOTES,
 	TOKEN_SEMI,
 	TOKEN_AND,
 	TOKEN_OR,
@@ -70,7 +68,11 @@ typedef struct	s_lexer
 	t_token		*last_token;
 	size_t		size;
 	t_state		state;
+	t_state		lstate;
 }				t_lexer;
+
+void			replace_token(t_token *token, char *str);
+void			update_state(t_lexer *lexer, t_state newstate);
 
 int				lex_state_general(t_lexer *lexer);
 int				lex_state_quotes(t_lexer *lexer);
