@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 14:17:47 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 15:36:56 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 19:30:41 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	is_redirection(char *str, t_ex_token *tok)
 static void	lex_state_general_else(t_lexer *lexer)
 {
 	if ((*(lexer->in) == '"' || *(lexer->in) == '\'')
-						&& !is_escaped(lexer->in, lexer->in - lexer->pin, 0))
+						&& !is_escaped(lexer->pin, lexer->in - lexer->pin, 0))
 	{
 		update_state(lexer, *(lexer->in) == '"' ? ST_DQUOTES : ST_QUOTES);
 	}

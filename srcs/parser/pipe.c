@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 18:50:50 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 21:06:30 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	execute_pipe_builtin(t_pipel *pline, t_fd *fd, t_shell *shell)
 	return (ret);
 }
 
-static void	end_pipes(t_childs *childs, t_shell *shell)
+static void	end_pipes(t_childs *childs, t_fd *fd, t_shell *shell)
 {
 	int		ret;
 
@@ -99,6 +99,10 @@ static void	end_pipes(t_childs *childs, t_shell *shell)
 	}
 	shell->able_termcaps ? termcaps_init(NULL) : 0;
 	g_child = 0;
+	close(fd->np[0]);
+	close(fd->np[1]);
+	close(fd->op[0]);
+	close(fd->op[1]);
 }
 
 int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
@@ -124,7 +128,7 @@ int			execute_pipes(t_anode *node, t_shell *shell, t_anode **cn)
 	}
 	dup2(fd.sfd, 1);
 	close(fd.sfd);
-	end_pipes(childs, shell);
+	end_pipes(childs, &fd, shell);
 	child_del(childs);
 	del_pipeline(pipeline);
 	return (g_return);

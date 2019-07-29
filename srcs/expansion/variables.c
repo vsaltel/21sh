@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 17:42:16 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 19:51:28 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static int	handle_quotes(char **new, t_expansion *e)
 	if ((e->str[e->i] == '\'' && e->isquote == 0)
 			|| (e->str[e->i] == '"' && e->isquote == 0))
 	{
+		if (is_escaped(e->str, e->i, 0))
+			return (0);
 		fill_new(new, ft_strndup(e->str + e->li, e->i - e->li), 1);
 		e->li = e->i + 1;
 		e->isquote = e->str[e->i] == '"' ? 2 : 1;
@@ -55,6 +57,8 @@ static int	handle_quotes(char **new, t_expansion *e)
 	if ((e->str[e->i] == '\'' && e->isquote == 1)
 			|| (e->str[e->i] == '"' && e->isquote == 2))
 	{
+		if (is_escaped(e->str, e->i, 0))
+			return (0);
 		fill_new(new, ft_strndup(e->str + e->li, e->i - e->li), 1);
 		e->li = e->i + 1;
 		e->isquote = 0;

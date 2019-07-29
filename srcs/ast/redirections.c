@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 15:11:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/15 14:54:34 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/07/29 19:59:05 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_redirect	*create_redirection(t_token *token)
 		if (token->type != TOKEN_AGGR)
 			red->filedes = (token->type == TOKEN_REDIRO) ? 1 : 0;
 		else
-			red->filedes = (ft_strstr(token->content, "&>")) ? 1 : 0;
+			red->filedes = (ft_strstr(token->content, ">&")) ? 1 : 0;
 	}
 	red->type = token->type;
 	red->append = is_append(token);
