@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 19:51:28 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/07 15:52:56 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ static void	parse_token(t_token *token, t_expansion *e, t_env *env)
 			continue ;
 		if (!(e->str[e->i] == '$' && !is_escaped(e->str, e->i, 0))
 					|| e->isquote == 1)
+			continue ;
+		if (e->isquote != 1
+			&& (e->str[e->i + 1] == '\0' || e->str[e->i + 1] == '"'))
 			continue ;
 		fill_new(&new, ft_strndup(e->str + e->li, e->i - e->li), 1);
 		tmp = handle_var(env,
