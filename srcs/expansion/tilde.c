@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:49:15 by frossiny          #+#    #+#             */
-/*   Updated: 2019/08/12 15:19:48 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 18:31:09 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,11 @@ static int	handle_home_spec(t_token *token, t_env *env)
 
 	if (!env || token->content[1] == '\0')
 		return (0);
-	if (token->content[1] == '+'
-		&& (token->content[2] == '\0' || token->content[2] == '/'))
+	if ((token->content[1] == '+' || token->content[1] == '-')
+			&& (token->content[2] == '\0' || token->content[2] == '/'))
 	{
-		if (!(var = get_enve(env, "PWD")))
-			return (0);
-		if (!(path = ft_strjoin(var->value, token->content + 2)))
-			return (0);
-	}
-	else if (token->content[1] == '-'
-		&& (token->content[2] == '\0' || token->content[2] == '/'))
-	{
-		if (!(var = get_enve(env, "OLDPWD")))
+		if (!(var = get_enve(env, token->content[1] == '+'
+					? "PWD" : "OLDPWD")))
 			return (0);
 		if (!(path = ft_strjoin(var->value, token->content + 2)))
 			return (0);
