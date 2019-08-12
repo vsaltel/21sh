@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:26:37 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 10:42:34 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 15:06:46 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int			execute(t_cmd *cmd, t_shell *shell)
 		return (1);
 	build_args(cmd, shell->env);
 	cmd->redir = parse_redirections(cmd->exe, cmd->argc);
+	if (!validate_redirection(cmd->redir))
+		return (1);
 	return (start(cmd, shell->env, shell));
 }
 
@@ -74,5 +76,7 @@ int			execute_env(t_cmd *cmd, t_env *env, t_shell *shell)
 		return (1);
 	build_args(cmd, env);
 	cmd->redir = parse_redirections(cmd->exe, cmd->argc);
+	if (!validate_redirection(cmd->redir))
+		return (1);
 	return (start(cmd, env, shell));
 }

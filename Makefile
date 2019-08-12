@@ -6,7 +6,7 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/07/29 18:49:56 by frossiny         ###   ########.fr        #
+#    Updated: 2019/08/12 18:23:42 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,8 @@ FILES 	=	main.c									\
 			termcaps/completion/t_completion.c		\
 			termcaps/completion/files.c				\
 			termcaps/completion/path.c				\
+			termcaps/completion/include_word.c		\
+			termcaps/completion/get_tilde.c			\
 			termcaps/t_up.c							\
 			termcaps/t_down.c						\
 			termcaps/t_history_next.c				\

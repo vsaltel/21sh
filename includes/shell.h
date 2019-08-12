@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 11:59:10 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 18:51:20 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 18:24:51 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,8 +202,9 @@ void				termcaps_visual_cut(char **str, t_cursor_pos *pos,
 void				termcaps_visual_copy(char **str, t_cursor_pos *pos,
 														t_shell *shell);
 
-int					complete_files(t_compl_info *ci);
+int					complete_files(t_compl_info *ci, t_shell *shell);
 void				include_word(char *word, char **str, t_cursor_pos *pos);
 int					complete_path(t_compl_info *ci, t_shell *shell);
+char				*get_tilde(char *word, t_env *env);
 
 #endif
