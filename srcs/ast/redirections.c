@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 15:11:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 19:59:05 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 15:20:01 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,21 @@ t_redirect			*parse_redirections(t_token *tok, int offset)
 		tok = tok->next->next;
 	}
 	return (red);
+}
+
+int					validate_redirection(t_redirect *redir)
+{
+	while (redir)
+	{
+		if (redir->type == TOKEN_REDIRI)
+		{
+			if (access(redir->value->content, F_OK))
+			{
+				inexistant(redir->value->content);
+				return (0);
+			}
+		}
+		redir = redir->next;
+	}
+	return (1);
 }

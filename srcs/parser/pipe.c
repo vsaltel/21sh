@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/10 20:32:11 by frossiny          #+#    #+#             */
-/*   Updated: 2019/07/29 21:06:30 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 15:18:58 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	execute_pipe_cmd(t_pipel *pline, t_fd *fd, t_shell *shell)
 	int		ret;
 
 	cmd = pline->cmd;
+	if (!(ret = validate_redirection(cmd->redir)))
+		return (!ret);
 	if ((ret = can_execute(cmd->exe->content, shell)))
 		return (ret);
 	if ((g_child = fork()) == 0)
@@ -65,6 +67,8 @@ static int	execute_pipe_builtin(t_pipel *pline, t_fd *fd, t_shell *shell)
 	cmd = pline->cmd;
 	if (!is_builtin(cmd->exe->content))
 		return (execute_pipe_cmd(pline, fd, shell));
+	if (!(ret = validate_redirection(cmd->redir)))
+		return (!ret);
 	if (!(builtin = get_builtin(cmd->exe->content)).func)
 		return (-1);
 	if (cmd->redir)

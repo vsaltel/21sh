@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 15:50:15 by frossiny          #+#    #+#             */
-/*   Updated: 2019/05/02 13:45:30 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 15:05:44 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,7 @@ typedef struct		s_anode
 	struct s_anode	*left;
 	struct s_anode	*right;
 }					t_anode;
+
+int					validate_redirection(t_redirect *redir);
 
 #endif
