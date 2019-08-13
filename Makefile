@@ -6,12 +6,12 @@
 #    By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/03 14:37:18 by vsaltel           #+#    #+#              #
-#    Updated: 2019/08/13 12:37:03 by frossiny         ###   ########.fr        #
+#    Updated: 2019/08/13 14:09:13 by frossiny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	gcc -g3
-#CFLAGS	+=	-Wall -Werror -Wextra
+CC		=	gcc
+CFLAGS	+=	-Wall -Werror -Wextra
 
 SHELL	=	bash
 

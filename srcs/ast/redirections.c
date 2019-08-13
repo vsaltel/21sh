@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/09 15:11:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/08/12 15:20:01 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/13 14:46:31 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int					validate_redirection(t_redirect *redir)
 {
 	while (redir)
 	{
-		if (redir->type == TOKEN_REDIRI)
+		if (redir->type == TOKEN_REDIRI && redir->append == 0)
 		{
 			if (access(redir->value->content, F_OK))
 			{

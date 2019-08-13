@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 13:16:59 by frossiny          #+#    #+#             */
-/*   Updated: 2019/08/07 15:52:56 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/13 14:36:40 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,17 @@ static void	parse_token(t_token *token, t_expansion *e, t_env *env)
 int			replace_vars(t_token *token, t_env *env)
 {
 	t_expansion	exp;
+	int			esc;
 
 	while (token && is_word_token(token))
 	{
+		esc = (token->content[0] == '\\');
 		exp.i = -1;
 		exp.li = 0;
 		exp.isquote = 0;
 		exp.str = token->content;
 		parse_token(token, &exp, env);
-		if (token->content[0] == '~')
+		if (!esc && token->content[0] == '~')
 			if (!(handle_home(token, env)))
 				return (0);
 		token = token->next;
