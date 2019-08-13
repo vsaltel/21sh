@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 15:58:08 by frossiny          #+#    #+#             */
-/*   Updated: 2019/08/12 18:27:33 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/13 12:39:14 by frossiny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,6 @@ static char		*get_path(char *word, t_env *env)
 	if (!(search = ft_strrchr(word, '/')))
 		return (ft_strdup("."));
 	return (ft_strndup(word, search - word + 1));
-}
-
-static char		*get_file_start(char *word)
-{
-	char	*search;
-
-	if (!(search = ft_strrchr(word, '/')))
-		return (word[0] == '~' ? word + 1 : word);
-	return (search + 1);
 }
 
 static char		*get_home_word(char *word, char *dname)
@@ -76,6 +67,13 @@ static int		complete_file(char **str,
 	return (1);
 }
 
+static int		file_found(DIR *dirp, t_compl_info *ci, char *dname, t_env *env)
+{
+	complete_file(ci->str, dname, ci, env);
+	closedir(dirp);
+	return (1);
+}
+
 int				complete_files(t_compl_info *ci, t_shell *shell)
 {
 	DIR				*dirp;
@@ -84,8 +82,10 @@ int				complete_files(t_compl_info *ci, t_shell *shell)
 	char			*path;
 
 	file = get_file_start(ci->word);
-	path = get_path(ci->word, shell->env);
-	(dirp = opendir(path)) ? free(path) : free(path);
+	if (!(path = get_path(ci->word, shell->env)))
+		return (0);
+	dirp = opendir(path);
+	free(path);
 	if (!dirp)
 		return (0);
 	while ((dirc = readdir(dirp)))
@@ -93,11 +93,7 @@ int				complete_files(t_compl_info *ci, t_shell *shell)
 			if (ft_strnequ(dirc->d_name, file, ft_strlen(file)))
 			{
 				if (ci->index == 0)
-				{
-					complete_file(ci->str, dirc->d_name, ci, shell->env);
-					closedir(dirp);
-					return (1);
-				}
+					return (file_found(dirp, ci, dirc->d_name, shell->env));
 				else
 					ci->index--;
 			}
