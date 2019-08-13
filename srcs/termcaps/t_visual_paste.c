@@ -6,7 +6,7 @@
 /*   By: frossiny <frossiny@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/25 16:07:35 by vsaltel           #+#    #+#             */
-/*   Updated: 2019/05/15 14:48:55 by frossiny         ###   ########.fr       */
+/*   Updated: 2019/08/12 18:42:09 by vsaltel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,18 @@ void		visual_replace(char **str, char *buf, t_cursor_pos *pos)
 	if (pos->v_beg < pos->x_rel)
 	{
 		l = ft_strndup(*str, pos->v_beg);
-		r = ft_strdup(*str + pos->x_rel + 1);
+		if ((*str)[pos->x_rel] != '\0')
+			r = ft_strdup(*str + pos->x_rel + 1);
+		else
+			r = ft_strdup("");
 	}
 	else
 	{
 		l = ft_strndup(*str, pos->x_rel);
-		r = ft_strdup(*str + pos->v_beg + 1);
+		if ((*str)[pos->v_beg] != '\0')
+			r = ft_strdup(*str + pos->v_beg + 1);
+		else
+			r = ft_strdup("");
 	}
 	free(*str);
 	*str = ft_strjoint(l, buf, r);
